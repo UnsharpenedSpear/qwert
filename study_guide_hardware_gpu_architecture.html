@@ -1,0 +1,2055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Hardware & GPU Architecture — Exam Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0e12;--bg2:#13161c;--bg3:#1a1e27;--border:#252a38;--border2:#323848;--accent:#4f9cf9;--accent2:#9b72ff;--accent3:#2dd4bf;--accent4:#f97316;--accent5:#f43f5e;--text:#dde4f0;--text2:#8b9ab5;--text3:#4e5a72;--green:#22c55e;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.75;min-height:100vh}
+
+/* HEADER */
+.hdr{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.5rem;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;height:54px;gap:1rem}
+.hdr-logo{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--accent);font-weight:600;letter-spacing:0.06em;white-space:nowrap}
+.hdr-tag{font-size:11px;color:var(--text3);white-space:nowrap}
+.hdr-nav{display:flex;gap:6px;flex-shrink:0}
+.tab-btn{padding:5px 14px;border-radius:4px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--text2);font-family:'IBM Plex Sans',sans-serif;transition:all 0.15s;letter-spacing:0.02em}
+.tab-btn:hover{border-color:var(--accent);color:var(--accent)}
+.tab-btn.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* LAYOUT */
+.layout{display:flex;min-height:calc(100vh - 54px)}
+
+/* SIDEBAR */
+.sidebar{width:270px;flex-shrink:0;background:var(--bg2);border-right:1px solid var(--border);padding:1.25rem 0;position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
+.sb-section{margin-bottom:1.25rem}
+.sb-heading{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;color:var(--text3);text-transform:uppercase;padding:0 1.1rem;margin-bottom:4px}
+.sb-item{display:flex;align-items:flex-start;gap:9px;padding:7px 1.1rem;cursor:pointer;font-size:12.5px;color:var(--text2);border-left:2px solid transparent;transition:all 0.12s;line-height:1.4}
+.sb-item:hover{background:var(--bg3);color:var(--text);border-left-color:var(--border2)}
+.sb-item.active{background:var(--bg3);color:var(--accent);border-left-color:var(--accent);font-weight:500}
+.sb-num{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text3);min-width:18px;margin-top:1px}
+
+/* MAIN */
+.main{flex:1;padding:2rem 2.25rem;overflow-x:hidden}
+.tp{display:none;animation:fadeIn 0.18s ease}
+.tp.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+
+/* TOPIC HEADER */
+.tp-header{margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
+.tp-num{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:6px}
+.tp-title{font-size:24px;font-weight:600;color:var(--text);line-height:1.3;margin-bottom:8px}
+.tp-desc{font-size:14px;color:var(--text2);max-width:700px;line-height:1.65}
+
+/* SECTION HEADING */
+.s-title{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin:1.75rem 0 0.9rem;display:flex;align-items:center;gap:8px}
+.s-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* CARDS */
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:7px;padding:1.1rem 1.25rem;margin-bottom:0.9rem}
+.card-h{font-size:13px;font-weight:600;color:var(--text);margin-bottom:0.7rem;display:flex;align-items:center;gap:7px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.cdot-g{background:var(--green)}
+.cdot-p{background:var(--purple)}
+.cdot-o{background:var(--accent4)}
+.cdot-r{background:var(--red)}
+.cdot-t{background:var(--accent3)}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
+/* STAT */
+.stat{background:var(--bg3);border:1px solid var(--border);border-radius:5px;padding:11px 13px}
+.stat-lbl{font-size:11px;color:var(--text3);margin-bottom:3px;font-family:'IBM Plex Mono',monospace}
+.stat-val{font-size:15px;font-weight:600;color:var(--text)}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* STEPS */
+ol.steps{list-style:none;padding:0}
+ol.steps li{display:flex;gap:13px;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px;color:var(--text2);line-height:1.6;align-items:flex-start}
+ol.steps li:last-child{border-bottom:none}
+.sn{min-width:24px;height:24px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--accent);flex-shrink:0;margin-top:2px;font-weight:600}
+ol.steps li strong{color:var(--text);font-weight:500}
+
+/* BULLETS */
+ul.bul{padding-left:0;list-style:none}
+ul.bul li{padding:4px 0 4px 16px;position:relative;font-size:13.5px;color:var(--text2);line-height:1.6}
+ul.bul li::before{content:'';position:absolute;left:0;top:13px;width:5px;height:1px;background:var(--text3)}
+ul.bul li strong{color:var(--text);font-weight:500}
+
+/* CALLOUTS */
+.co{border-radius:5px;padding:11px 15px;margin:11px 0;font-size:13px;line-height:1.65;border-left:3px solid}
+.co-key{border-color:var(--accent);background:rgba(79,156,249,0.07);color:var(--text2)}
+.co-warn{border-color:var(--amber);background:rgba(245,158,11,0.07);color:var(--text2)}
+.co-danger{border-color:var(--red);background:rgba(239,68,68,0.07);color:var(--text2)}
+.co-tip{border-color:var(--green);background:rgba(34,197,94,0.07);color:var(--text2)}
+.co-exam{border-color:var(--accent2);background:rgba(155,114,255,0.08);color:var(--text2)}
+.co-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;font-weight:600;text-transform:uppercase;display:block;margin-bottom:5px}
+.co-key .co-lbl{color:var(--accent)}.co-warn .co-lbl{color:var(--amber)}.co-danger .co-lbl{color:var(--red)}.co-tip .co-lbl{color:var(--green)}.co-exam .co-lbl{color:var(--accent2)}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;margin:10px 0}
+table.tbl{width:100%;border-collapse:collapse;font-size:13px}
+table.tbl th{background:var(--bg3);padding:9px 13px;text-align:left;font-weight:500;color:var(--text2);border:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.04em}
+table.tbl td{padding:8px 13px;border:1px solid var(--border);color:var(--text2);vertical-align:top;font-size:13px}
+table.tbl td strong{color:var(--text);font-weight:500}
+table.tbl tr:nth-child(even) td{background:rgba(255,255,255,0.015)}
+
+/* BADGE */
+.badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:500;font-family:'IBM Plex Mono',monospace;letter-spacing:0.03em}
+.b-blue{background:rgba(79,156,249,0.15);color:var(--accent)}
+.b-purple{background:rgba(155,114,255,0.15);color:var(--accent2)}
+.b-green{background:rgba(34,197,94,0.15);color:var(--green)}
+.b-amber{background:rgba(245,158,11,0.15);color:var(--amber)}
+.b-red{background:rgba(239,68,68,0.15);color:var(--red)}
+.b-teal{background:rgba(45,212,191,0.15);color:var(--accent3)}
+
+/* CODE */
+code{font-family:'IBM Plex Mono',monospace;background:var(--bg3);border:1px solid var(--border);padding:1px 6px;border-radius:3px;font-size:12px;color:var(--accent3)}
+pre{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:14px 16px;overflow-x:auto;margin:10px 0}
+pre code{background:none;border:none;padding:0;font-size:13px;color:var(--accent3)}
+
+/* MEMORY PYRAMID */
+.pyramid{display:flex;flex-direction:column;gap:4px;max-width:500px;margin:12px auto}
+.pyr-row{border-radius:4px;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;gap:12px}
+.pyr-name{font-size:13px;font-weight:500}
+.pyr-detail{font-size:12px;opacity:0.7;text-align:right}
+
+/* PIPELINE VIZ */
+.pipeline{display:flex;gap:0;margin:12px 0;overflow-x:auto}
+.pipe-stage{flex:1;min-width:80px;text-align:center;padding:10px 8px;background:var(--bg3);border:1px solid var(--border);border-right:none;position:relative}
+.pipe-stage:first-child{border-radius:4px 0 0 4px}
+.pipe-stage:last-child{border-right:1px solid var(--border);border-radius:0 4px 4px 0}
+.pipe-stage::after{content:'→';position:absolute;right:-10px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:12px;z-index:1}
+.pipe-stage:last-child::after{display:none}
+.pipe-abbr{font-family:'IBM Plex Mono',monospace;font-size:12px;font-weight:600;margin-bottom:3px}
+.pipe-name{font-size:11px;color:var(--text3);line-height:1.3}
+
+/* ARCH COMPARE */
+.arch-compare{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:12px 0;align-items:stretch}
+.arch-col{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:1rem}
+.arch-col-h{font-size:13px;font-weight:600;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.arch-vs{display:flex;align-items:center;justify-content:center;padding:0 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3);writing-mode:vertical-rl}
+
+/* GPU THREAD HIERARCHY */
+.thread-hier{display:flex;gap:10px;margin:12px 0;flex-wrap:wrap}
+.th-box{border-radius:6px;padding:10px 14px;border:1px solid}
+.th-box .th-label{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:5px}
+.th-box .th-val{font-size:14px;font-weight:600}
+.th-box .th-desc{font-size:12px;margin-top:3px;opacity:0.7}
+
+/* WARP DIVERGENCE VIZ */
+.warp-viz{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin:12px 0}
+.wt{width:100%;aspect-ratio:1;border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:600}
+.wt-a{background:rgba(79,156,249,0.3);color:var(--accent)}
+.wt-b{background:rgba(155,114,255,0.3);color:var(--accent2)}
+.wt-m{background:rgba(75,85,100,0.3);color:var(--text3)}
+
+/* BACK BUTTON */
+.home-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--text3);cursor:pointer;margin-bottom:1rem;padding:5px 0;transition:color 0.12s;font-family:'IBM Plex Mono',monospace;letter-spacing:0.04em}
+.home-btn:hover{color:var(--accent)}
+
+/* RESPONSIVE */
+@media(max-width:900px){.sidebar{display:none}.main{padding:1.25rem}.g2,.g3,.g4{grid-template-columns:1fr}.arch-compare{grid-template-columns:1fr}.arch-vs{display:none}.pipeline{flex-wrap:wrap}}
+@media(max-width:600px){.hdr-tag{display:none}.hdr-nav{gap:4px}.tab-btn{padding:4px 10px;font-size:11px}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="hdr-logo">// EXAM STUDY GUIDE</div>
+    <div class="hdr-tag">PC Hardware &amp; GPU Architecture · Undergrad Reference</div>
+  </div>
+  <nav class="hdr-nav">
+    <button class="tab-btn active" onclick="switchSection('hw')">Hardware Assembly</button>
+    <button class="tab-btn" onclick="switchSection('arch')">CPU &amp; GPU Architecture</button>
+  </nav>
+</header>
+
+<div class="layout">
+  <!-- ═══ SIDEBAR ═══ -->
+  <nav class="sidebar" id="sidebar">
+    <!-- HW sidebar -->
+    <div class="sb-section hw-nav">
+      <div class="sb-heading">Hardware Topics</div>
+      <div class="sb-item active" onclick="showTopic('t1')"><span class="sb-num">01</span><span>Desktop PC Assembly — Motherboard &amp; RAM</span></div>
+      <div class="sb-item" onclick="showTopic('t2')"><span class="sb-num">02</span><span>Laptop Keyboard &amp; Storage Disassembly</span></div>
+      <div class="sb-item" onclick="showTopic('t3')"><span class="sb-num">03</span><span>Gaming PC Assembly — GPU Installation</span></div>
+      <div class="sb-item" onclick="showTopic('t4')"><span class="sb-num">04</span><span>Laptop Motherboard Disassembly Precautions</span></div>
+      <div class="sb-item" onclick="showTopic('t5')"><span class="sb-num">05</span><span>Workstation Computer Assembly</span></div>
+      <div class="sb-item" onclick="showTopic('t6')"><span class="sb-num">06</span><span>Laptop Cooling Fan &amp; Processor Disassembly</span></div>
+      <div class="sb-item" onclick="showTopic('t7')"><span class="sb-num">07</span><span>SSD &amp; RAM Upgrade Procedures</span></div>
+      <div class="sb-item" onclick="showTopic('t8')"><span class="sb-num">08</span><span>Server System Assembly &amp; Maintenance</span></div>
+      <div class="sb-item" onclick="showTopic('t9')"><span class="sb-num">09</span><span>Motherboard Troubleshooting During Assembly</span></div>
+    </div>
+    <!-- ARCH sidebar -->
+    <div class="sb-section arch-nav" style="display:none">
+      <div class="sb-heading">Architecture Topics</div>
+      <div class="sb-item" onclick="showTopic('t10')"><span class="sb-num">10</span><span>CPU vs GPU — Parallel Processing</span></div>
+      <div class="sb-item" onclick="showTopic('t11')"><span class="sb-num">11</span><span>Pipelining in Modern CPUs</span></div>
+      <div class="sb-item" onclick="showTopic('t12')"><span class="sb-num">12</span><span>NVIDIA Blackwell vs AMD CDNA</span></div>
+      <div class="sb-item" onclick="showTopic('t13')"><span class="sb-num">13</span><span>SIMT Execution Model in GPUs</span></div>
+      <div class="sb-item" onclick="showTopic('t14')"><span class="sb-num">14</span><span>GPU Memory Hierarchy</span></div>
+      <div class="sb-item" onclick="showTopic('t15')"><span class="sb-num">15</span><span>Tensor Cores in NVIDIA Blackwell GPUs</span></div>
+      <div class="sb-item" onclick="showTopic('t16')"><span class="sb-num">16</span><span>GPU Shared Memory vs Global Memory</span></div>
+      <div class="sb-item" onclick="showTopic('t17')"><span class="sb-num">17</span><span>Power Efficiency in GPU Architectures</span></div>
+      <div class="sb-item" onclick="showTopic('t18')"><span class="sb-num">18</span><span>CUDA Compiler Optimization</span></div>
+      <div class="sb-item" onclick="showTopic('t19')"><span class="sb-num">19</span><span>CPU vs GPU for AI &amp; Deep Learning</span></div>
+    </div>
+  </nav>
+
+  <!-- ═══ MAIN CONTENT ═══ -->
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 1 — Desktop PC Assembly
+    ══════════════════════════════════════════════ -->
+    <div class="tp active" id="t1">
+      <div class="tp-header">
+        <div class="tp-num">Topic 01 · Hardware Assembly</div>
+        <div class="tp-title">Desktop PC Assembly — Motherboard &amp; RAM Installation</div>
+        <div class="tp-desc">A complete walkthrough of assembling a desktop PC from bare components, covering form factors, socket standards, slot installation procedures, power delivery, and POST verification.</div>
+      </div>
+
+      <div class="s-title">Tools &amp; Safety Preparations</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Required Tools</div>
+          <ul class="bul">
+            <li><strong>Phillips-head screwdriver (PH2)</strong> — primary tool for most screws</li>
+            <li><strong>Anti-static wrist strap</strong> — connect to unpainted metal on case</li>
+            <li><strong>Thermal paste</strong> — pre-applied on most coolers, otherwise apply separately</li>
+            <li><strong>Magnetic tray</strong> — holds screws, prevents losing tiny hardware</li>
+            <li><strong>Cable ties / velcro straps</strong> — for cable management</li>
+            <li><strong>Flashlight</strong> — for dark case interiors</li>
+            <li><strong>Isopropyl alcohol (90%+)</strong> — clean old thermal paste</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-o"></span>ESD &amp; Workspace Safety</div>
+          <ul class="bul">
+            <li>Work on a hard, non-carpeted surface (wood table, not carpet)</li>
+            <li>Anti-static wrist strap grounds you to prevent ESD discharge</li>
+            <li>If no strap: touch unpainted metal chassis frequently to discharge</li>
+            <li>Keep components in anti-static bags until needed</li>
+            <li>Never touch gold contacts on PCIe cards, RAM sticks, or CPU pins</li>
+            <li>Power off and unplug PSU before working (but leave PSU grounded)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Motherboard Form Factors</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Form Factor</th><th>Dimensions</th><th>PCIe Slots</th><th>RAM Slots</th><th>Use Case</th></tr>
+          <tr><td><strong>E-ATX</strong></td><td>305 × 330 mm</td><td>7+</td><td>8</td><td>High-end workstation / HEDT</td></tr>
+          <tr><td><strong>ATX</strong></td><td>305 × 244 mm</td><td>7</td><td>4</td><td>Standard desktop / gaming</td></tr>
+          <tr><td><strong>Micro-ATX</strong></td><td>244 × 244 mm</td><td>4</td><td>4</td><td>Compact desktop</td></tr>
+          <tr><td><strong>Mini-ITX</strong></td><td>170 × 170 mm</td><td>1</td><td>2</td><td>Small form factor builds</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">CPU Socket Standards (2024–2025)</div>
+      <div class="g3">
+        <div class="stat"><div class="stat-lbl">Intel LGA 1851</div><div class="stat-val">Core Ultra 200 (Arrow Lake)</div><div class="stat-sub">1851 pins on motherboard socket</div></div>
+        <div class="stat"><div class="stat-lbl">AMD AM5</div><div class="stat-val">Ryzen 7000 / 9000</div><div class="stat-sub">1718 contacts; LGA design</div></div>
+        <div class="stat"><div class="stat-lbl">Intel LGA 4677</div><div class="stat-val">Xeon Scalable (Sapphire Rapids)</div><div class="stat-sub">Server / workstation socket</div></div>
+      </div>
+
+      <div class="s-title">Step-by-Step Assembly Procedure</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Prepare the case:</strong> Remove side panels. Lay case flat on its side. Identify the rear I/O cutout. Remove the pre-installed I/O shield (punch out). Note the motherboard standoff positions corresponding to your form factor.</div></li>
+        <li><span class="sn">2</span><div><strong>Install brass standoffs:</strong> Screw brass standoffs into the case threaded holes matching your motherboard's mounting pattern. These lift the board off the case pan to prevent electrical shorts. Missing a standoff causes board flex; extra standoffs cause shorts.</div></li>
+        <li><span class="sn">3</span><div><strong>Install the custom I/O shield:</strong> Press the motherboard's I/O shield into the case cutout from inside until all edges click into the frame. Align tabs — they will contact board connectors for grounding.</div></li>
+        <li><span class="sn">4</span><div><strong>CPU installation:</strong> For Intel LGA: lift the socket retention arm, place CPU with golden triangle aligned to socket triangle, lower arm. For AMD AM5/LGA: same procedure — CPU drops in with no force. For older AMD AM4/AM3: PGA socket — align CPU pins with socket holes, lever closes. <em>Never use force on any CPU socket.</em></div></li>
+        <li><span class="sn">5</span><div><strong>RAM installation:</strong> Open DIMM slot retention clips on both ends. Locate the notch on the RAM stick — this is a key that ensures correct orientation. Align the notch to the slot key. Press down firmly and evenly with both thumbs until both retention clips snap closed. You should hear and feel a distinct click. For dual-channel operation, populate slots A2 + B2 (second and fourth from CPU) unless the manual specifies otherwise.</div></li>
+        <li><span class="sn">6</span><div><strong>M.2 NVMe SSD (on-board):</strong> Remove the M.2 heatsink if present. Insert M.2 drive at 30° angle into the M.2 slot (keyed connector). Press flat and secure with the small retaining screw. Replace heatsink.</div></li>
+        <li><span class="sn">7</span><div><strong>Mount the motherboard:</strong> Lower the board into the case, aligning rear I/O ports with the shield cutouts. Confirm all standoffs align with the mounting holes. Insert all mounting screws finger-tight first, then use a star/cross pattern to torque evenly — prevents board warping.</div></li>
+        <li><span class="sn">8</span><div><strong>Install CPU cooler:</strong> Apply thermal paste if not pre-applied (pea-sized dot on CPU IHS center). Mount cooler backplate (if required), then secure cooler. For tower coolers: use screws or push-pins. Tighten in diagonal pairs for even IHS contact pressure.</div></li>
+        <li><span class="sn">9</span><div><strong>Connect PSU cables:</strong> (1) 24-pin ATX main power to motherboard. (2) 4+4 pin CPU EPS power to top-left corner of board (separate from 24-pin, often overlooked). (3) PCIe power cables to GPU when installed.</div></li>
+        <li><span class="sn">10</span><div><strong>Connect SATA storage:</strong> L-shaped SATA data cable from motherboard SATA port to drive. SATA power from PSU to drive. Note: SATA data is separate from power, unlike older IDE.</div></li>
+        <li><span class="sn">11</span><div><strong>Connect front panel headers:</strong> These are small 1- or 2-pin connectors. Connect to F_PANEL header on board. Key connections: PWR_SW (power button), RESET_SW, HDD_LED (+/−), PWR_LED (+/−), HD_AUDIO, USB 2.0 header, USB 3.0 header. Check manual for polarity — LEDs are direction-sensitive (wrong polarity = LED won't light, but won't damage hardware).</div></li>
+        <li><span class="sn">12</span><div><strong>Connect fans:</strong> CPU fan to CPU_FAN header (mandatory — if unconnected, BIOS will halt boot). Case fans to SYS_FAN or CHA_FAN headers. Pump for AIO to AIO_PUMP or CPU_OPT.</div></li>
+        <li><span class="sn">13</span><div><strong>Cable management:</strong> Route all cables behind the motherboard tray through rubber-lined cutouts. Use velcro ties. This improves airflow and allows the side panel to close without pinching cables.</div></li>
+        <li><span class="sn">14</span><div><strong>First boot / POST:</strong> Connect monitor, keyboard, power. Power on. System should POST (Power-On Self-Test), display BIOS screen. If RAM is new, enable XMP/EXPO profile in BIOS (AI Overclocking on ASUS, DOCP on some ASUS, EXPO on AMD platforms) to run RAM at rated speed rather than JEDEC default (2133 MHz).</div></li>
+      </ol>
+
+      <div class="s-title">RAM Technical Details</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Standard</th><th>Voltage</th><th>Base Speed</th><th>Max (2025)</th><th>Slot Type</th></tr>
+          <tr><td><strong>DDR4</strong></td><td>1.2 V</td><td>2133 MHz</td><td>5333 MHz (OC)</td><td>288-pin DIMM</td></tr>
+          <tr><td><strong>DDR5</strong></td><td>1.1 V</td><td>4800 MHz</td><td>9200+ MHz (OC)</td><td>288-pin DIMM (notch diff)</td></tr>
+          <tr><td><strong>SO-DIMM DDR4</strong></td><td>1.2 V</td><td>2133 MHz</td><td>3200 MHz</td><td>260-pin (laptop)</td></tr>
+          <tr><td><strong>SO-DIMM DDR5</strong></td><td>1.1 V</td><td>4800 MHz</td><td>7200 MHz</td><td>262-pin (laptop)</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        1. RAM slots are physically keyed — one orientation only; never force. <br>
+        2. Dual-channel = populate A2+B2 slots (check manual); single stick = B2 slot (closest to CPU). <br>
+        3. Star-pattern tightening prevents board flex. <br>
+        4. Missing the 4+4 CPU EPS power connector is the most common new-builder mistake causing no-POST. <br>
+        5. XMP/EXPO must be manually enabled in BIOS or RAM runs at default JEDEC speed.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 2 — Laptop Keyboard & Storage Disassembly
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t2">
+      <div class="tp-header">
+        <div class="tp-num">Topic 02 · Hardware Disassembly</div>
+        <div class="tp-title">Laptop Keyboard &amp; Storage Unit Disassembly</div>
+        <div class="tp-desc">Detailed procedure for safely removing a laptop keyboard and storage drives (HDD, SATA SSD, M.2 NVMe), including connector types, ribbon cable handling, and reassembly notes.</div>
+      </div>
+
+      <div class="s-title">Pre-Disassembly Checklist</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-o"></span>Safety Steps (Always Do First)</div>
+          <ul class="bul">
+            <li>Power off completely (not sleep/hibernate)</li>
+            <li>Disconnect AC adapter</li>
+            <li>Discharge residual energy: hold power button 5 seconds after unplugging</li>
+            <li>Work on anti-static mat; wear wrist strap</li>
+            <li>Photograph the underside screw locations before removal</li>
+            <li>Use a magnetic parts tray or tape screws to labeled paper</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Required Tools</div>
+          <ul class="bul">
+            <li><strong>JIS screwdrivers</strong> — many Japanese laptops use JIS #0 and #1 (not Phillips, though PH looks similar)</li>
+            <li><strong>Torx T5/T4</strong> — used on some ultrabooks (Apple, Surface)</li>
+            <li><strong>Plastic pry tools / spudgers</strong> — never metal on chassis</li>
+            <li><strong>Tweezers</strong> — for ribbon connectors</li>
+            <li><strong>Opening picks</strong> — thin guitar-pick shape for clip panel release</li>
+            <li><strong>iFixit / repair guide for exact model</strong></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Keyboard Disassembly — Base Panel Method</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Remove base screws:</strong> Flip laptop upside-down. Remove all underside screws. Note: screws often differ in length (shorter at front edges, longer near hinges). Document positions. Some screws hide under rubber feet (peel them back) or warranty stickers (breaking = voiding warranty).</div></li>
+        <li><span class="sn">2</span><div><strong>Release base panel clips:</strong> The base panel is held by friction clips around its perimeter in addition to screws. Insert a plastic opening pick into the seam between base and top shell. Slide around perimeter to release clips sequentially. Listen for clicking sounds as clips release — do not force.</div></li>
+        <li><span class="sn">3</span><div><strong>Open the base panel:</strong> Start lifting from a corner (usually near hinges where there are fewer clips). Swing open gently — watch for cables that may be routed to the base panel (battery cable, fingerprint sensor cable, speaker cables).</div></li>
+        <li><span class="sn">4</span><div><strong>Disconnect the battery first:</strong> Before touching anything else, find the battery connector on the motherboard and disconnect it. This is a flat multi-wire connector, usually secured by a small latch or gentle friction. Disconnecting eliminates risk of short circuits.</div></li>
+        <li><span class="sn">5</span><div><strong>Access keyboard cable:</strong> The keyboard connects to the motherboard via a ZIF (Zero Insertion Force) ribbon cable. Locate the ribbon cable connector on the motherboard. Flip the brown/tan/black plastic latch upward (90° — it's a hinge, not removable). The ribbon cable then slides out freely — zero force required. Never pull the cable directly.</div></li>
+        <li><span class="sn">6</span><div><strong>Remove keyboard screws (if any):</strong> Some designs have 2–4 small screws holding the keyboard plate to the top chassis. Remove these. Other designs use only clips along the top or bottom edge of the keyboard bezel.</div></li>
+        <li><span class="sn">7</span><div><strong>Release keyboard clips:</strong> On designs where keyboard installs from the top, insert a thin plastic tool along the keyboard bezel edges to release the retention clips. Push inward, not upward, to disengage.</div></li>
+        <li><span class="sn">8</span><div><strong>Lift keyboard out:</strong> Tilt keyboard up carefully. There is often a second, shorter ribbon cable (backlight or trackpad). Disconnect this via its own ZIF latch before fully removing the keyboard.</div></li>
+      </ol>
+
+      <div class="s-title">ZIF Connector Types — Critical Detail</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Top-Lock ZIF</div>
+          <ul class="bul">
+            <li>Latch flips upward (toward you) like a hinged lid</li>
+            <li>Latch is part of the connector housing — don't remove it</li>
+            <li>Cable slides in/out horizontally with zero force once latch is open</li>
+            <li>Most common type in modern laptops</li>
+            <li>Close latch firmly after inserting cable — press until it's flat</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>Bottom-Lock / Slide-Lock ZIF</div>
+          <ul class="bul">
+            <li>Latch slides outward (parallel to board surface) to release</li>
+            <li>Less common but found in some older/slim designs</li>
+            <li>Do not try to pry upward — you will break the connector</li>
+            <li>Use tweezers to slide latch out; slide cable in/out</li>
+            <li>Lock by sliding the latch back until it clicks</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Storage Unit Disassembly</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>2.5" SATA HDD / SSD Removal</div>
+        <ol class="steps">
+          <li><span class="sn">1</span><div>After base panel is open, locate the 2.5" drive bay. Drive is usually secured by a caddy with 2–4 side screws or a rubber bumper system.</div></li>
+          <li><span class="sn">2</span><div>Disconnect the SATA connector: In most laptops, a single L-shaped SATA combo connector carries both data and power. Pull straight out (parallel to the board surface) from the drive end.</div></li>
+          <li><span class="sn">3</span><div>Some designs use a ribbon-cable SATA adapter (interposer board) — disconnect the ribbon, then remove the drive from its caddy.</div></li>
+          <li><span class="sn">4</span><div>Remove the 4 caddy screws (usually M3×3mm). Slide drive out of caddy. Transfer caddy to new drive before reinstalling.</div></li>
+        </ol>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>M.2 NVMe / M.2 SATA SSD Removal</div>
+        <ol class="steps">
+          <li><span class="sn">1</span><div>Locate M.2 slot — usually under a thermal pad/heatsink or shield. Remove heatsink screws and thermal pad if present.</div></li>
+          <li><span class="sn">2</span><div>Remove the single small screw at the far end of the M.2 drive (M2×3mm). Hold the drive as you do this — it will spring up to ~30° when the screw is removed.</div></li>
+          <li><span class="sn">3</span><div>Slide the drive straight out at the ~30° angle from the M.2 edge connector. The connector is at one end; the screw hole is at the other.</div></li>
+          <li><span class="sn">4</span><div>To install new drive: insert at 30°, align connector notch with slot key (M-key for NVMe, B+M-key for SATA), press gently until seated, press flat and secure screw. Apply new thermal pad if removing old one.</div></li>
+        </ol>
+      </div>
+
+      <div class="s-title">M.2 Key Types</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Key</th><th>Interface</th><th>Notch Position</th><th>Use</th></tr>
+          <tr><td><strong>M-key</strong></td><td>PCIe NVMe (or SATA)</td><td>Right side (pins 67–74 missing)</td><td>High-speed NVMe SSDs</td></tr>
+          <tr><td><strong>B-key</strong></td><td>SATA or PCIe x2</td><td>Left side (pins 12–19 missing)</td><td>WWAN cards, some SSDs</td></tr>
+          <tr><td><strong>B+M-key</strong></td><td>SATA or PCIe x2</td><td>Both notches</td><td>Backward-compatible SSDs</td></tr>
+          <tr><td><strong>E-key</strong></td><td>PCIe x2 + USB, SDIO</td><td>Different position</td><td>WiFi / Bluetooth cards</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-warn"><span class="co-lbl">Critical Warnings</span>
+        Never use a metal pry tool on the laptop chassis — it scratches and can short components. Never pull ribbon cables by the flat cable itself — only by the connector housing. Static discharge can permanently corrupt storage — always ground yourself before handling.
+      </div>
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        ZIF = Zero Insertion Force connector; the latch must be opened before the cable can be removed — never pull a ZIF cable without opening its latch. Laptop SSDs may be 2.5" SATA, M.2 SATA, or M.2 NVMe — they are NOT interchangeable without checking slot compatibility. M-key slots support NVMe; B+M-key may support SATA or NVMe depending on the host controller.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 3 — Gaming PC Assembly with GPU
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t3">
+      <div class="tp-header">
+        <div class="tp-num">Topic 03 · Hardware Assembly</div>
+        <div class="tp-title">Gaming PC Assembly — GPU Installation</div>
+        <div class="tp-desc">Comprehensive guide to building a gaming PC with emphasis on discrete GPU installation, power delivery requirements, thermal management, and BIOS configuration for gaming performance.</div>
+      </div>
+
+      <div class="s-title">GPU Physical Specifications</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Attribute</th><th>Details</th></tr>
+          <tr><td><strong>Interface</strong></td><td>PCIe x16 Gen 4 or Gen 5 (electrically; x8 is common for Gen 5 cards)</td></tr>
+          <tr><td><strong>Slot width</strong></td><td>2-slot, 2.5-slot, 3-slot, or 3.5-slot designs (width = neighboring slot space consumed)</td></tr>
+          <tr><td><strong>Length</strong></td><td>170mm (compact) to 340mm+ (full-size); measure case clearance first</td></tr>
+          <tr><td><strong>Power connectors</strong></td><td>6-pin (75W), 8-pin (150W), 12VHPWR/16-pin (600W for RTX 4090)</td></tr>
+          <tr><td><strong>TDP range</strong></td><td>75W (low-profile) → 600W (RTX 4090); plan PSU accordingly</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">GPU Installation — Step by Step</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Case preparation:</strong> Remove PCIe slot covers from the case rear panel. For a 2-slot GPU, remove covers at positions 1 and 2. Use a flat-head screwdriver or unscrew them. Keep unused covers in place to maintain airflow.</div></li>
+        <li><span class="sn">2</span><div><strong>Unlock the PCIe x16 slot:</strong> The primary PCIe x16 slot (closest to the CPU) has a retention latch at its far end. Push it away from the slot (outward) to unlock it. This prevents accidental removal during transport once the card is installed.</div></li>
+        <li><span class="sn">3</span><div><strong>Align the GPU:</strong> Hold the GPU by its heatsink shroud and PCB edges. Align the gold-finger PCIe connector with the x16 slot. Align the bracket cutouts with the rear case slots. The GPU should hover directly above the slot before pressing down.</div></li>
+        <li><span class="sn">4</span><div><strong>Seat the GPU:</strong> Press down firmly and evenly across the full PCIe connector length until you hear/feel the retention latch click into place. Verify the latch is engaged — if not, the GPU may appear seated but have a loose electrical connection.</div></li>
+        <li><span class="sn">5</span><div><strong>Secure the bracket:</strong> Screw the GPU's metal bracket to the case with 2–3 screws (same location as the slot covers you removed). This provides mechanical support and prevents the heavy GPU from sagging the PCIe slot over time.</div></li>
+        <li><span class="sn">6</span><div><strong>GPU support bracket (optional but recommended):</strong> Very heavy GPUs (RTX 4090, RX 7900 XTX) can cause PCIe slot sag over months. A GPU support bracket (third-party accessory) props up the GPU at the non-bracket end.</div></li>
+        <li><span class="sn">7</span><div><strong>Connect PCIe power:</strong> Modern GPUs require one or more power cables from the PSU. Connect 8-pin, 6-pin, or 16-pin (12VHPWR) connectors. <em>Never daisy-chain: do not use a single PSU cable with two 8-pin connectors for a GPU requiring two separate 8-pin connectors.</em> Use separate cables from the PSU for each connector when possible.</div></li>
+        <li><span class="sn">8</span><div><strong>12VHPWR adapter warning:</strong> Some adapters (3× 8-pin to 16-pin) have had melting issues. If your GPU ships with this adapter, ensure correct connection — all pins fully seated, no tension on the cable at the connector. NVIDIA updated to a sturdier 16-pin native cable in RTX 4080/4090 FE revision.</div></li>
+      </ol>
+
+      <div class="s-title">PSU Sizing for Gaming PCs</div>
+      <div class="g3">
+        <div class="stat"><div class="stat-lbl">Formula</div><div class="stat-val">CPU TDP + GPU TDP + 100W</div><div class="stat-sub">Minimum PSU wattage rule of thumb</div></div>
+        <div class="stat"><div class="stat-lbl">Example: RTX 4070 + i7-13700K</div><div class="stat-val">200W + 125W + 100W = 750W</div><div class="stat-sub">Use 850W for headroom</div></div>
+        <div class="stat"><div class="stat-lbl">80+ Rating</div><div class="stat-val">Bronze / Gold / Platinum</div><div class="stat-sub">Higher = more efficient; Gold recommended</div></div>
+      </div>
+
+      <div class="s-title">Thermal Management in Gaming PCs</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Air Cooling Airflow Design</div>
+          <ul class="bul">
+            <li><strong>Positive pressure</strong>: more intake fans than exhaust — slightly reduces dust ingress</li>
+            <li><strong>Negative pressure</strong>: more exhaust — keeps GPU/CPU cooler but sucks in more dust</li>
+            <li><strong>Recommended layout</strong>: front intake + top/rear exhaust. GPU exhausts hot air out rear panel.</li>
+            <li>Fan orientations: front/bottom fans point inward (intake); rear/top fans point outward (exhaust)</li>
+            <li>GPU blower cooler: better for tight cases (exhausts directly out back); open-air coolers: better for cases with good airflow</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-t"></span>AIO Liquid Cooler Installation</div>
+          <ul class="bul">
+            <li>Mount radiator at front or top case position</li>
+            <li><strong>Front radiator</strong>: intake fans pull cool air from outside through rad (best for CPU temps)</li>
+            <li><strong>Top radiator</strong>: exhaust — pulls air from inside case; slightly worse CPU temps but keeps VRMs cooler</li>
+            <li>Pump connects to CPU_OPT or AIO_PUMP header on motherboard (full speed, no PWM throttling)</li>
+            <li>Check case clearance — 360mm rad requires 3 × 120mm fan mounts</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Gaming BIOS Configuration After Assembly</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Setting</th><th>What to Do</th><th>Why</th></tr>
+          <tr><td><strong>XMP / EXPO</strong></td><td>Enable in BIOS → DRAM settings</td><td>Runs RAM at rated speed (e.g. 6000 MHz vs default 4800 MHz)</td></tr>
+          <tr><td><strong>Resizable BAR / Smart Access Memory</strong></td><td>Enable if GPU+CPU support it</td><td>CPU can access full GPU VRAM; up to 15% gaming perf gain</td></tr>
+          <tr><td><strong>Secure Boot</strong></td><td>Enable for Windows 11</td><td>Required by Windows 11 TPM 2.0 specification</td></tr>
+          <tr><td><strong>Boot order</strong></td><td>Set primary boot device to OS drive</td><td>Skip USB/PXE boot attempts</td></tr>
+          <tr><td><strong>Fan curves</strong></td><td>Configure in BIOS or software</td><td>Balances acoustics vs thermal performance</td></tr>
+          <tr><td><strong>Above 4G Decoding</strong></td><td>Enable (required for some modern GPUs)</td><td>Allows GPU VRAM &gt;4GB to be addressable above 4GB physical range</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        GPU installs in PCIe x16 slot (closest to CPU). The retention latch must click. Never use a single daisy-chained PSU cable for dual 8-pin GPU power — use two separate cables. Above 4G Decoding must be enabled for large VRAM GPUs. Resizable BAR / SAM requires both CPU and GPU support plus BIOS/driver enablement.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 4 — Laptop Motherboard Disassembly Precautions
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t4">
+      <div class="tp-header">
+        <div class="tp-num">Topic 04 · Hardware Disassembly</div>
+        <div class="tp-title">Laptop Motherboard Disassembly Precautions</div>
+        <div class="tp-desc">Laptop motherboards are dense, fragile, and surrounded by proprietary connectors. This topic covers every precaution needed before, during, and after disassembly to avoid permanent damage.</div>
+      </div>
+
+      <div class="s-title">Why Laptop Motherboard Disassembly is High-Risk</div>
+      <div class="g3">
+        <div class="stat"><div class="stat-lbl">Component density</div><div class="stat-val">10–50× more connectors</div><div class="stat-sub">vs a typical desktop board per sq. cm</div></div>
+        <div class="stat"><div class="stat-lbl">Screw variety</div><div class="stat-val">5–15 different lengths</div><div class="stat-sub">Mixing screws causes stripped holes or cracked PCB</div></div>
+        <div class="stat"><div class="stat-lbl">ESD sensitivity</div><div class="stat-val">Extremely high</div><div class="stat-sub">BGA components have no built-in ESD protection</div></div>
+      </div>
+
+      <div class="s-title">Pre-Disassembly Precautions</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-o"></span>Electrical Safety</div>
+          <ul class="bul">
+            <li><strong>Fully discharge battery</strong> before starting — run it down to 0% or disconnect the built-in battery first thing after opening base panel</li>
+            <li><strong>Anti-static wrist strap required</strong> — connect to a known ground (metal table leg, wall outlet ground)</li>
+            <li><strong>Anti-static mat</strong> preferred over any fabric surface</li>
+            <li>Even with battery disconnected, capacitors retain charge briefly — wait 10–15 seconds after disconnecting before touching board</li>
+            <li>Never work near synthetic fabrics, carpet, or in low-humidity environments without grounding</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Documentation &amp; Organization</div>
+          <ul class="bul">
+            <li><strong>Photograph every step</strong> before removing anything — cable routing, connector positions, screw locations</li>
+            <li><strong>Screw matrix</strong>: tape screws to a paper diagram of the board showing where each came from</li>
+            <li>Label or sketch cable connector positions — many look identical but go to specific headers</li>
+            <li>Download service manual for the exact model (manufacturer support pages, iFixit, Notebookcheck teardown)</li>
+            <li>Note cable routing paths — cables pinched or misrouted on reassembly cause overheating or connectivity issues</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Connector-Specific Precautions</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>Connector Handling Rules — Never Violate These</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>Connector Type</th><th>How to Disconnect</th><th>Common Mistake</th></tr>
+            <tr><td><strong>ZIF ribbon cables</strong></td><td>Flip latch upward, slide cable out</td><td>Pulling cable without opening latch — tears connector off board</td></tr>
+            <tr><td><strong>Nano ZIF (narrow)</strong></td><td>Use tweezers to flip latch; extremely delicate</td><td>Too much force — snaps the latch permanently</td></tr>
+            <tr><td><strong>Antenna cables (WiFi)</strong></td><td>Use spudger under the IPEX/MHF4 connector; pull straight up</td><td>Pulling the coaxial cable — separates from connector</td></tr>
+            <tr><td><strong>Friction-lock connectors (battery)</strong></td><td>Rock gently side to side while pulling up</td><td>Pulling at angle — bends connector pins</td></tr>
+            <tr><td><strong>JST-style speaker/fan connectors</strong></td><td>Grip the plastic housing, pull straight</td><td>Pulling wires — they separate from housing</td></tr>
+            <tr><td><strong>Display (eDP) cable</strong></td><td>Peel any tape, lift latch, slide cable</td><td>Forgetting tape; folding the cable at sharp angle</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="s-title">Motherboard Removal Sequence</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Remove all peripherals first:</strong> Battery (disconnect + unscrew), SSD, WWAN card, RAM (if not soldered), optical drive if present. Lighten the board before removing it.</div></li>
+        <li><span class="sn">2</span><div><strong>Remove heatsink / cooling assembly:</strong> The heatsink often spans CPU and GPU die. Remove screws in reverse-numbered order (from highest to 1) to release pressure evenly. Twist gently to break thermal paste bond — never yank straight up.</div></li>
+        <li><span class="sn">3</span><div><strong>Disconnect all board connectors:</strong> Battery cable first, then: display cable, webcam cable, keyboard ribbon, trackpad ribbon, power button cable, speaker cables, antenna cables, USB board cables, fingerprint sensor cable. Each one must be labeled or photographed.</div></li>
+        <li><span class="sn">4</span><div><strong>Remove board-to-chassis screws:</strong> These are often hidden under stickers, foam pads, or rubber gaskets. Check every corner and center of the board. Missed screws = cracked PCB when lifting.</div></li>
+        <li><span class="sn">5</span><div><strong>Check for port anchors:</strong> USB, HDMI, SD card, and audio jacks are often soldered to the board and protrude through chassis cutouts. The board must slide at a specific angle to clear these. Never pry straight up.</div></li>
+        <li><span class="sn">6</span><div><strong>Lift board at correct angle:</strong> Usually tilt hinge-side up first, then slide toward the hinge end to clear port cutouts. Support the board evenly with both hands.</div></li>
+        <li><span class="sn">7</span><div><strong>Place on anti-static mat:</strong> Never place the bare motherboard directly on a metal surface or bare table. Component-side up unless servicing the underside.</div></li>
+      </ol>
+
+      <div class="s-title">BGA vs LGA — Critical Distinction for Laptops</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-r"></span>BGA (Ball Grid Array) — Laptop CPUs</div>
+          <ul class="bul">
+            <li>CPU is soldered directly to motherboard during manufacturing</li>
+            <li>Solder balls form electrical connections beneath the chip</li>
+            <li>Cannot be replaced by end user — requires professional reballing equipment</li>
+            <li>All modern laptop CPUs: Intel Core Ultra, AMD Ryzen Mobile are BGA</li>
+            <li>Failure = entire motherboard replacement</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-g"></span>LGA (Land Grid Array) — Desktop CPUs</div>
+          <ul class="bul">
+            <li>CPU is socketed — removable and replaceable</li>
+            <li>Pins are on the socket (motherboard side for Intel, CPU side for AMD AM4/AM5 historically)</li>
+            <li>AMD AM5 is LGA (pins on socket); Intel LGA 1851 also on socket</li>
+            <li>Drop-in CPU upgrade possible without board replacement</li>
+            <li>Bent socket pins can be straightened carefully with a pin or mechanical pencil</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="co co-danger"><span class="co-lbl">Irreversible Damage Risks</span>
+        Torn ZIF connector from board = PCB-level repair needed (extremely expensive). Bent or broken antenna cable center conductor = WiFi failure. Cracked PCB trace from board flex = subtle intermittent faults. Wrong-length screw into a short standoff hole = cracks the PCB from below.
+      </div>
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Laptop CPUs are BGA (soldered) — not user-replaceable. ZIF connectors require latch opening before cable removal. Disconnecting the battery is the first step after opening the base panel. Screw-size documentation and photographic record-keeping are essential precautions. Reverse-numbered heatsink screw removal order prevents die cracking.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 5 — Workstation Assembly
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t5">
+      <div class="tp-header">
+        <div class="tp-num">Topic 05 · Hardware Assembly</div>
+        <div class="tp-title">Workstation Computer Assembly</div>
+        <div class="tp-desc">Workstations differ from consumer desktops in CPU architecture, memory standards, reliability requirements, professional GPU selection, expansion capability, and storage redundancy. This topic covers all aspects of their assembly.</div>
+      </div>
+
+      <div class="s-title">What Differentiates a Workstation</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Component</th><th>Consumer Desktop</th><th>Workstation</th></tr>
+          <tr><td><strong>CPU</strong></td><td>Core i9, Ryzen 9 (gaming optimized)</td><td>Xeon W, Core i9-X, Threadripper Pro (ECC + multi-socket capable)</td></tr>
+          <tr><td><strong>RAM</strong></td><td>Non-ECC DDR5 UDIMM</td><td>ECC RDIMM / LRDIMM (error-correcting; up to 6 TB)</td></tr>
+          <tr><td><strong>GPU</strong></td><td>GeForce / Radeon RX</td><td>RTX Pro / Quadro / Radeon PRO (certified ISV drivers)</td></tr>
+          <tr><td><strong>Motherboard</strong></td><td>ATX gaming board</td><td>WRX90, C422, W790 (many ECC DIMM slots, IPMI support)</td></tr>
+          <tr><td><strong>Storage</strong></td><td>Single NVMe SSD</td><td>RAID array (SAS/SATA/NVMe), hot-swap bays</td></tr>
+          <tr><td><strong>PSU</strong></td><td>Single 750–1000W</td><td>Single high-wattage or dual redundant PSU (2+1 or N+1)</td></tr>
+          <tr><td><strong>Certification</strong></td><td>None required</td><td>ISV-certified (SolidWorks, AutoCAD, Autodesk, Adobe)</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Workstation CPU Platforms (2024–2025)</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Intel Xeon W (Sapphire Rapids-W)</div>
+          <ul class="bul">
+            <li>Socket LGA 4677; up to 60 cores (W9-3595X)</li>
+            <li>ECC DDR5 in 8-channel configuration (up to 4 TB)</li>
+            <li>112 PCIe Gen 5 lanes</li>
+            <li>AVX-512 VNNI for AI inference acceleration</li>
+            <li>Intel AMT for remote management</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-r"></span>AMD Threadripper Pro (Storm Peak / Chagall Pro)</div>
+          <ul class="bul">
+            <li>Socket TRX50 (Threadripper Pro 7000) / WRX80 (older)</li>
+            <li>Up to 96 cores (7995WX)</li>
+            <li>ECC DDR5 8-channel (up to 2 TB) or DDR4 (older platforms)</li>
+            <li>128 PCIe Gen 5 lanes — industry-leading expansion</li>
+            <li>Popular for 3D rendering, VFX, ML workstations</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">ECC RAM — Why It Matters in Workstations</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Error Correcting Code Memory</div>
+        <ul class="bul">
+          <li><strong>DRAM bit flips:</strong> Cosmic rays and thermal noise can randomly flip bits in DRAM. At scale (TBs of RAM), this happens multiple times per day.</li>
+          <li><strong>ECC detects and corrects:</strong> ECC RAM adds extra bits (single-bit error correction, double-bit error detection — SECDED) to each memory word. Hardware corrects single-bit errors silently.</li>
+          <li><strong>UDIMM ECC:</strong> Unbuffered ECC — similar to consumer RAM but with error correction. Supported by some workstation/server Xeons and AMD Ryzen Pro.</li>
+          <li><strong>RDIMM (Registered):</strong> Register buffer chip between controller and DRAM chips. Reduces electrical load, enables more DIMMs per channel. Required for 4+ DIMMs per channel.</li>
+          <li><strong>LRDIMM (Load-Reduced):</strong> Further isolates memory bus using iMB buffer. Enables the highest DIMM counts (8+ DIMMs per channel) and maximum capacity.</li>
+          <li><strong>Cannot mix ECC and non-ECC</strong> in same system — will not boot or will disable ECC.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Workstation Assembly Procedure</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Case selection and preparation:</strong> Full-tower or rack-mount chassis. Ensure clearance for large CPU heatsinks (workstation CPUs have higher TDPs). Install case in final position before heavy components — a fully built workstation can exceed 40kg.</div></li>
+        <li><span class="sn">2</span><div><strong>Motherboard installation:</strong> Workstation boards may use 12-pin or proprietary power connectors. Check manual. Install standoffs matching board layout. Some workstation boards have a daughterboard for power distribution.</div></li>
+        <li><span class="sn">3</span><div><strong>CPU installation:</strong> Workstation CPUs are large and heavy. Intel LGA 4677: use the socket loading arm, place CPU in carrier frame, lower into socket using the rail mechanism. AMD TRX50: similar rail system. Never remove CPU from its carrier frame before installation.</div></li>
+        <li><span class="sn">4</span><div><strong>ECC RAM installation:</strong> Populate channels symmetrically. Workstation boards have 8–16 DIMM slots. Fill in the order specified in the manual (often pairs per channel: A1+B1, C1+D1, etc.) for maximum bandwidth.</div></li>
+        <li><span class="sn">5</span><div><strong>Professional GPU installation:</strong> Professional GPUs are often single-slot blower designs. Install in PCIe x16 slot. Professional GPUs may require specific driver installation before use — do not use gaming drivers.</div></li>
+        <li><span class="sn">6</span><div><strong>Storage — RAID configuration:</strong> Install NVMe/SAS/SATA drives in hot-swap bays if equipped. Configure RAID through BIOS RAID utility or OS software RAID. Common workstation configs: RAID 1 (mirrored, for OS reliability), RAID 5/6 (parity for data drives).</div></li>
+        <li><span class="sn">7</span><div><strong>Expansion cards:</strong> Install in PCIe slots: RAID controller (HBA), 10 GbE NIC, SATA expansion card, video capture, etc. Fill slots from top down; use risers if needed for clearance.</div></li>
+        <li><span class="sn">8</span><div><strong>Power — high-wattage PSU:</strong> Workstations may use 1200–2000W PSUs. Modular PSUs recommended — use only the cables you need. Some workstation PSUs use proprietary connectors (Dell, HP).</div></li>
+      </ol>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        ECC RAM = Error Correcting Code; corrects single-bit errors silently — critical for workstations running 24/7 on large datasets. RDIMM vs UDIMM: RDIMM has a register buffer reducing bus load. Workstation GPUs have ISV-certified drivers for professional CAD/3D software. Threadripper Pro and Xeon W have up to 128 PCIe lanes — far more than consumer platforms (24–48 lanes).
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 6 — Laptop Cooling Fan & Processor Disassembly
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t6">
+      <div class="tp-header">
+        <div class="tp-num">Topic 06 · Hardware Disassembly</div>
+        <div class="tp-title">Laptop Cooling Fan &amp; Processor Disassembly</div>
+        <div class="tp-desc">Detailed procedure for accessing and replacing laptop cooling fans, removing the heatsink, re-applying thermal compound, and understanding laptop thermal architecture including heat pipes and vapor chambers.</div>
+      </div>
+
+      <div class="s-title">Laptop Thermal Architecture</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Heat Pipe Cooling (Traditional)</div>
+          <ul class="bul">
+            <li>Copper heat pipes run from CPU/GPU thermal pads to fan-mounted radiator fins</li>
+            <li>Heat pipe interior contains working fluid (usually water or acetone) in a partial vacuum</li>
+            <li>Fluid evaporates at hot end (CPU die), travels as vapor to cold end (fins), condenses, wicks back via capillary action</li>
+            <li>Passive — no moving parts; extremely reliable</li>
+            <li>Multiple heat pipes in parallel increase capacity (2–5 pipes in gaming laptops)</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-t"></span>Vapor Chamber (Premium Design)</div>
+          <ul class="bul">
+            <li>Flat sealed chamber filled with working fluid</li>
+            <li>Spreads heat in 2D (vs 1D for heat pipes), better for large CPU/GPU die packages</li>
+            <li>Found in premium gaming laptops (ASUS ROG, Razer Blade, MSI Titan)</li>
+            <li>Lower thermal resistance than equivalent heat pipe arrays</li>
+            <li>Cannot be repaired if punctured — replace entire heatsink assembly</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Cooling Fan Disassembly</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Open the base panel:</strong> Remove all base screws. Use plastic pry tool to release clip around perimeter. Note: some gaming laptops have additional screws hidden beneath the hinge area — pry only after all screws removed.</div></li>
+        <li><span class="sn">2</span><div><strong>Disconnect battery:</strong> Always the first connector to disconnect after opening. Pull battery connector by housing parallel to board surface.</div></li>
+        <li><span class="sn">3</span><div><strong>Locate fan connectors:</strong> One or two fan connectors on the motherboard — small 3-pin or 4-pin connectors next to each fan. They are friction-locked. Grip the connector housing (plastic part) with tweezers or fingers; do not pull the wire bundle.</div></li>
+        <li><span class="sn">4</span><div><strong>Remove fan screws:</strong> Each fan has 2–4 small screws mounting it to the chassis or heatsink frame. These are usually M2×3mm. Remove them — the fan may still be attached to the heatsink assembly.</div></li>
+        <li><span class="sn">5</span><div><strong>Fan + heatsink as one unit:</strong> In most designs, the fan and heatsink are a single replaceable assembly. Removing the heatsink screws also releases the fan. Proceed to heatsink removal steps below.</div></li>
+        <li><span class="sn">6</span><div><strong>Stand-alone fan replacement:</strong> If the fan is a separate unit (some designs), lift it free after disconnecting and removing its screws. Transfer thermal pads if they were between fan shroud and memory chips.</div></li>
+      </ol>
+
+      <div class="s-title">Heatsink Removal</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Identify heatsink screw order:</strong> Heatsink screws are usually numbered or follow a specific tightening/loosening order. Loosen in the <em>reverse</em> of the numbered order (e.g. if numbered 1–4, loosen 4→3→2→1). This releases pressure evenly across the die surface and prevents cracking.</div></li>
+        <li><span class="sn">2</span><div><strong>Note thermal pad locations:</strong> Before removing, photograph the heatsink from above. Thermal pads cover VRAM chips, VRM components, and other ICs. Note their positions, sizes, and approximate thickness (common: 0.5mm, 1mm, 1.5mm, 2mm).</div></li>
+        <li><span class="sn">3</span><div><strong>Break the thermal paste bond:</strong> After all screws are removed, grip the heatsink assembly gently and rotate it slightly (5–10°) to break the adhesion of dried thermal paste. Never pull straight up — the paste bond can be significant and you risk lifting the die or damaging substrate.</div></li>
+        <li><span class="sn">4</span><div><strong>Lift heatsink assembly free:</strong> Once the paste bond is broken, lift the assembly clear. Set it component-side down on a clean surface.</div></li>
+        <li><span class="sn">5</span><div><strong>Clean old thermal paste:</strong> Apply a small amount of 90%+ isopropyl alcohol to a lint-free cloth or coffee filter. Gently wipe the CPU/GPU die surface and the heatsink contact plate in straight strokes until no paste remains. Do not use cotton balls (leave fibers).</div></li>
+        <li><span class="sn">6</span><div><strong>Replace thermal pads:</strong> If thermal pads are dried/cracked, replace them with new pads of the correct thickness. Match the original thickness — pads that are too thin won't make contact; too thick compress excessively. Cut to size if needed.</div></li>
+        <li><span class="sn">7</span><div><strong>Apply new thermal compound:</strong> Place a small pea-sized (2–3mm diameter) dot of thermal compound in the center of the CPU die. For larger dies (some gaming laptop APUs), use a thin cross pattern instead. Heatsink pressure will spread it.</div></li>
+        <li><span class="sn">8</span><div><strong>Reinstall heatsink:</strong> Lower heatsink onto CPU die. Tighten screws in the numbered order (1→2→3→4) with light progressive torque — finger tight first across all screws, then tighten fully in sequence. This ensures even pressure across the die.</div></li>
+      </ol>
+
+      <div class="s-title">Thermal Compound Types</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Type</th><th>Example</th><th>Thermal Conductivity</th><th>Notes</th></tr>
+          <tr><td><strong>Silicone-based</strong></td><td>Stock Intel/AMD paste, MX-4</td><td>4–9 W/m·K</td><td>Safe, non-conductive, easy to apply</td></tr>
+          <tr><td><strong>Carbon-based</strong></td><td>Thermal Grizzly Kryonaut</td><td>12–17 W/m·K</td><td>High performance; degrades at high temps over time</td></tr>
+          <tr><td><strong>Metal-based (liquid metal)</strong></td><td>Thermal Grizzly Conductonaut</td><td>73 W/m·K</td><td>Best performance; electrically conductive — dangerous on non-copper surfaces; used in some factory laptops</td></tr>
+          <tr><td><strong>Phase-change</strong></td><td>Honeywell PTM7950</td><td>12 W/m·K</td><td>Solid at room temp; melts at operating temp. Used in premium devices (M-series Macs).</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-warn"><span class="co-lbl">Liquid Metal Warning</span>
+        Liquid metal is electrically conductive. Any contact with adjacent components causes immediate short circuit and permanent damage. Never use on aluminum heatsinks (galvanic corrosion). Clean up immediately if any spills. Professional use only.
+      </div>
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Reverse-numbered order for heatsink screw removal prevents die cracking. Thermal paste must be fully cleaned with IPA before re-application. Heat pipes work by two-phase fluid transfer (evaporation + condensation). Modern laptop CPUs are BGA — cannot be replaced by user. Thermal pads cover secondary components (VRAM, VRM) and must be replaced with correct thickness.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 7 — SSD & RAM Upgrade Procedures
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t7">
+      <div class="tp-header">
+        <div class="tp-num">Topic 07 · Hardware Upgrade</div>
+        <div class="tp-title">SSD &amp; RAM Upgrade Procedures in PCs</div>
+        <div class="tp-desc">Comprehensive coverage of storage and memory upgrade procedures for desktops and laptops, including compatibility verification, data migration, cloning, and performance considerations.</div>
+      </div>
+
+      <div class="s-title">Pre-Upgrade Compatibility Verification</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>SSD Compatibility Checklist</div>
+          <ul class="bul">
+            <li><strong>Form factor</strong>: 2.5" SATA, M.2 2280 (22×80mm), M.2 2242, M.2 2260, M.2 22110</li>
+            <li><strong>Interface</strong>: SATA III (6 Gbps max ~550 MB/s) vs PCIe 3.0/4.0/5.0 NVMe (up to 14,000 MB/s)</li>
+            <li><strong>Key type</strong>: M-key for NVMe, B+M-key for SATA M.2 — check slot supports NVMe if buying NVMe</li>
+            <li><strong>Slot length</strong>: M.2 slots may only support 2242 or 2260 — verify before buying 2280</li>
+            <li><strong>Thermal envelope</strong>: Some compact laptops can't thermally support high-performance NVMe drives</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>RAM Compatibility Checklist</div>
+          <ul class="bul">
+            <li><strong>Generation</strong>: DDR4 vs DDR5 — physically different slots, not interchangeable</li>
+            <li><strong>Speed</strong>: Must be at rated or lower (higher speed RAM will downclock to max supported)</li>
+            <li><strong>Voltage</strong>: DDR4 = 1.2V (1.35V for XMP), DDR5 = 1.1V base</li>
+            <li><strong>Maximum supported</strong>: Set by CPU memory controller (e.g. Core i7-13700K max 128 GB DDR5)</li>
+            <li><strong>Single vs dual rank</strong>: Dual-rank DIMMs offer more bandwidth but may limit max OC speed</li>
+            <li><strong>QVL list</strong>: Motherboard-tested Qualified Vendor List — guaranteed compatibility</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Data Migration Before SSD Upgrade</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Drive Cloning Procedure (Recommended)</div>
+        <ol class="steps">
+          <li><span class="sn">1</span><div>Download cloning software: Macrium Reflect Free, Clonezilla, or AOMEI Backupper</div></li>
+          <li><span class="sn">2</span><div>Connect new SSD via USB enclosure or secondary SATA port while old drive remains installed</div></li>
+          <li><span class="sn">3</span><div>In cloning software, select source disk (old HDD/SSD) and destination disk (new SSD). Verify — clone is destructive to the destination.</div></li>
+          <li><span class="sn">4</span><div>Run the clone. Duration: 30 minutes to several hours depending on data volume and drive speeds</div></li>
+          <li><span class="sn">5</span><div>After clone completes, shut down, swap drives physically (or change BIOS boot order)</div></li>
+          <li><span class="sn">6</span><div>Boot from new SSD. Verify OS and data intact. Use Windows Disk Management to extend partition if new drive is larger.</div></li>
+        </ol>
+      </div>
+
+      <div class="s-title">Desktop SSD Upgrade Procedures</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>2.5" SATA SSD (Desktop)</div>
+          <ol class="steps">
+            <li><span class="sn">1</span><div>Power off; disconnect PSU. Open side panel.</div></li>
+            <li><span class="sn">2</span><div>Locate drive in 2.5" or 3.5" bay (with adapter). Disconnect SATA data cable + SATA power cable.</div></li>
+            <li><span class="sn">3</span><div>Remove 2–4 screws holding drive in bay. Slide out.</div></li>
+            <li><span class="sn">4</span><div>Install new drive, reconnect cables. SATA data connects to any SATA port on motherboard. SATA power from PSU cable.</div></li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-t"></span>M.2 NVMe SSD (Desktop)</div>
+          <ol class="steps">
+            <li><span class="sn">1</span><div>Power off. Remove single retaining screw at far end of M.2 slot.</div></li>
+            <li><span class="sn">2</span><div>SSD springs up to ~30°. Slide straight out along its axis.</div></li>
+            <li><span class="sn">3</span><div>Insert new SSD at 30°, align notch to key, gently push until fully seated in connector.</div></li>
+            <li><span class="sn">4</span><div>Press flat (the SSD will resist slightly — this is correct). Insert and tighten retaining screw. Do not overtighten — M2 screw is tiny and strips easily.</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="s-title">Desktop RAM Upgrade</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Verify compatibility:</strong> Check CPU and motherboard specs. Confirm generation (DDR4/DDR5), maximum supported speed, and maximum capacity per slot.</div></li>
+        <li><span class="sn">2</span><div><strong>Power off and discharge:</strong> Shut down, unplug PSU, press power button once to discharge capacitors.</div></li>
+        <li><span class="sn">3</span><div><strong>Open DIMM slot latches:</strong> Press both latches outward until they click open. On some boards only one side latches.</div></li>
+        <li><span class="sn">4</span><div><strong>Remove old RAM:</strong> The stick will pop up slightly when both latches are open. Grip by the edges and lift out — avoid touching the gold contacts or chips.</div></li>
+        <li><span class="sn">5</span><div><strong>Install new RAM:</strong> Align the RAM notch with the slot key. Press firmly and evenly with both thumbs — requires significant force. Both latches must click locked. If one side latch doesn't click, the stick is not fully seated.</div></li>
+        <li><span class="sn">6</span><div><strong>Post-installation:</strong> Boot and enter BIOS. Enable XMP/EXPO. Save and exit. Verify speed in Task Manager → Performance → Memory.</div></li>
+      </ol>
+
+      <div class="s-title">NVMe Performance Tiers</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Interface</th><th>Sequential Read</th><th>Sequential Write</th><th>Random 4K IOPS</th></tr>
+          <tr><td><strong>SATA III SSD</strong></td><td>~550 MB/s</td><td>~520 MB/s</td><td>~90K</td></tr>
+          <tr><td><strong>PCIe 3.0 NVMe (x4)</strong></td><td>~3,500 MB/s</td><td>~3,000 MB/s</td><td>~500K</td></tr>
+          <tr><td><strong>PCIe 4.0 NVMe (x4)</strong></td><td>~7,400 MB/s</td><td>~6,500 MB/s</td><td>~1,000K</td></tr>
+          <tr><td><strong>PCIe 5.0 NVMe (x4)</strong></td><td>~14,700 MB/s</td><td>~12,000 MB/s</td><td>~2,000K</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        DDR4 and DDR5 are physically incompatible — different slot notch positions. NVMe and SATA M.2 use different M.2 key configurations. Cloning preserves OS + data; clean install is an alternative (no data preserved). XMP must be manually enabled after RAM upgrade or system runs at default JEDEC speed. QVL (Qualified Vendor List) is the manufacturer-tested RAM compatibility list.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 8 — Server System Assembly & Maintenance
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t8">
+      <div class="tp-header">
+        <div class="tp-num">Topic 08 · Hardware Assembly</div>
+        <div class="tp-title">Server System Assembly &amp; Maintenance</div>
+        <div class="tp-desc">Complete coverage of server form factors, rack installation, CPU and ECC memory configuration, hot-swap storage, redundant PSUs, IPMI/BMC management, and routine maintenance procedures.</div>
+      </div>
+
+      <div class="s-title">Server Form Factors</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Form Factor</th><th>Height</th><th>Typical Use</th><th>Characteristics</th></tr>
+          <tr><td><strong>Tower Server</strong></td><td>N/A (floor-standing)</td><td>Small office, edge deployment</td><td>Same as desktop; quieter; no rack needed</td></tr>
+          <tr><td><strong>1U Rack Server</strong></td><td>44.45 mm (1.75")</td><td>Web servers, load balancers</td><td>High density; noisy; limited GPU space</td></tr>
+          <tr><td><strong>2U Rack Server</strong></td><td>88.9 mm</td><td>Database, general compute</td><td>Fits full-length PCIe cards; most common</td></tr>
+          <tr><td><strong>4U Rack Server</strong></td><td>177.8 mm</td><td>GPU compute, storage servers</td><td>Fits large GPUs, many drive bays</td></tr>
+          <tr><td><strong>Blade Server</strong></td><td>Modular (blade chassis)</td><td>Enterprise data centers</td><td>Hot-swappable blade modules; shared networking</td></tr>
+          <tr><td><strong>MicroServer</strong></td><td>Small desktop</td><td>SMB NAS, edge compute</td><td>Low power; limited expansion</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Rack Installation Procedure</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Rack preparation:</strong> Standard 19-inch rack. Mark target rack unit (RU) position. Ensure rack is leveled and bolted to floor if required for seismic stability. Allow front-to-back airflow clearance (cold aisle / hot aisle data center design).</div></li>
+        <li><span class="sn">2</span><div><strong>Install rail kit:</strong> Attach inner rails to the server chassis. Mount outer rails to the rack posts at front and rear. Rails are adjustable for rack depth. Tighten rail screws — a dropped 2U server at full load can exceed 20 kg.</div></li>
+        <li><span class="sn">3</span><div><strong>Slide server into rack:</strong> With assistance, align the server's inner rails with the outer rack rails. Slide inward until it seats. Secure with thumbscrews at the front ears (cage nuts in rack).</div></li>
+        <li><span class="sn">4</span><div><strong>Cable management:</strong> Route power cables to rear PDU (Power Distribution Unit). Network cables to patch panel or top-of-rack switch. Use Velcro straps; label every cable with source and destination. Right-angle connectors reduce cable bend radius.</div></li>
+      </ol>
+
+      <div class="s-title">Server CPU &amp; Memory Installation</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Dual-CPU Server Configuration</div>
+          <ul class="bul">
+            <li>Enterprise servers often support 2 CPUs (dual-socket) connected via UPI (Intel) or Infinity Fabric (AMD)</li>
+            <li>Install CPU 0 first (primary socket). Server will not boot without CPU 0.</li>
+            <li>CPU 1 is optional but enables NUMA (Non-Uniform Memory Access) architecture</li>
+            <li>Each CPU has its own memory channels — DIMM slots are divided between CPUs; populate local channels for each</li>
+            <li>With 1 CPU: install blanking plate in CPU 1 socket to maintain airflow path</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>Server Memory (RDIMM / LRDIMM)</div>
+          <ul class="bul">
+            <li>Must use registered DIMMs (RDIMM) or load-reduced (LRDIMM) for server platforms</li>
+            <li>Populate in balanced configuration across all active memory channels (see board memory population guide)</li>
+            <li>NUMA awareness: memory on CPU 0 channels is local to CPU 0 — applications should allocate on the NUMA node of the CPU that will use the data</li>
+            <li>Server boards: 16–32 DIMM slots typical; workstations 8–16</li>
+            <li>Enable memory mirroring (uses 50% capacity; mirrors data for redundancy) or memory sparing in BIOS if needed</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">IPMI / BMC — Out-of-Band Management</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-o"></span>Intelligent Platform Management Interface (IPMI)</div>
+        <ul class="bul">
+          <li><strong>What it is:</strong> A dedicated microcontroller (BMC — Baseboard Management Controller) on the server motherboard with its own network interface, separate from the main OS.</li>
+          <li><strong>Out-of-band:</strong> Functions even when the server OS is down, frozen, or in BIOS — can power cycle, access console, and check hardware status remotely.</li>
+          <li><strong>Vendor implementations:</strong> Dell iDRAC, HP iLO, Supermicro IPMI, Lenovo XClarity — all based on IPMI standard but with proprietary web UIs.</li>
+          <li><strong>Capabilities:</strong> Remote KVM (keyboard/video/mouse), power control (on/off/reset), SOL (Serial Over LAN console), hardware sensor monitoring, event log (SEL), virtual media mounting, alerting.</li>
+          <li><strong>Connection:</strong> Dedicated 1 GbE management NIC port (separate from data NIC ports). Connect to management VLAN for security separation.</li>
+          <li><strong>Initial config:</strong> Set BMC IP (static or DHCP), create admin password, enable required features. Access via web browser (HTTPS) or CLI (ipmitool).</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Hot-Swap Storage &amp; Redundant PSU</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-g"></span>Hot-Swap Drive Replacement (RAID Array)</div>
+          <ol class="steps">
+            <li><span class="sn">1</span><div>Identify failed drive via RAID controller alert, BMC event log, or OS RAID status. Note the drive bay number.</div></li>
+            <li><span class="sn">2</span><div>Verify RAID has redundancy (RAID 1/5/6) — do not pull drives from RAID 0 (no redundancy).</div></li>
+            <li><span class="sn">3</span><div>Pull the drive tray release lever and slide failed drive out. New drive slides in immediately — no power down needed.</div></li>
+            <li><span class="sn">4</span><div>RAID controller detects new drive and begins automatic rebuild. Monitor rebuild progress — during rebuild, a second failure will cause data loss.</div></li>
+          </ol>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-r"></span>Redundant PSU (N+1 Configuration)</div>
+          <ul class="bul">
+            <li><strong>N+1 redundancy:</strong> If the server needs N power supplies, install N+1. If one fails, the server continues running on the remaining N units.</li>
+            <li><strong>Hot-swap:</strong> Failed PSU slides out; replacement slides in without powering down the server</li>
+            <li><strong>Load sharing:</strong> In 2+1 config, all 3 PSUs share load equally — each operates below capacity, improving efficiency and longevity</li>
+            <li><strong>PDU distribution:</strong> Connect each PSU to a different PDU/UPS circuit for full power path redundancy</li>
+            <li>Replacing: pull the PSU handle/lever, slide out. New PSU slides in and clicks into place — server auto-detects and adds it to the power pool</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Routine Server Maintenance Tasks</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Task</th><th>Frequency</th><th>Procedure</th></tr>
+          <tr><td><strong>Dust filter cleaning</strong></td><td>Every 3–6 months</td><td>Remove front filter, vacuum or wash with water, dry before reinstalling</td></tr>
+          <tr><td><strong>Firmware updates</strong></td><td>Quarterly or on-demand</td><td>BMC firmware, BIOS, RAID controller firmware, NIC firmware. Test in staging first.</td></tr>
+          <tr><td><strong>Thermal paste refresh</strong></td><td>Every 3–5 years</td><td>Full disassembly; clean; apply new compound; validate temps</td></tr>
+          <tr><td><strong>CMOS battery check</strong></td><td>Every 5 years</td><td>Replace CR2032 if BIOS settings reset on power loss</td></tr>
+          <tr><td><strong>SMART drive monitoring</strong></td><td>Continuous / monthly review</td><td>Monitor reallocated sectors, pending sectors, uncorrectable errors</td></tr>
+          <tr><td><strong>Memory test</strong></td><td>After any maintenance</td><td>MemTest86 or server BIOS memory diagnostics</td></tr>
+          <tr><td><strong>UPS battery test</strong></td><td>Every 6 months</td><td>Run self-test from UPS management software; replace batteries every 3–5 years</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        IPMI/BMC allows server management even when OS is down (out-of-band management). N+1 redundancy = one extra PSU beyond what's needed. Hot-swap allows drive or PSU replacement without server downtime. RDIMM = Registered DIMM — required for server memory buses. NUMA: in dual-socket servers, memory is physically local to one CPU — software should allocate memory on the local NUMA node for best performance.
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════
+         TOPIC 9 — Motherboard Troubleshooting
+    ══════════════════════════════════════════════ -->
+    <div class="tp" id="t9">
+      <div class="tp-header">
+        <div class="tp-num">Topic 09 · Troubleshooting</div>
+        <div class="tp-title">Motherboard Troubleshooting During PC Assembly</div>
+        <div class="tp-desc">Systematic diagnostic approach for no-POST, no-display, and random crash scenarios during and after PC assembly, including breadboard testing, BIOS tools, and component isolation techniques.</div>
+      </div>
+
+      <div class="s-title">POST — What It Is and What Can Go Wrong</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Power-On Self-Test (POST) Sequence</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">POST is firmware-level hardware initialization that runs before any OS loads. It tests and initializes CPU, RAM, storage, and expansion hardware. A failed POST means the system cannot proceed to boot.</p>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>POST Stage</th><th>What Happens</th><th>If it Fails Here</th></tr>
+            <tr><td>CPU init</td><td>CPU microcode loaded; caches enabled</td><td>No display, no Q-LED activity, possible no power LED</td></tr>
+            <tr><td>Memory init</td><td>RAM trained, SPD read, XMP applied</td><td>DRAM Q-LED on; beep codes for RAM errors</td></tr>
+            <tr><td>PCIe init</td><td>GPU, NVMe, USB controller enumerated</td><td>VGA Q-LED on; possible beeps</td></tr>
+            <tr><td>Storage init</td><td>NVMe/SATA drives found; BOOT LEDs</td><td>Boot device not found; boots to BIOS shell</td></tr>
+            <tr><td>Boot device</td><td>OS bootloader loaded from drive</td><td>"Reboot and select proper boot device"</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="s-title">Diagnostic Indicators</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-o"></span>Q-LED / Debug LEDs</div>
+          <ul class="bul">
+            <li>Found on ASUS ROG/TUF, MSI, Gigabyte Aorus boards</li>
+            <li>4 LEDs labeled: CPU, DRAM, VGA, BOOT</li>
+            <li>The LED that stays lit indicates where POST failed</li>
+            <li><strong>CPU LED on:</strong> CPU not seated, no CPU power (EPS cable), incompatible CPU (BIOS update needed)</li>
+            <li><strong>DRAM LED on:</strong> RAM not fully seated, incompatible RAM, wrong slots populated</li>
+            <li><strong>VGA LED on:</strong> GPU not seated, PCIe power not connected, monitor cable issue</li>
+            <li><strong>BOOT LED on:</strong> No bootable storage found, incorrect boot order, corrupted bootloader</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>POST Beep Codes</div>
+          <ul class="bul">
+            <li>Beep codes require a case speaker (not motherboard buzzer — they're different)</li>
+            <li>Beep patterns differ between BIOS vendors (AMI, Award/Phoenix, InsydeH2O)</li>
+            <li><strong>AMI common codes:</strong> 1 short = OK (on some boards); 3 short = RAM error; 5 short = CPU error; 8 short = display card error</li>
+            <li><strong>Award/Phoenix:</strong> 1 long + 2 short = display card error; continuous long beeps = RAM not detected</li>
+            <li>Refer to motherboard manual for exact codes — they vary by board</li>
+            <li>No speaker installed = silent failure; always connect case speaker for diagnostics</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">POST Code Display (Advanced Boards)</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>2-Digit Hex POST Code Display</div>
+        <ul class="bul">
+          <li>Small 7-segment LED display on high-end motherboards (ASUS ROG Maximus, MSI MEG)</li>
+          <li>Displays 2-digit hexadecimal codes as POST progresses</li>
+          <li>A stopped code indicates where POST halted</li>
+          <li>Common codes (AMI BIOS): 00 = Not used; 05 = Early CPU init; 13 = Early memory init; A0 = IDE init; A8 = BIOS setup; 00/FF after completion = successful POST</li>
+          <li>Full table of codes in motherboard manual appendix</li>
+        </ul>
+      </div>
+
+      <div class="s-title">The Breadboard Test — Primary Diagnostic Method</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div><strong>Minimum hardware configuration:</strong> Remove the motherboard from the case. Place it on a non-conductive surface (its own anti-static bag or a cardboard box). This eliminates case-related short circuits from misaligned standoffs.</div></li>
+        <li><span class="sn">2</span><div><strong>Minimum components:</strong> Install only CPU + 1 RAM stick (in the recommended primary slot, usually A2 or DIMM1) + CPU cooler + PSU. Connect 24-pin + 4+8 CPU power. Connect monitor to onboard video (if available) or GPU.</div></li>
+        <li><span class="sn">3</span><div><strong>Short the power pins:</strong> Use a flat-head screwdriver to momentarily bridge the PWR_SW header pins (or connect the power button). The system should attempt to POST.</div></li>
+        <li><span class="sn">4</span><div><strong>Observe result:</strong> Fan spins + display = CPU and RAM are working. Add components one at a time: second RAM stick → GPU → storage → add-in cards. Remove components until the issue is isolated.</div></li>
+      </ol>
+
+      <div class="s-title">Fault Isolation Checklist</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Symptom</th><th>Most Likely Causes</th><th>Actions</th></tr>
+          <tr><td><strong>System powers on but no display</strong></td><td>GPU not seated, display cable wrong port, iGPU disabled with no dGPU</td><td>Reseat GPU, try different display port, try onboard video</td></tr>
+          <tr><td><strong>Immediate power off after pressing power</strong></td><td>Overcurrent protection, CPU not seated, short circuit</td><td>Breadboard test; check for loose screw under board</td></tr>
+          <tr><td><strong>Continuous reboot loop</strong></td><td>RAM at incompatible speed, overclocking instability, CPU overheat</td><td>Clear CMOS; disable XMP; check cooler seating</td></tr>
+          <tr><td><strong>POST stops at memory phase</strong></td><td>RAM not seated, incompatible kit, wrong slot</td><td>Try 1 stick; try each slot; test stick in another system</td></tr>
+          <tr><td><strong>Blue screen in Windows after POST</strong></td><td>Faulty RAM, driver conflict, storage error</td><td>Run MemTest86 (8+ passes); check Event Viewer</td></tr>
+          <tr><td><strong>Random crashes / instability</strong></td><td>RAM unstable at XMP, insufficient PSU, temperature throttling</td><td>Check temps under load; run Prime95 + GPU stress test; test PSU</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">CMOS Clear Procedure</div>
+      <ol class="steps">
+        <li><span class="sn">1</span><div>Power off and disconnect AC power from PSU</div></li>
+        <li><span class="sn">2</span><div>Remove the CR2032 CMOS battery from the motherboard (silver coin-cell battery in a holder) and wait 30 seconds. This drains CMOS capacitors and resets all BIOS settings to defaults.</div></li>
+        <li><span class="sn">3</span><div>Alternatively: use the CLR_CMOS jumper on the board — short the two pins for 5–10 seconds (with PSU disconnected)</div></li>
+        <li><span class="sn">4</span><div>Replace battery / un-jumper. Reconnect PSU. Power on — system will boot with factory BIOS defaults. Re-apply XMP and any other custom settings.</div></li>
+      </ol>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Breadboard test = minimum hardware outside the case — the standard first diagnostic step. Q-LEDs indicate which POST phase failed (CPU/DRAM/VGA/BOOT). CMOS clear resets all BIOS settings to defaults. Suspect loose case screws under the board for mysterious short-circuit symptoms. Adding components one-at-a-time after successful minimum-hardware POST isolates the faulty component.
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         ═══════════ ARCHITECTURE TOPICS ════════════════════
+    ═══════════════════════════════════════════════════════ -->
+
+    <!-- TOPIC 10 -->
+    <div class="tp" id="t10">
+      <div class="tp-header">
+        <div class="tp-num">Topic 10 · CPU &amp; GPU Architecture</div>
+        <div class="tp-title">CPU vs GPU — Parallel Processing Comparison</div>
+        <div class="tp-desc">A deep comparison of CPU and GPU design philosophies, core counts, cache hierarchies, execution models, memory architectures, and the specific types of workloads each excels at.</div>
+      </div>
+
+      <div class="s-title">Fundamental Design Philosophies</div>
+      <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:12px 0">
+        <div class="card" style="border-radius:7px 0 0 7px;border-right:none">
+          <div class="card-h" style="color:var(--accent)"><span class="cdot"></span>CPU — Latency-Optimized</div>
+          <ul class="bul">
+            <li>4–128 large, powerful cores</li>
+            <li>Designed for <strong>sequential, low-latency</strong> task execution</li>
+            <li>Complex control logic: out-of-order execution, branch prediction, speculative execution</li>
+            <li>Huge caches (up to 192 MB LLC) to feed fast cores</li>
+            <li>Handles complex, irregular control flow efficiently</li>
+            <li>Clock speeds: 3–6 GHz</li>
+            <li>Transistor budget: ~40% control/prediction logic, ~40% cache, ~20% compute</li>
+          </ul>
+        </div>
+        <div style="display:flex;align-items:center;padding:0 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text3)">VS</div>
+        <div class="card" style="border-radius:0 7px 7px 0;border-left:none">
+          <div class="card-h" style="color:var(--accent2)"><span class="cdot cdot-p"></span>GPU — Throughput-Optimized</div>
+          <ul class="bul">
+            <li>Thousands of simple cores (e.g. 16,384 CUDA cores in RTX 4090)</li>
+            <li>Designed for <strong>high-throughput, data-parallel</strong> computation</li>
+            <li>Minimal per-core control logic; relies on massive parallelism</li>
+            <li>Small per-core cache; latency hidden by switching between thousands of threads</li>
+            <li>Handles uniform, predictable operations efficiently</li>
+            <li>Core clock speeds: 1.5–3 GHz (lower per-core; compensated by count)</li>
+            <li>Transistor budget: ~70% compute, ~20% memory/cache, ~10% control</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Core Architecture Breakdown</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Feature</th><th>CPU Core</th><th>GPU Core (SM/CU)</th></tr>
+          <tr><td><strong>Execution units</strong></td><td>2–8 wide superscalar out-of-order pipeline</td><td>SIMT warp: 32 threads sharing one pipeline</td></tr>
+          <tr><td><strong>Branch prediction</strong></td><td>Advanced (TAGE, neural-based in some)</td><td>Minimal — divergence handled by masking</td></tr>
+          <tr><td><strong>Cache</strong></td><td>L1: 32–64 KB, L2: 1–4 MB, L3: 4–192 MB</td><td>L1: 32–128 KB shared/SM, L2: 6–50 MB shared</td></tr>
+          <tr><td><strong>Instruction set</strong></td><td>x86-64 + SIMD (SSE4, AVX-512)</td><td>PTX (virtual ISA) → SASS (native)</td></tr>
+          <tr><td><strong>Memory latency tolerance</strong></td><td>Caches hide latency; stall on miss</td><td>Latency hidden by switching to another warp</td></tr>
+          <tr><td><strong>Memory bandwidth</strong></td><td>~200–500 GB/s (DDR5)</td><td>~1–8 TB/s (HBM3e)</td></tr>
+          <tr><td><strong>FP32 performance</strong></td><td>~1–5 TFLOPS</td><td>~30–165 TFLOPS (CUDA cores alone)</td></tr>
+          <tr><td><strong>Special units</strong></td><td>FPU, SIMD unit, crypto accelerator</td><td>Tensor Cores, RT Cores, texture units, ROP</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Flynn's Taxonomy Classification</div>
+      <div class="g2">
+        <div class="stat"><div class="stat-lbl">CPU (typical)</div><div class="stat-val">MIMD</div><div class="stat-sub">Multiple Instruction, Multiple Data — each core runs its own instruction stream on its own data</div></div>
+        <div class="stat"><div class="stat-lbl">GPU</div><div class="stat-val">SIMT (variant of SIMD)</div><div class="stat-sub">Single Instruction, Multiple Threads — 32 threads execute same instruction on different data</div></div>
+      </div>
+
+      <div class="s-title">Memory System Comparison</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Aspect</th><th>CPU Memory System</th><th>GPU Memory System</th></tr>
+          <tr><td><strong>DRAM type</strong></td><td>DDR5 (consumer) / RDIMM (server)</td><td>HBM3e (datacenter) / GDDR7 (consumer)</td></tr>
+          <tr><td><strong>Bandwidth (peak)</strong></td><td>~400 GB/s (8× DDR5-6400)</td><td>~8 TB/s (H200 HBM3e)</td></tr>
+          <tr><td><strong>Capacity</strong></td><td>Up to 12 TB (server)</td><td>Up to 192 GB (B200 GPU)</td></tr>
+          <tr><td><strong>Latency strategy</strong></td><td>Multi-level cache hierarchy reduces latency</td><td>Thread-level parallelism hides latency</td></tr>
+          <tr><td><strong>Addressable by</strong></td><td>CPU directly; GPU via PCIe (slow)</td><td>GPU directly; CPU via PCIe or NVLink</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        CPU = latency-optimized, few powerful cores, complex control, branch prediction, deep cache hierarchy. GPU = throughput-optimized, thousands of simple cores, SIMT execution, latency hidden by thread switching. CPU uses MIMD (Flynn); GPU uses SIMT (variant of SIMD). GPU memory bandwidth is 10–20× higher than CPU; GPU memory capacity is much smaller.
+      </div>
+    </div>
+
+    <!-- TOPIC 11 -->
+    <div class="tp" id="t11">
+      <div class="tp-header">
+        <div class="tp-num">Topic 11 · CPU Architecture</div>
+        <div class="tp-title">Pipelining in Modern CPUs</div>
+        <div class="tp-desc">Comprehensive study of instruction pipelining from the classic 5-stage model to modern superscalar out-of-order superpipelines, including all hazard types and their solutions.</div>
+      </div>
+
+      <div class="s-title">What Is Pipelining?</div>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:14px;line-height:1.7">Pipelining is a hardware implementation technique in which multiple instructions are overlapped in execution. Like a manufacturing assembly line, different pipeline stages process different instructions simultaneously. Without pipelining, each instruction would complete all stages before the next begins.</p>
+
+      <div class="s-title">Classic 5-Stage RISC Pipeline</div>
+      <div style="display:flex;gap:0;margin:12px 0;overflow-x:auto">
+        <div style="flex:1;min-width:90px;text-align:center;padding:14px 8px;background:rgba(79,156,249,0.1);border:1px solid rgba(79,156,249,0.3);border-right:none;border-radius:6px 0 0 6px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent)">IF</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Instruction<br>Fetch</div>
+        </div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:14px 8px;background:rgba(155,114,255,0.1);border:1px solid rgba(155,114,255,0.3);border-right:none">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent2)">ID</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Instruction<br>Decode</div>
+        </div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:14px 8px;background:rgba(45,212,191,0.1);border:1px solid rgba(45,212,191,0.3);border-right:none">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent3)">EX</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Execute<br>(ALU)</div>
+        </div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:14px 8px;background:rgba(249,115,22,0.1);border:1px solid rgba(249,115,22,0.3);border-right:none">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent4)">MEM</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Memory<br>Access</div>
+        </div>
+        <div style="flex:1;min-width:90px;text-align:center;padding:14px 8px;background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.3);border-radius:0 6px 6px 0">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:600;color:var(--accent5)">WB</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:4px">Write<br>Back</div>
+        </div>
+      </div>
+
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Stage</th><th>Full Name</th><th>What Happens</th><th>Hardware Used</th></tr>
+          <tr><td><span class="badge b-blue">IF</span></td><td>Instruction Fetch</td><td>PC sent to instruction memory / L1 cache. Instruction fetched and stored in instruction register. PC incremented to next instruction.</td><td>PC register, instruction cache (L1-I), instruction register</td></tr>
+          <tr><td><span class="badge b-purple">ID</span></td><td>Instruction Decode / Register Fetch</td><td>Instruction decoded to determine operation type, operands, destination. Source registers read from register file.</td><td>Decoder, register file (read ports), control unit, sign extender</td></tr>
+          <tr><td><span class="badge b-teal">EX</span></td><td>Execute</td><td>ALU performs the operation (arithmetic, logical, address calculation). Branch conditions evaluated.</td><td>ALU, barrel shifter, multiplier, comparator</td></tr>
+          <tr><td><span class="badge b-amber">MEM</span></td><td>Memory Access</td><td>For load instructions: reads data from data cache. For store instructions: writes data to cache. Register-to-register operations do nothing here.</td><td>Data cache (L1-D), memory address register, memory data register</td></tr>
+          <tr><td><span class="badge b-red">WB</span></td><td>Write Back</td><td>Result from ALU or memory loaded into destination register in register file. Completes the instruction.</td><td>Register file (write port), mux to select ALU result vs memory data</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Throughput Calculation</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Ideal Pipeline Speedup</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">If executing N instructions with a k-stage pipeline, ideally the pipeline delivers 1 instruction result per clock cycle (after filling). For a single instruction, time = k cycles. For N >> k instructions, throughput ≈ 1 instruction/cycle = CPI (Cycles Per Instruction) of 1.</p>
+        <p style="font-size:13px;color:var(--text2)">Speedup vs non-pipelined = k (stages). A 5-stage pipeline ideally runs 5× faster than non-pipelined. Real speedup is limited by pipeline hazards.</p>
+      </div>
+
+      <div class="s-title">Pipeline Hazards — Complete Coverage</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>1. Structural Hazards</div>
+        <ul class="bul">
+          <li><strong>Definition:</strong> Two instructions in different pipeline stages require the same hardware resource simultaneously</li>
+          <li><strong>Example:</strong> Single-ported memory — IF stage tries to fetch instruction from memory while MEM stage reads data from the same memory</li>
+          <li><strong>Solution:</strong> Separate instruction cache (L1-I) and data cache (L1-D) — the Harvard architecture split eliminates this hazard for caches. For other shared resources: stall or duplicate hardware.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-o"></span>2. Data Hazards (RAW, WAR, WAW)</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>Type</th><th>Acronym</th><th>Example</th><th>Solution</th></tr>
+            <tr><td><strong>Read After Write</strong></td><td>RAW (True dependency)</td><td>ADD R1, R2, R3; SUB R4, R1, R5 — SUB reads R1 before ADD writes it</td><td>Data forwarding/bypassing; stall (bubble insertion)</td></tr>
+            <tr><td><strong>Write After Read</strong></td><td>WAR (Anti-dependency)</td><td>In out-of-order: a later write reaches WB before an earlier read in EX</td><td>Register renaming eliminates WAR</td></tr>
+            <tr><td><strong>Write After Write</strong></td><td>WAW (Output dependency)</td><td>Two writes to same register — second write might complete first</td><td>Register renaming eliminates WAW</td></tr>
+          </table>
+        </div>
+        <div class="co co-key" style="margin-top:8px"><span class="co-lbl">Data Forwarding / Bypassing</span>
+          Instead of waiting for WB to complete before the next instruction's ID stage, bypass paths route the computed result directly from EX or MEM stage outputs to the next instruction's EX stage inputs. This eliminates most RAW stalls. A load-use hazard (result from MEM needed immediately) still requires one stall cycle even with forwarding.
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-p"></span>3. Control Hazards (Branch Hazards)</div>
+        <ul class="bul">
+          <li><strong>Cause:</strong> On a branch instruction, the CPU doesn't know the next PC until the branch is resolved (EX or later stage). Meanwhile, the pipeline has already fetched the next sequential instructions.</li>
+          <li><strong>Branch penalty:</strong> If the branch is taken, the speculatively-fetched instructions must be flushed (converted to NOPs/bubbles). Penalty = number of stages between IF and branch resolution stage.</li>
+          <li><strong>Static branch prediction:</strong> Always predict not-taken (flush if taken) or always predict taken. Simple; low accuracy (~50–70%).</li>
+          <li><strong>Dynamic branch prediction:</strong> Hardware maintains a Branch History Table (BHT) with 1-bit or 2-bit saturating counters per branch PC. Accuracy: 85–95%.</li>
+          <li><strong>Two-level adaptive prediction:</strong> Uses branch history register + BHT indexed by both PC and history. Correlation predictor (gshare, gselect). Accuracy: 95%+.</li>
+          <li><strong>TAGE predictor:</strong> Tagged Geometric branch predictor (Intel Haswell+). Uses multiple tables with different history lengths; tournament selection. Best known predictor in CPUs today.</li>
+          <li><strong>Speculative execution:</strong> CPU executes instructions beyond a branch speculatively; flushes and corrects on misprediction.</li>
+          <li><strong>Branch delay slot:</strong> RISC architecture solution — execute 1 instruction after branch regardless (compiler fills with useful instruction or NOP).</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Modern Superpipeline &amp; Superscalar</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-t"></span>Superpipelining</div>
+          <ul class="bul">
+            <li>Deeper pipelines (14–20 stages in modern x86 CPUs like Skylake, Zen 4)</li>
+            <li>Each stage does less work → allows higher clock frequency</li>
+            <li>Tradeoff: branch misprediction penalty grows proportionally (15–20 cycles for modern CPUs)</li>
+            <li>Intel Pentium 4 Prescott: 31-stage pipeline — too deep; misprediction cost too high</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot"></span>Superscalar Out-of-Order (OoO)</div>
+          <ul class="bul">
+            <li>Issue multiple instructions per cycle from a window of instructions (IPC > 1)</li>
+            <li>Instructions analyzed for dependencies; independent instructions execute simultaneously</li>
+            <li>Reorder Buffer (ROB) tracks in-flight instructions; commits in program order</li>
+            <li>Tomasulo algorithm: operand forwarding + out-of-order execution with register renaming</li>
+            <li>Modern Intel Raptor Lake: 6-wide decode, ~500-entry ROB</li>
+            <li>Modern AMD Zen 4: 4-wide decode, ~320-entry ROB</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        5 pipeline stages: IF → ID → EX → MEM → WB. Three hazard types: Structural (resource conflict), Data (RAW/WAR/WAW), Control (branch). Data forwarding eliminates most RAW hazards; load-use requires 1 stall cycle even with forwarding. Branch prediction accuracy directly determines CPI. Register renaming (Tomasulo) eliminates WAR and WAW hazards. Speedup = k stages (ideal case); real CPUs achieve IPC &gt; 1 via superscalar.
+      </div>
+    </div>
+
+    <!-- TOPIC 12 -->
+    <div class="tp" id="t12">
+      <div class="tp-header">
+        <div class="tp-num">Topic 12 · GPU Architecture</div>
+        <div class="tp-title">NVIDIA Blackwell vs AMD CDNA Architecture Comparison</div>
+        <div class="tp-desc">In-depth comparison of NVIDIA's Blackwell (B100/B200/GB200) and AMD's CDNA 3 (MI300X) GPU architectures, covering compute units, memory subsystems, interconnects, precision support, and workload suitability.</div>
+      </div>
+
+      <div class="s-title">NVIDIA Blackwell Architecture (GB100 / GB200, 2024)</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Blackwell GPU Die Overview</div>
+        <div class="g4">
+          <div class="stat"><div class="stat-lbl">Die config</div><div class="stat-val">2× B100 dies</div><div class="stat-sub">Connected by NVLink-C2C (900 GB/s)</div></div>
+          <div class="stat"><div class="stat-lbl">CUDA cores (B200)</div><div class="stat-val">208 SMs × 128 = ~26,600</div><div class="stat-sub">Per full GPU</div></div>
+          <div class="stat"><div class="stat-lbl">HBM3e Memory</div><div class="stat-val">192 GB</div><div class="stat-sub">8 TB/s bandwidth</div></div>
+          <div class="stat"><div class="stat-lbl">Process node</div><div class="stat-val">TSMC N4P</div><div class="stat-sub">4nm class FinFET</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Blackwell Key Innovations</div>
+        <ul class="bul">
+          <li><strong>5th-gen Tensor Cores:</strong> Support FP4 (float4), FP6 (float6), FP8, BF16, FP16, TF32, FP64. FP4 provides 2× throughput vs FP8 — critical for LLM inference at scale. B200: 20 PFLOPS FP4.</li>
+          <li><strong>Micro-tensor scaling:</strong> Very fine-grained per-group scale factors during FP4/FP8 quantization. Maintains model accuracy while reducing precision. Called "block scaling" — applies separate scale to each 16-element block of a matrix tile.</li>
+          <li><strong>Transformer Engine v2:</strong> Dynamic, per-layer precision selection. Automatically chooses FP4/FP8/BF16 for each transformer operation to maximize speed without accuracy regression. No manual tuning required.</li>
+          <li><strong>RAS (Reliability, Availability, Serviceability):</strong> Row remapping and column remapping for in-field HBM defect tolerance. Decompression engine for LZ4/Snappy/Deflate on-chip.</li>
+          <li><strong>NVLink 5.0:</strong> 1.8 TB/s bidirectional bandwidth per GPU-to-GPU link. NVLink Switch allows all-to-all connectivity across 72 GPUs in GB200 NVL72 rack.</li>
+          <li><strong>Second-gen Confidential Computing:</strong> Hardware-isolated execution environments for secure multi-tenant AI inference.</li>
+          <li><strong>Blackwell SM:</strong> Each SM has 128 CUDA FP32 cores, 4× Tensor Cores (mixed precision), 1× RT Core (Gen 4), 256 KB shared memory/L1, 4× warp schedulers.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">AMD CDNA 3 Architecture (MI300X, 2023–2024)</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>MI300X Chiplet Architecture</div>
+        <div class="g4">
+          <div class="stat"><div class="stat-lbl">GPU compute dies</div><div class="stat-val">6× GCD chiplets</div><div class="stat-sub">Each on TSMC N5</div></div>
+          <div class="stat"><div class="stat-lbl">Memory</div><div class="stat-val">192 GB HBM3</div><div class="stat-sub">5.3 TB/s bandwidth</div></div>
+          <div class="stat"><div class="stat-lbl">Compute units</div><div class="stat-val">304 CUs total</div><div class="stat-sub">~19,456 stream processors</div></div>
+          <div class="stat"><div class="stat-lbl">Architecture</div><div class="stat-val">3D chiplet stacked</div><div class="stat-sub">CPU dies + GPU dies + HBM3</div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-p"></span>CDNA 3 Key Innovations</div>
+        <ul class="bul">
+          <li><strong>3D chiplet integration:</strong> MI300X stacks GPU dies (GCDs) and HBM3 over base dies. MI300A (APU variant) also integrates 3× Zen 4 CPU dies with 6× GPU dies — unified CPU+GPU memory pool for zero-copy data sharing.</li>
+          <li><strong>Unified memory (MI300A):</strong> CPU and GPU share the same 128 GB HBM3 pool — no PCIe data transfer needed for CPU↔GPU. Critical for large model inference where data movement was a bottleneck.</li>
+          <li><strong>Matrix cores (4th gen):</strong> Support FP8, BF16, FP16, FP32, FP64 matrix operations. FP64 throughput is extremely high — best FP64 GPU performance available, critical for HPC (scientific simulation).</li>
+          <li><strong>Infinity Fabric 3.0:</strong> AMD's die-to-die interconnect. Provides 896 GB/s of inter-chiplet bandwidth across the 6 GCDs.</li>
+          <li><strong>ROCm software stack:</strong> Open-source GPU compute stack. HIP (Heterogeneous Interface for Portability) allows CUDA-like programming. ROCm increasingly competitive for PyTorch, JAX workloads.</li>
+          <li><strong>Compute Unit (CU) structure:</strong> Each CU has 64 stream processors, 4× SIMD16 units, 1 scalar unit, 64 KB LDS (Local Data Share = shared memory), 4× texture units, and 1× Matrix Core unit.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Side-by-Side Comparison</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Feature</th><th>NVIDIA B200 (Blackwell)</th><th>AMD MI300X (CDNA 3)</th></tr>
+          <tr><td><strong>Process</strong></td><td>TSMC N4P (dual die)</td><td>TSMC N5 (GCD) + N6 (base)</td></tr>
+          <tr><td><strong>Memory</strong></td><td>192 GB HBM3e, 8 TB/s</td><td>192 GB HBM3, 5.3 TB/s</td></tr>
+          <tr><td><strong>FP16 (Tensor)</strong></td><td>~9 PFLOPS</td><td>~1.3 PFLOPS</td></tr>
+          <tr><td><strong>FP8 (Tensor)</strong></td><td>~18 PFLOPS</td><td>~2.6 PFLOPS</td></tr>
+          <tr><td><strong>FP4 (Tensor)</strong></td><td>~20 PFLOPS</td><td>Not supported</td></tr>
+          <tr><td><strong>FP64</strong></td><td>~1.5 PFLOPS</td><td>~1.6 PFLOPS (best-in-class)</td></tr>
+          <tr><td><strong>Interconnect</strong></td><td>NVLink 5.0 (1.8 TB/s)</td><td>Infinity Fabric (896 GB/s)</td></tr>
+          <tr><td><strong>Multi-GPU scale</strong></td><td>72 GPUs in NVL72 rack</td><td>8× MI300X per node</td></tr>
+          <tr><td><strong>Software</strong></td><td>CUDA ecosystem (dominant)</td><td>ROCm / HIP (growing)</td></tr>
+          <tr><td><strong>Best workload</strong></td><td>LLM training &amp; inference (FP4/FP8)</td><td>HPC FP64, large batch inference</td></tr>
+          <tr><td><strong>TDP</strong></td><td>1000W (GB200)</td><td>750W (MI300X)</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Blackwell: dual-die GB200, FP4 Tensor Cores (unique to Blackwell), NVLink 5.0, Transformer Engine v2, micro-tensor scaling. CDNA 3 (MI300X): 3D chiplet design, best FP64 performance, unified CPU+GPU memory in MI300A variant, ROCm open-source stack. NVLink bandwidth (1.8 TB/s) significantly exceeds Infinity Fabric (896 GB/s) for multi-GPU training.
+      </div>
+    </div>
+
+    <!-- TOPIC 13 -->
+    <div class="tp" id="t13">
+      <div class="tp-header">
+        <div class="tp-num">Topic 13 · GPU Architecture</div>
+        <div class="tp-title">SIMT Execution Model in GPUs</div>
+        <div class="tp-desc">Deep dive into Single Instruction, Multiple Threads (SIMT) — the GPU execution model that powers CUDA and ROCm compute. Covers warps, wavefronts, divergence, occupancy, and scheduling.</div>
+      </div>
+
+      <div class="s-title">SIMT Conceptual Model</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>How SIMT Differs from SIMD</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>Aspect</th><th>CPU SIMD (SSE/AVX)</th><th>GPU SIMT</th></tr>
+            <tr><td><strong>Programmer model</strong></td><td>Explicit vector operations — programmer chooses intrinsics (mm256_add_ps)</td><td>Scalar programming — each thread writes its own scalar code; hardware groups into warps</td></tr>
+            <tr><td><strong>Granularity</strong></td><td>Vector width explicit (4, 8, 16, 32 floats)</td><td>Warp width fixed (32 NVIDIA, 64 AMD)</td></tr>
+            <tr><td><strong>Divergence handling</strong></td><td>Manual masking required</td><td>Automatic predication / masking by hardware</td></tr>
+            <tr><td><strong>Memory model</strong></td><td>Shared with CPU L1/L2</td><td>Private registers + shared memory + global memory</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="s-title">GPU Thread Hierarchy</div>
+      <div style="display:flex;flex-direction:column;gap:8px;margin:12px 0">
+        <div style="background:rgba(79,156,249,0.08);border:1px solid rgba(79,156,249,0.25);border-radius:6px;padding:12px 16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:0.1em;margin-bottom:4px">GRID — Programmer launches N blocks</div>
+          <div style="font-size:13px;color:var(--text2)">The entire kernel launch. Contains all thread blocks (CTAs). Mapped to the GPU globally. Size defined at kernel launch by the programmer.</div>
+        </div>
+        <div style="background:rgba(155,114,255,0.08);border:1px solid rgba(155,114,255,0.25);border-radius:6px;padding:12px 16px;margin-left:20px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent2);letter-spacing:0.1em;margin-bottom:4px">THREAD BLOCK / CTA (Cooperative Thread Array)</div>
+          <div style="font-size:13px;color:var(--text2)">Up to 1024 threads that share <strong style="color:var(--text)">shared memory (SMEM)</strong> and can synchronize via <code>__syncthreads()</code>. Assigned to one SM — all threads in a block execute on the same SM. Can have 1D, 2D, or 3D shape for convenient indexing.</div>
+        </div>
+        <div style="background:rgba(45,212,191,0.08);border:1px solid rgba(45,212,191,0.25);border-radius:6px;padding:12px 16px;margin-left:40px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent3);letter-spacing:0.1em;margin-bottom:4px">WARP (NVIDIA) / WAVEFRONT (AMD)</div>
+          <div style="font-size:13px;color:var(--text2)">Hardware scheduling unit. <strong style="color:var(--text)">NVIDIA: 32 threads. AMD: 64 threads.</strong> All threads in a warp execute the same instruction simultaneously on different data. The warp scheduler issues one instruction per clock per warp. Multiple warps interleave on the same SM to hide memory latency.</div>
+        </div>
+        <div style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.25);border-radius:6px;padding:12px 16px;margin-left:60px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent4);letter-spacing:0.1em;margin-bottom:4px">THREAD</div>
+          <div style="font-size:13px;color:var(--text2)">The finest-grained execution unit. Has its own registers, program counter, and call stack. Identified by threadIdx (within block) and blockIdx (within grid). Access: globalIdx = blockIdx.x × blockDim.x + threadIdx.x</div>
+        </div>
+      </div>
+
+      <div class="s-title">Warp Execution Mechanics</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Zero-Divergence Warp (Ideal)</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">All 32 threads in the warp take the same code path. The warp scheduler issues one instruction; all 32 execution units process it simultaneously on their respective data. 100% SIMT efficiency. Full throughput.</p>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>Warp Divergence (Performance Killer)</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">When threads in the same warp take different if/else branches, the GPU executes both paths sequentially with a predicate mask — active threads execute; masked threads are disabled (their results discarded).</p>
+        <pre><code>// This causes warp divergence if threads have different threadIdx values
+if (threadIdx.x % 2 == 0) {
+    result = compute_A();  // Even threads execute; odd threads masked
+} else {
+    result = compute_B();  // Odd threads execute; even threads masked
+}
+// Total execution time = time(A) + time(B), not max(A, B)</code></pre>
+        <div class="co co-warn" style="margin-top:8px"><span class="co-lbl">Impact</span>
+          Worst case: all 32 threads take different paths → effectively serial execution at 1/32 of SIMT throughput. Avoid conditional branches keyed on threadIdx or data values within performance-critical kernels.
+        </div>
+      </div>
+
+      <div class="s-title">Warp Scheduling &amp; Latency Hiding</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>Multithreaded Warp Scheduling</div>
+        <ul class="bul">
+          <li>Each SM has 4 warp schedulers (modern NVIDIA GPUs)</li>
+          <li>Each warp scheduler can issue 1–2 instructions per clock from its assigned warps</li>
+          <li>When a warp stalls (waiting for memory, waiting for a previous instruction's result), the scheduler instantly switches to another warp — zero context-switch cost (all warps' registers live in the register file simultaneously)</li>
+          <li>Memory latency (400–800 cycles): while one warp waits for global memory, the SM executes 12–25 other warps during that time</li>
+          <li><strong>Occupancy</strong>: fraction of maximum possible concurrent warps active on an SM. Higher occupancy = better latency hiding. But maximum occupancy is not always optimal — it can increase register spilling.</li>
+          <li>Maximum concurrent warps per SM: 64 warps (Ampere/Ada), each with 32 threads = 2048 threads per SM</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Occupancy Calculation</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Limiting Resource</th><th>Formula</th><th>Example</th></tr>
+          <tr><td><strong>Registers per thread</strong></td><td>Active warps = register file size ÷ (regs/thread × 32)</td><td>65536 regs ÷ (32 regs/thread × 32) = 64 warps (max)</td></tr>
+          <tr><td><strong>Shared memory per block</strong></td><td>Active blocks = SM shared memory ÷ smem/block</td><td>100 KB SM ÷ 25 KB/block = 4 blocks max</td></tr>
+          <tr><td><strong>Block size</strong></td><td>Active warps = active blocks × (block_size ÷ 32)</td><td>4 blocks × (256 threads ÷ 32) = 32 warps</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        SIMT = Single Instruction, Multiple Threads. Warp = 32 threads (NVIDIA), Wavefront = 64 threads (AMD) — the hardware scheduling unit. Warp divergence forces serial execution with masking — avoid conditional branches on per-thread data. Latency hiding: the SM switches to other warps while one warp waits for memory — requires sufficient concurrent warps (occupancy). Occupancy is limited by registers, shared memory, and block size.
+      </div>
+    </div>
+
+    <!-- TOPIC 14 -->
+    <div class="tp" id="t14">
+      <div class="tp-header">
+        <div class="tp-num">Topic 14 · GPU Architecture</div>
+        <div class="tp-title">GPU Memory Hierarchy</div>
+        <div class="tp-desc">Complete GPU memory hierarchy from per-thread registers to off-chip HBM/GDDR, covering capacity, latency, bandwidth, and programming implications of each level.</div>
+      </div>
+
+      <div class="s-title">Memory Hierarchy Overview</div>
+      <div style="display:flex;flex-direction:column;gap:4px;margin:12px 0;max-width:600px">
+        <div style="background:rgba(244,63,94,0.15);border:1px solid rgba(244,63,94,0.35);border-radius:5px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:500;font-size:13px;color:var(--accent5)">Registers</div>
+          <div style="font-size:11px;color:var(--text3);text-align:right">~4 cycles · ~8 MB/SM · Per-thread, private</div>
+        </div>
+        <div style="background:rgba(249,115,22,0.12);border:1px solid rgba(249,115,22,0.3);border-radius:5px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:500;font-size:13px;color:var(--accent4)">Shared Memory / L1 Cache</div>
+          <div style="font-size:11px;color:var(--text3);text-align:right">~20–30 cycles · 48–228 KB/SM · Per-block</div>
+        </div>
+        <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.25);border-radius:5px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;margin-left:20px">
+          <div style="font-weight:500;font-size:13px;color:var(--amber)">L2 Cache</div>
+          <div style="font-size:11px;color:var(--text3);text-align:right">~100–200 cycles · 32–80 MB · All SMs</div>
+        </div>
+        <div style="background:rgba(79,156,249,0.08);border:1px solid rgba(79,156,249,0.2);border-radius:5px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;margin-left:40px">
+          <div style="font-weight:500;font-size:13px;color:var(--accent)">Global Memory (HBM / GDDR)</div>
+          <div style="font-size:11px;color:var(--text3);text-align:right">400–800 cycles · 8–192 GB · All SMs</div>
+        </div>
+        <div style="background:rgba(100,116,139,0.1);border:1px solid rgba(100,116,139,0.2);border-radius:5px;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;margin-left:60px">
+          <div style="font-weight:500;font-size:13px;color:var(--text3)">Host Memory (PCIe)</div>
+          <div style="font-size:11px;color:var(--text3);text-align:right">50,000+ cycles · TBs · CPU RAM via PCIe</div>
+        </div>
+      </div>
+
+      <div class="s-title">Each Level — Detailed</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>Register File</div>
+        <ul class="bul">
+          <li>Fastest GPU memory. Per-thread private storage. <strong>No explicit programmer control</strong> — compiler allocates automatically.</li>
+          <li>NVIDIA Ada Lovelace SM: 65,536 × 32-bit registers per SM. All active threads' registers coexist — no register save/restore on warp switch.</li>
+          <li>More registers per thread → fewer concurrent warps (limited register file) → lower occupancy.</li>
+          <li><strong>Register spilling:</strong> When a thread uses more registers than available, the excess spills to local memory (L2/global). Local memory accesses have full global memory latency — catastrophic for performance.</li>
+          <li>Check register usage: compile with <code>-–ptxas-options=-v</code> flag in nvcc.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-o"></span>Shared Memory (SMEM)</div>
+        <ul class="bul">
+          <li>On-chip SRAM local to each SM. Shared among all threads in the same thread block.</li>
+          <li>Programmer-controlled: declared with <code>__shared__</code> keyword in CUDA.</li>
+          <li>Organized into 32 banks (32-bit words). Bank width = 4 bytes. Bank i contains addresses: i, i+32, i+64, ... </li>
+          <li><strong>Bank conflicts:</strong> When multiple threads in the same warp access different addresses that map to the same bank → the accesses serialize. K-way conflict = K cycles instead of 1.</li>
+          <li><strong>No bank conflict:</strong> All threads access the same address (broadcast) or all threads access different banks.</li>
+          <li>Configurable split with L1 cache (on Ampere/Ada): 32 KB shared + 32 KB L1, or 64 KB + 0, or 100 KB shared + 28 KB L1 (varies by GPU).</li>
+          <li>Use case: matrix multiplication tiling, scan algorithms, reduction trees — any pattern where data loaded from global is reused multiple times within a block.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-p"></span>L2 Cache</div>
+        <ul class="bul">
+          <li>Shared across all SMs. 32–80 MB in modern GPUs (Ada L4090: 72 MB L2 — the largest).</li>
+          <li>Hardware-managed; programmer cannot explicitly control what resides in L2.</li>
+          <li>CUDA Persistent L2 caching (Ampere+): <code>cudaStreamSetAttribute</code> can pin a data region in L2 for repeated access — useful for embedding tables or small model weights accessed every kernel.</li>
+          <li>Caches: global memory reads, constant memory, texture memory, local memory (spilled registers).</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Global Memory — HBM vs GDDR</div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <tr><th>Feature</th><th>HBM3e (Datacenter)</th><th>GDDR7 (Consumer)</th></tr>
+            <tr><td><strong>Interface width</strong></td><td>1024-bit per stack</td><td>16-bit per pin (×16 chips)</td></tr>
+            <tr><td><strong>Bandwidth</strong></td><td>~8 TB/s (H200)</td><td>~1.8 TB/s (RTX 5090)</td></tr>
+            <tr><td><strong>Capacity</strong></td><td>Up to 192 GB</td><td>Up to 32 GB</td></tr>
+            <tr><td><strong>Power/bandwidth</strong></td><td>Much better (3–5× GDDR)</td><td>Higher power per TB/s</td></tr>
+            <tr><td><strong>Physical</strong></td><td>Stacked dies on interposer (CoWoS)</td><td>Discrete DRAM chips on PCB</td></tr>
+            <tr><td><strong>Cost</strong></td><td>Extremely high</td><td>Moderate</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="s-title">Memory Coalescing — Critical for Global Memory Performance</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Coalesced vs Uncoalesced Access</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Global memory is accessed in 128-byte transactions. When 32 threads in a warp access 32 consecutive 4-byte floats starting at a 128-byte-aligned address, all data is served in a single 128-byte transaction — fully coalesced.</p>
+        <pre><code>// Coalesced: thread i accesses array[i] — all consecutive
+float val = array[threadIdx.x + blockIdx.x * blockDim.x];
+
+// Uncoalesced (strided): thread i accesses array[i * stride] — scattered
+float val = array[(threadIdx.x + blockIdx.x * blockDim.x) * stride];</code></pre>
+        <p style="font-size:13px;color:var(--text2);margin-top:8px">Strided access with stride=32 means each thread accesses a different 128-byte cache line → 32 separate transactions instead of 1. 32× more memory transactions = 32× worse bandwidth utilization.</p>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Hierarchy (fast→slow): Registers → Shared Memory → L1 → L2 → Global Memory → Host Memory. Shared memory = per-block, programmer-controlled, ~4 cycle latency. Global memory = 400–800 cycle latency; latency hidden by warp switching. Memory coalescing: 32 consecutive threads accessing contiguous aligned data → single 128-byte transaction. Bank conflicts in shared memory: multiple threads hitting same bank → serialization. Register spilling to local memory (mapped in global) = major performance hazard.
+      </div>
+    </div>
+
+    <!-- TOPIC 15 -->
+    <div class="tp" id="t15">
+      <div class="tp-header">
+        <div class="tp-num">Topic 15 · GPU Architecture</div>
+        <div class="tp-title">Tensor Cores in NVIDIA Blackwell GPUs</div>
+        <div class="tp-desc">Comprehensive coverage of Tensor Core hardware, the matrix multiply-accumulate (MMA) operation, precision formats from FP64 to FP4, generational improvements, and programming interface via WMMA API and cuDNN.</div>
+      </div>
+
+      <div class="s-title">What Problem Do Tensor Cores Solve?</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Deep Learning Is Dominated by Matrix Multiplications</div>
+        <ul class="bul">
+          <li>A transformer forward pass: ~95% of compute is matrix multiplications (QKV projections, attention, FFN layers)</li>
+          <li>CUDA cores (general FP32 ALUs) execute matrix multiply element-by-element: inefficient for large matrices</li>
+          <li>Tensor Cores execute a full tile MMA (matrix multiply-accumulate) in a single clock cycle: D = A × B + C</li>
+          <li>Performance advantage: a Tensor Core MMA on a 16×16×16 tile takes 1 clock vs ~4096 operations on CUDA FP32 cores</li>
+        </ul>
+      </div>
+
+      <div class="s-title">MMA Operation — D = A × B + C</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Matrix Multiply-Accumulate Breakdown</div>
+        <div class="g3">
+          <div class="stat"><div class="stat-lbl">Matrix A (input)</div><div class="stat-val">M × K tile</div><div class="stat-sub">Activations / query matrix</div></div>
+          <div class="stat"><div class="stat-lbl">Matrix B (weights)</div><div class="stat-val">K × N tile</div><div class="stat-sub">Weight matrix / key matrix</div></div>
+          <div class="stat"><div class="stat-lbl">Matrix D (result)</div><div class="stat-val">M × N accumulator</div><div class="stat-sub">Output; C is partial sum from prior</div></div>
+        </div>
+        <p style="font-size:13px;color:var(--text2);margin-top:10px">For every element D[i,j] = Σk (A[i,k] × B[k,j]) + C[i,j]. Tensor Cores compute this for an entire tile simultaneously. With FP16 inputs and FP32 accumulation, each Tensor Core performs 64 multiply-add operations per clock.</p>
+      </div>
+
+      <div class="s-title">Generational Tensor Core Evolution</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Generation</th><th>Architecture</th><th>Tile Size</th><th>Precision Support</th><th>Peak FLOPS (A100/H100/B200)</th></tr>
+          <tr><td><strong>1st gen</strong></td><td>Volta (V100)</td><td>4×4×4 FP16</td><td>FP16 → FP32</td><td>125 TFLOPS FP16</td></tr>
+          <tr><td><strong>2nd gen</strong></td><td>Turing (T4)</td><td>8×8×16</td><td>FP16, INT8, INT4, INT1 + FP16→FP32</td><td>260 TFLOPS FP16</td></tr>
+          <tr><td><strong>3rd gen</strong></td><td>Ampere (A100)</td><td>8×16×16</td><td>TF32, BF16, FP16, FP64, INT8, INT4</td><td>312 TFLOPS BF16 (sparse)</td></tr>
+          <tr><td><strong>4th gen</strong></td><td>Hopper (H100)</td><td>+wgmma async</td><td>FP8, FP16, BF16, TF32, FP64 + Transformer Engine v1</td><td>3958 TFLOPS FP8</td></tr>
+          <tr><td><strong>5th gen</strong></td><td>Blackwell (B200)</td><td>+micro-scaling</td><td>FP4, FP6, FP8, BF16, FP16, TF32, FP64 + TE v2</td><td>20,000 TFLOPS FP4</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Precision Formats — Full Detail</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Format</th><th>Bits</th><th>Exponent/Mantissa</th><th>Range</th><th>Use Case</th></tr>
+          <tr><td><strong>FP64</strong></td><td>64</td><td>11 exp, 52 mantissa</td><td>Highest</td><td>HPC scientific simulation (CFD, molecular dynamics)</td></tr>
+          <tr><td><strong>FP32</strong></td><td>32</td><td>8 exp, 23 mantissa</td><td>High</td><td>Accumulation, gradient computation</td></tr>
+          <tr><td><strong>TF32</strong></td><td>19 (19-bit operands)</td><td>8 exp, 10 mantissa</td><td>Same range as FP32, less precision</td><td>Training; replaces FP32 in tensor ops with ~same accuracy</td></tr>
+          <tr><td><strong>BF16</strong></td><td>16</td><td>8 exp, 7 mantissa</td><td>Same as FP32 range</td><td>Training; preferred over FP16 for stability (same exponent as FP32)</td></tr>
+          <tr><td><strong>FP16</strong></td><td>16</td><td>5 exp, 10 mantissa</td><td>±65504 (narrow)</td><td>Inference; training with loss scaling</td></tr>
+          <tr><td><strong>FP8 (E4M3)</strong></td><td>8</td><td>4 exp, 3 mantissa</td><td>±448</td><td>Inference; forward pass activations</td></tr>
+          <tr><td><strong>FP8 (E5M2)</strong></td><td>8</td><td>5 exp, 2 mantissa</td><td>±57344</td><td>Gradient computation (wider range needed)</td></tr>
+          <tr><td><strong>FP4 (E2M1)</strong></td><td>4</td><td>2 exp, 1 mantissa</td><td>Very narrow</td><td>Blackwell-only: LLM inference with micro-tensor scaling</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">WMMA / WGMMA API</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>Programming Tensor Cores</div>
+        <ul class="bul">
+          <li><strong>WMMA API (Turing/Ampere):</strong> Warp-level Matrix Multiply-Accumulate. <code>nvcuda::wmma</code> namespace. Each warp collaboratively computes a tile MMA. <code>wmma::fragment</code>, <code>wmma::load_matrix_sync</code>, <code>wmma::mma_sync</code>.</li>
+          <li><strong>WGMMA (Hopper+):</strong> Warp Group MMA. 128 threads (4 warps) cooperate on larger tiles. Uses asynchronous data movement (TMA — Tensor Memory Accelerator) to overlap data load with compute.</li>
+          <li><strong>cuBLAS / cuDNN:</strong> High-level libraries that use Tensor Cores automatically. Most users interact with Tensor Cores through these, not directly via WMMA.</li>
+          <li><strong>PyTorch automatic use:</strong> <code>torch.backends.cuda.matmul.allow_tf32 = True</code> enables TF32 Tensor Cores. Automatic mixed precision: <code>torch.cuda.amp.autocast()</code> uses FP16/BF16 Tensor Cores automatically.</li>
+        </ul>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Tensor Core operation: D = A × B + C (matrix multiply-accumulate). 5th-gen Blackwell supports FP4 (new) via micro-tensor scaling. FP4 → 2× throughput of FP8 → 4× of FP16. BF16 preferred over FP16 for training (same exponent range as FP32 = better numerical stability). Transformer Engine dynamically selects precision per layer. WMMA = Warp-level MMA API for programming Tensor Cores. 20 PFLOPS FP4 = B200's peak Tensor Core throughput.
+      </div>
+    </div>
+
+    <!-- TOPIC 16 -->
+    <div class="tp" id="t16">
+      <div class="tp-header">
+        <div class="tp-num">Topic 16 · GPU Architecture</div>
+        <div class="tp-title">GPU Shared Memory vs Global Memory</div>
+        <div class="tp-desc">Deep technical comparison of on-chip shared memory and off-chip global memory, with detailed programming patterns, tiling optimization, bank conflict analysis, and coalescing strategies.</div>
+      </div>
+
+      <div class="s-title">Fundamental Differences</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="card">
+          <div class="card-h" style="color:var(--accent4)"><span class="cdot cdot-o"></span>Shared Memory</div>
+          <div class="tbl-wrap"><table class="tbl">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Location</td><td>On-chip, inside SM</td></tr>
+            <tr><td>Scope</td><td>Thread block only</td></tr>
+            <tr><td>Lifetime</td><td>Duration of thread block</td></tr>
+            <tr><td>Control</td><td>Explicit (programmer)</td></tr>
+            <tr><td>Latency</td><td>~4 cycles</td></tr>
+            <tr><td>Bandwidth</td><td>~100 TB/s (within SM)</td></tr>
+            <tr><td>Capacity</td><td>48–228 KB per SM</td></tr>
+            <tr><td>Declaration</td><td><code>__shared__ float s[]</code></td></tr>
+          </table></div>
+        </div>
+        <div class="card">
+          <div class="card-h" style="color:var(--accent)"><span class="cdot"></span>Global Memory</div>
+          <div class="tbl-wrap"><table class="tbl">
+            <tr><th>Property</th><th>Value</th></tr>
+            <tr><td>Location</td><td>Off-chip (HBM/GDDR)</td></tr>
+            <tr><td>Scope</td><td>All threads, all SMs</td></tr>
+            <tr><td>Lifetime</td><td>Duration of application</td></tr>
+            <tr><td>Control</td><td>Implicit (hardware managed)</td></tr>
+            <tr><td>Latency</td><td>400–800 cycles</td></tr>
+            <tr><td>Bandwidth</td><td>~1–8 TB/s (HBM3e)</td></tr>
+            <tr><td>Capacity</td><td>8–192 GB</td></tr>
+            <tr><td>Declaration</td><td><code>cudaMalloc(&amp;ptr, size)</code></td></tr>
+          </table></div>
+        </div>
+      </div>
+
+      <div class="s-title">Tiling with Shared Memory — The Key Pattern</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Matrix Multiplication Tiling Example</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Naïve matrix multiply: each thread computes one output element, loading K elements from A and K from B from global memory → each load is O(N²×K) global memory transactions.</p>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">Tiled implementation with shared memory: load a TILE_SIZE × TILE_SIZE block of A and B into shared memory once, then compute all partial sums using shared memory → reduces global memory transactions by TILE_SIZE times.</p>
+        <pre><code>__shared__ float As[TILE][TILE], Bs[TILE][TILE];
+
+// Phase 1: Cooperatively load tile from global into shared
+As[ty][tx] = A[row * N + (ph * TILE + tx)];
+Bs[ty][tx] = B[(ph * TILE + ty) * N + col];
+__syncthreads();  // Barrier: all threads must finish loading
+
+// Phase 2: Compute dot product using shared memory
+for (int k = 0; k < TILE; k++) {
+    Cval += As[ty][k] * Bs[k][tx];  // Fast SMEM access
+}
+__syncthreads();  // Barrier before loading next tile</code></pre>
+      </div>
+
+      <div class="s-title">Bank Conflicts — Analysis &amp; Avoidance</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>Shared Memory Bank Structure</div>
+        <ul class="bul">
+          <li>Shared memory divided into 32 banks. Bank width = 4 bytes (32-bit) in most configurations.</li>
+          <li>Address-to-bank mapping: bank index = (address / 4) % 32</li>
+          <li><strong>No conflict:</strong> All 32 threads access different banks (any permutation)</li>
+          <li><strong>No conflict (broadcast):</strong> All 32 threads access the same address (hardware broadcasts)</li>
+          <li><strong>2-way conflict:</strong> 2 threads access different addresses in same bank → 2 serial transactions</li>
+          <li><strong>32-way conflict (worst case):</strong> All threads access the same bank → fully serial</li>
+        </ul>
+        <div style="margin-top:10px">
+          <p style="font-size:13px;color:var(--text2);margin-bottom:6px">Common conflict scenario — row-major 2D shared array accessed column-wise:</p>
+          <pre><code>// s[TILE][TILE] — accessing column j by thread tx:
+float val = s[tx][j];  // s[0][j], s[1][j], ... s[31][j]
+// All addresses differ by TILE floats = TILE*4 bytes
+// If TILE=32: address spacing = 128 bytes = 32 banks apart → same bank!
+// FIX: declare s[TILE][TILE+1] — padding breaks the bank alignment</code></pre>
+        </div>
+      </div>
+
+      <div class="s-title">Global Memory Access Patterns</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Pattern</th><th>Access Type</th><th>Transactions</th><th>Efficiency</th></tr>
+          <tr><td>Consecutive aligned 128 bytes</td><td>Coalesced</td><td>1 × 128-byte transaction</td><td>100%</td></tr>
+          <tr><td>Consecutive but misaligned (offset 4 bytes)</td><td>Mostly coalesced</td><td>2 transactions</td><td>50%</td></tr>
+          <tr><td>Stride-2 (every other element)</td><td>Strided</td><td>Up to 16 transactions</td><td>~6%</td></tr>
+          <tr><td>Random scatter</td><td>Uncoalesced</td><td>Up to 32 transactions</td><td>~3%</td></tr>
+          <tr><td>Broadcast (all access same address)</td><td>Broadcast</td><td>1 transaction</td><td>100%</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Constant Memory &amp; Texture Memory</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>Constant Memory</div>
+          <ul class="bul">
+            <li>64 KB special read-only global memory region</li>
+            <li>Cached in per-SM constant cache (very fast when all threads access same address)</li>
+            <li>Broadcast: if all 32 warp threads read same constant address → served in 1 cycle</li>
+            <li>Ideal for: shader constants, convolution kernel weights</li>
+            <li>Declared: <code>__constant__ float kernel[256]</code>, copied via <code>cudaMemcpyToSymbol()</code></li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-t"></span>Texture Memory</div>
+          <ul class="bul">
+            <li>Read-only global memory region with spatial locality caching</li>
+            <li>2D spatial cache — if accessing (x,y) and (x+1,y) and (x,y+1) are likely to be in cache</li>
+            <li>Hardware interpolation for bilinear/trilinear sampling (graphics and image processing)</li>
+            <li>Useful when access pattern has 2D spatial locality (e.g. image convolution without tiling)</li>
+            <li>CUDA texture objects or <code>__ldg()</code> intrinsic for read-only cache hint on global loads</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Shared memory: on-chip, per-block, programmer-controlled, ~4 cycles. Global memory: off-chip, all threads, hardware-managed, 400–800 cycles. Tiling = load global memory tile into shared memory, compute from shared memory → reduces global transactions by TILE_SIZE. Bank conflict: multiple threads in same warp hit same bank → serialize. Fix: padding (declare array with +1 column width). Memory coalescing: 32 threads access 128 contiguous aligned bytes → 1 transaction. __syncthreads() required after loading into shared memory before reading.
+      </div>
+    </div>
+
+    <!-- TOPIC 17 -->
+    <div class="tp" id="t17">
+      <div class="tp-header">
+        <div class="tp-num">Topic 17 · GPU Architecture</div>
+        <div class="tp-title">Power Efficiency in Modern GPU Architectures</div>
+        <div class="tp-desc">Analysis of the techniques modern GPU architects use to improve performance-per-watt: precision reduction, structured sparsity, DVFS, memory technology choices, and system-level power design.</div>
+      </div>
+
+      <div class="s-title">The Power Challenge</div>
+      <div class="g4">
+        <div class="stat"><div class="stat-lbl">NVIDIA H100 SXM5 TDP</div><div class="stat-val">700 W</div><div class="stat-sub">Per GPU</div></div>
+        <div class="stat"><div class="stat-lbl">NVIDIA GB200 TDP</div><div class="stat-val">1000 W</div><div class="stat-sub">Per GPU (dual-die)</div></div>
+        <div class="stat"><div class="stat-lbl">GB200 NVL72 rack</div><div class="stat-val">120 kW</div><div class="stat-sub">72 GPUs total</div></div>
+        <div class="stat"><div class="stat-lbl">Power density trend</div><div class="stat-val">+40% / gen</div><div class="stat-sub">TDP growth per GPU gen</div></div>
+      </div>
+
+      <div class="s-title">Architectural Power Efficiency Techniques</div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>1. Reduced Numerical Precision</div>
+        <ul class="bul">
+          <li>Energy per floating-point multiply scales roughly with the square of the bit width: halving precision → ~4× less energy per operation</li>
+          <li>FP32 → FP16: ~4× more ops per watt on same silicon area. FP16 → FP8: another ~4×. FP8 → FP4: another ~4×.</li>
+          <li>Modern LLMs can be quantized to FP8 (inference) or FP4 (aggressive quantization) with acceptable accuracy loss</li>
+          <li>Accumulation is still done in FP32 to prevent numerical catastrophe — the mixed-precision approach</li>
+          <li>NVIDIA Transformer Engine: selects precision automatically, maximizing throughput while monitoring numerical metrics</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>2. Structured Sparsity (2:4 Sparsity)</div>
+        <ul class="bul">
+          <li>Introduced in NVIDIA Ampere. Enforces a specific sparsity pattern: for every 4 consecutive weights, exactly 2 must be zero.</li>
+          <li>This 2:4 pattern allows a hardware-accelerated sparse matrix multiply that skips zero computations → 2× throughput for sparse matrices at no accuracy cost (with fine-tuning).</li>
+          <li>The sparse weights are stored in compressed format: values (50% of original) + 2-bit metadata indicating which 2 of 4 weights are non-zero.</li>
+          <li>Requires a pruning phase during training to impose the 2:4 structure, followed by fine-tuning to recover accuracy.</li>
+          <li>Result: 2× performance gain for Tensor Core operations on networks trained with 2:4 sparsity.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-o"></span>3. Dynamic Voltage-Frequency Scaling (DVFS)</div>
+        <ul class="bul">
+          <li>GPU clocks are not fixed. DVFS dynamically adjusts operating frequency and supply voltage based on workload and temperature.</li>
+          <li>Power ∝ C × V² × f (capacitance × voltage² × frequency). Reducing both V and f simultaneously reduces power cubically.</li>
+          <li>Base clock vs Boost clock: GPUs operate at lower base clock under sustained load (power/thermal limits) and boost for short bursts</li>
+          <li>Power limit (TDP): the operating frequency drops if instantaneous power exceeds the configured TDP</li>
+          <li>Clock gating: idle SMs, memory controllers, and logic blocks are clock-gated (their clock signal disabled) → zero dynamic power. NVIDIA calls this "fine-grained power gating."</li>
+          <li>Temperature-aware throttling: GPU reduces clock when junction temperature approaches T_max (typically 83–90°C for GPU junction)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>4. HBM vs GDDR — Memory Power Efficiency</div>
+        <ul class="bul">
+          <li>Data movement is the dominant power consumer in modern AI workloads — often 50–80% of total GPU power</li>
+          <li>HBM3e achieves ~3–5× better bandwidth-per-watt than GDDR6X at equivalent bandwidth</li>
+          <li>Short physical interconnect (interposer, microbumps) between GPU die and HBM stack → lower signal swing, lower I/O power</li>
+          <li>Near-memory computing (in-memory processing): future architecture trend to place compute logic inside HBM stack to minimize data movement</li>
+          <li>CoWoS (Chip-on-Wafer-on-Substrate) packaging enables HBM stacks next to GPU die — shorter traces = less energy</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-p"></span>5. NVLink vs PCIe Power Efficiency</div>
+        <ul class="bul">
+          <li>PCIe 5.0 x16: 128 GB/s peak at ~30W for the link itself</li>
+          <li>NVLink 5.0: 1.8 TB/s at similar or lower energy-per-bit — 10–15× more bandwidth per watt than PCIe for GPU-GPU transfers</li>
+          <li>Reducing inter-GPU communication energy significantly improves system power efficiency in multi-GPU clusters</li>
+          <li>NVLink-C2C (Chip-to-Chip): used within the GB200 dual-die package at 900 GB/s with extremely low energy — orders of magnitude more efficient than any PCIe or NVLink between separate chips</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Liquid Cooling for High-TDP GPUs</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-r"></span>Cooling Technologies</div>
+        <ul class="bul">
+          <li><strong>Air cooling:</strong> Effective up to ~400W per GPU. Blower cooler (rear exhaust) or open-air (3-fan). High noise levels at sustained load.</li>
+          <li><strong>Direct liquid cooling (DLC):</strong> Coldplate directly on GPU die. Liquid (water-glycol) carries heat to rack-level heat exchanger. GB200 NVL72 uses DLC — enables 1000W per GPU in dense rack.</li>
+          <li><strong>Immersion cooling:</strong> GPU cards submerged in dielectric fluid. 2-phase immersion (fluid boils at chip surface, condenses at top) can handle any TDP. Experimental/specialized data centers.</li>
+          <li><strong>Thermal runaway prevention:</strong> If cooling fails, GPU reduces clock (thermal throttling) → eventually shuts down via hardware protection before damage.</li>
+        </ul>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        Power ∝ V² × f — reducing voltage and frequency reduces power cubically. Structured 2:4 sparsity: exactly 2 of every 4 weights are zero → 2× Tensor Core throughput with hardware acceleration. DVFS: dynamically scales voltage and frequency — more efficient at lower utilization. Clock gating: disables clock to idle units → zero dynamic power. HBM3e: 3–5× better bandwidth/watt vs GDDR6X. Data movement (DRAM reads) dominates AI workload power — minimizing transfers is key.
+      </div>
+    </div>
+
+    <!-- TOPIC 18 -->
+    <div class="tp" id="t18">
+      <div class="tp-header">
+        <div class="tp-num">Topic 18 · GPU Programming</div>
+        <div class="tp-title">CUDA Compiler Optimization Techniques</div>
+        <div class="tp-desc">Comprehensive coverage of the CUDA compilation pipeline, NVCC optimizations, PTX intermediate representation, key optimization techniques, and profiling tools for GPU kernel performance.</div>
+      </div>
+
+      <div class="s-title">CUDA Compilation Pipeline</div>
+      <div style="display:flex;align-items:center;gap:0;margin:12px 0;overflow-x:auto">
+        <div style="padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:5px 0 0 5px;text-align:center;min-width:120px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent);font-weight:600">.cu file</div>
+          <div style="font-size:11px;color:var(--text3)">CUDA C++ source</div>
+        </div>
+        <div style="padding:0 8px;color:var(--text3);font-size:18px">→</div>
+        <div style="padding:10px 14px;background:var(--bg3);border:1px solid var(--border);text-align:center;min-width:120px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent2);font-weight:600">NVCC</div>
+          <div style="font-size:11px;color:var(--text3)">Device code separated</div>
+        </div>
+        <div style="padding:0 8px;color:var(--text3);font-size:18px">→</div>
+        <div style="padding:10px 14px;background:var(--bg3);border:1px solid var(--border);text-align:center;min-width:120px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent3);font-weight:600">PTX</div>
+          <div style="font-size:11px;color:var(--text3)">Virtual ISA (arch-independent)</div>
+        </div>
+        <div style="padding:0 8px;color:var(--text3);font-size:18px">→</div>
+        <div style="padding:10px 14px;background:var(--bg3);border:1px solid var(--border);text-align:center;min-width:120px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--amber);font-weight:600">PTXAS</div>
+          <div style="font-size:11px;color:var(--text3)">Optimizer + register alloc</div>
+        </div>
+        <div style="padding:0 8px;color:var(--text3);font-size:18px">→</div>
+        <div style="padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:0 5px 5px 0;text-align:center;min-width:120px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--accent4);font-weight:600">SASS</div>
+          <div style="font-size:11px;color:var(--text3)">Native machine code</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>PTX vs SASS — Key Distinction</div>
+        <ul class="bul">
+          <li><strong>PTX (Parallel Thread Execution):</strong> Architecture-independent virtual ISA. Human-readable assembly-like IR. Forward-compatible: PTX compiled for sm_80 can be JIT-compiled by driver to run on sm_90 GPUs.</li>
+          <li><strong>SASS (Streaming ASSembler):</strong> Architecture-specific native ISA. Not documented by NVIDIA but reverse-engineered by researchers. Maximum performance — no JIT overhead.</li>
+          <li><strong>Fatbinary:</strong> CUDA executable can embed multiple PTX versions + multiple SASS versions for different GPU architectures (–gencode flags).</li>
+          <li><strong>JIT compilation:</strong> If no native SASS matches the GPU, the CUDA driver JIT-compiles the embedded PTX at first run. Cached in user's compilation cache.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Key NVCC Optimization Techniques</div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Loop Unrolling</div>
+        <ul class="bul">
+          <li>Replicates the loop body N times, reducing loop overhead (branch, counter update) and exposing more independent instructions for the warp scheduler</li>
+          <li>Allows the compiler to schedule independent instructions across unrolled iterations, increasing instruction-level parallelism (ILP)</li>
+        </ul>
+        <pre><code>#pragma unroll 4
+for (int k = 0; k < K; k++) {
+    result += A[k] * B[k];  // Unrolled 4× by compiler
+}</code></pre>
+        <ul class="bul">
+          <li><code>#pragma unroll N</code>: unroll exactly N times (partial unroll for loops longer than N)</li>
+          <li><code>#pragma unroll</code>: fully unroll (only if trip count is constant and small)</li>
+          <li>Over-unrolling increases register pressure → may reduce occupancy</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-o"></span>Function Inlining</div>
+        <ul class="bul">
+          <li><code>__forceinline__ __device__</code>: forces compiler to inline a device function. Eliminates function call overhead (register saves, branch, return).</li>
+          <li><code>__noinline__</code>: prevents inlining — useful when a function is called many times and binary size matters</li>
+          <li>Device functions are inlined by default in CUDA unless the compiler decides against it. <code>__forceinline__</code> overrides this decision.</li>
+          <li>Inlining exposes more optimization opportunities across the call boundary (constant propagation, common subexpression elimination)</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-p"></span>FMA — Fused Multiply-Add</div>
+        <ul class="bul">
+          <li>The compiler automatically combines separate multiply + add into a single FMA instruction: <code>result = a * b + c</code> → single hardware instruction</li>
+          <li>FMA executes in 1 cycle vs 2 cycles for separate mul + add. Also preserves more floating-point precision (only 1 rounding step vs 2).</li>
+          <li>CUDA Fast Math mode (<code>-use_fast_math</code>): uses hardware intrinsics that sacrifice IEEE 754 compliance for speed (sin, exp, rcp, rsqrt become fast approximations). Up to 2–4× faster for math-heavy kernels. Use only if accuracy loss is acceptable.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-t"></span>Memory Access Optimizations</div>
+        <ul class="bul">
+          <li><strong><code>__restrict__</code> keyword:</strong> Tells compiler that two pointer arguments don't alias (point to overlapping memory). Without this, the compiler must assume any write through one pointer might affect another pointer's data → prevents load hoisting and many optimizations. With <code>__restrict__</code>, compiler can freely reorder loads/stores and cache values in registers.</li>
+          <li><strong>Asynchronous copy (cp.async / cuda::memcpy_async):</strong> Ampere+ hardware can copy from global to shared memory asynchronously, overlapping with computation. No warp stall during the copy. Critical for software pipelining.</li>
+          <li><strong>Software pipelining:</strong> Overlap data load for iteration N+1 with computation for iteration N. Requires cp.async + pipeline barrier objects (cuda::pipeline). Effectively hides global memory latency for iterative kernels.</li>
+          <li><strong>Vectorized loads (float4, int4):</strong> Loading 128 bits in a single instruction (4 floats) vs 4 separate 32-bit loads. More efficient use of memory bandwidth. <code>float4 val = *reinterpret_cast&lt;float4*&gt;(&amp;arr[idx])</code></li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>Occupancy Optimization</div>
+        <ul class="bul">
+          <li><strong>Occupancy</strong> = active warps per SM / maximum warps per SM. Higher occupancy ≠ always better performance, but very low occupancy (&lt;25%) typically hurts performance.</li>
+          <li>Limiting factors: register count per thread, shared memory per block, block size (threads per block).</li>
+          <li><strong>CUDA Occupancy Calculator:</strong> <code>cudaOccupancyMaxPotentialBlockSize()</code> API finds block size that maximizes occupancy given the kernel's resource usage.</li>
+          <li><strong>Launch bounds:</strong> <code>__launch_bounds__(maxThreadsPerBlock, minBlocksPerSM)</code> hints to compiler to stay within register budget for target occupancy.</li>
+          <li><strong>Shared memory configuration:</strong> Use <code>cudaFuncSetAttribute(kernel, cudaFuncAttributePreferredSharedMemoryCarveout, 75)</code> to request 75% of available configurable shared memory.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Profiling Tools</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Tool</th><th>Purpose</th><th>Key Metrics</th></tr>
+          <tr><td><strong>NVIDIA Nsight Compute</strong></td><td>Kernel-level profiling with hardware counters</td><td>Memory throughput, SM occupancy, warp stall reasons, L1/L2/HBM hit rates, Tensor Core utilization</td></tr>
+          <tr><td><strong>NVIDIA Nsight Systems</strong></td><td>System-level timeline profiling</td><td>CPU↔GPU overlap, kernel launch gaps, PCIe transfer timing, multi-GPU sync</td></tr>
+          <tr><td><strong>nvprof (legacy)</strong></td><td>Command-line profiler</td><td>Kernel time, memory bandwidth, API trace</td></tr>
+          <tr><td><strong>CUDA Profiling API</strong></td><td>In-code profiling marks</td><td>Custom ranges: nvtxRangePush/Pop for timeline annotations</td></tr>
+          <tr><td><strong>ptxas -v</strong></td><td>Compiler info</td><td>Register count, shared memory, spill stores/loads per kernel</td></tr>
+        </table>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        CUDA compilation: .cu → PTX (virtual ISA, arch-independent) → SASS (native machine code). PTX enables forward compatibility via JIT. Key optimizations: loop unrolling (ILP), __forceinline__ (remove call overhead), FMA (single instruction), __restrict__ (enable load reordering), cp.async (overlap load+compute). Occupancy = active warps / max warps; limited by registers, SMEM, and block size. Nsight Compute is the primary CUDA kernel profiling tool.
+      </div>
+    </div>
+
+    <!-- TOPIC 19 -->
+    <div class="tp" id="t19">
+      <div class="tp-header">
+        <div class="tp-num">Topic 19 · CPU &amp; GPU Architecture</div>
+        <div class="tp-title">CPU vs GPU for AI &amp; Deep Learning Workloads</div>
+        <div class="tp-desc">Comprehensive analysis of when CPUs outperform GPUs and vice versa for AI workloads, the roofline model, distributed training architectures, and the role of specialized accelerators (TPU, NPU).</div>
+      </div>
+
+      <div class="s-title">Why GPUs Dominate Deep Learning</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot"></span>The Arithmetic Intensity Argument</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:10px">Deep learning is fundamentally matrix multiplication: Y = XW + b. A single linear layer with batch size B, input dim N, output dim M requires 2×B×N×M FLOPs to compute, but only reads B×N + N×M + B×M elements from memory. For large matrices, this ratio (FLOPs / bytes accessed) — the arithmetic intensity — is very high.</p>
+        <div class="g3">
+          <div class="stat"><div class="stat-lbl">Large matmul (4096×4096)</div><div class="stat-val">~274 FLOPS/byte</div><div class="stat-sub">Compute-bound → GPU Tensor Cores ideal</div></div>
+          <div class="stat"><div class="stat-lbl">Embedding lookup</div><div class="stat-val">~1 FLOP/byte</div><div class="stat-sub">Memory-bound → bandwidth matters most</div></div>
+          <div class="stat"><div class="stat-lbl">GPU compute:bandwidth ratio (H100)</div><div class="stat-val">~3,958 TFLOPS / 3.35 TB/s ≈ 1180 FLOPS/byte</div><div class="stat-sub">Ridge point (roofline)</div></div>
+        </div>
+      </div>
+
+      <div class="s-title">The Roofline Model</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>Roofline Model Explanation</div>
+        <p style="font-size:13px;color:var(--text2);margin-bottom:8px">The roofline model predicts the achievable performance of a kernel based on two hardware limits:</p>
+        <ul class="bul">
+          <li><strong>Memory bandwidth roof:</strong> Performance = Arithmetic Intensity × Memory Bandwidth. If the kernel reads/writes large amounts of data relative to compute, memory bandwidth limits it.</li>
+          <li><strong>Compute roof:</strong> Performance = Peak FLOPS. If the kernel does many FLOPs per byte accessed (high arithmetic intensity), it is compute-bound.</li>
+          <li><strong>Ridge point:</strong> The crossover arithmetic intensity where a kernel transitions from memory-bound to compute-bound. = Peak FLOPS / Peak Bandwidth.</li>
+          <li><strong>Example H100:</strong> Ridge = 3958 TFLOPS / 3.35 TB/s ≈ 1180 FLOPS/byte. Large transformer attention (well-optimized) often sits at or above the ridge point.</li>
+          <li><strong>Action:</strong> For memory-bound kernels, optimize for coalesced access and cache reuse. For compute-bound kernels, maximize Tensor Core utilization and minimize warp stalls.</li>
+        </ul>
+      </div>
+
+      <div class="s-title">Workload-by-Workload Analysis</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Workload</th><th>Winner</th><th>Reason</th></tr>
+          <tr><td><strong>Neural network training (large batch)</strong></td><td><span class="badge b-purple">GPU</span></td><td>Massive matmuls; perfect for Tensor Core SIMT; requires high memory bandwidth</td></tr>
+          <tr><td><strong>Transformer attention (multi-head)</strong></td><td><span class="badge b-purple">GPU</span></td><td>Q×K^T and (Q×K^T)×V are large batched matmuls; FlashAttention uses SMEM tiling</td></tr>
+          <tr><td><strong>Single-sample inference (batch=1)</strong></td><td><span class="badge b-blue">CPU competitive</span></td><td>Small matrices → low arithmetic intensity → memory-bound; CPU L3 cache helps; GPU underutilized</td></tr>
+          <tr><td><strong>Large batch inference (LLM)</strong></td><td><span class="badge b-purple">GPU</span></td><td>Larger batches increase arithmetic intensity; GPU throughput scales well</td></tr>
+          <tr><td><strong>Data preprocessing (tokenization, augmentation)</strong></td><td><span class="badge b-blue">CPU</span></td><td>Complex string ops, branching, file I/O — sequential and data-dependent; GPU inefficient</td></tr>
+          <tr><td><strong>Embedding lookups (sparse, random)</strong></td><td><span class="badge b-blue">CPU competitive</span></td><td>Irregular memory access patterns; poor GPU coalescing; CPU caches can help</td></tr>
+          <tr><td><strong>Reinforcement learning (simulation)</strong></td><td><span class="badge b-blue">CPU</span></td><td>Environment simulation = complex branching, physics, state machines; GPU NN policy update can use GPU</td></tr>
+          <tr><td><strong>Gradient communication (allreduce)</strong></td><td><span class="badge b-purple">GPU (NVLink)</span></td><td>NCCL AllReduce over NVLink at 1.8 TB/s. PCIe would throttle at 128 GB/s.</td></tr>
+          <tr><td><strong>Hyperparameter search (independent trials)</strong></td><td><span class="badge b-teal">Both</span></td><td>Embarrassingly parallel across machines; each trial uses one GPU; orchestration on CPU</td></tr>
+          <tr><td><strong>Decision tree / random forest inference</strong></td><td><span class="badge b-blue">CPU</span></td><td>Tree traversal = irregular branching; GPU libraries (cuML) help only for large batches</td></tr>
+          <tr><td><strong>Symbolic AI / rule-based systems</strong></td><td><span class="badge b-blue">CPU</span></td><td>Highly sequential; complex control flow; GPU parallelism cannot be exploited</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">Distributed Training Architectures</div>
+      <div class="g2">
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-o"></span>Data Parallelism</div>
+          <ul class="bul">
+            <li>Each GPU holds a full model copy. Mini-batch is split across GPUs.</li>
+            <li>Each GPU computes forward + backward pass on its shard of the batch.</li>
+            <li>Gradients are synchronized via AllReduce (averaged across all GPUs) before optimizer step.</li>
+            <li>NCCL (NVIDIA Collective Communications Library) manages the AllReduce over NVLink or InfiniBand.</li>
+            <li>Scales well for small-medium models that fit in one GPU's memory.</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-h"><span class="cdot cdot-p"></span>Model Parallelism / Pipeline Parallelism</div>
+          <ul class="bul">
+            <li><strong>Tensor Parallelism:</strong> Split weight matrices across GPUs. Each GPU computes a shard of the matmul. Requires AllReduce after each layer.</li>
+            <li><strong>Pipeline Parallelism:</strong> Different layers assigned to different GPUs. Micro-batches flow through the pipeline stage by stage. GPUs do not wait idle (pipelined scheduling).</li>
+            <li><strong>3D Parallelism (DeepSpeed / Megatron-LM):</strong> Combines data + tensor + pipeline parallelism. Used to train GPT-4 scale models (100B+ params) across thousands of GPUs.</li>
+            <li>CPU role: orchestration, optimizer state management (ZeRO-Offload moves optimizer state to CPU RAM)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="s-title">Specialized Accelerators Beyond CPU/GPU</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Accelerator</th><th>Architecture</th><th>Strength</th><th>Weakness</th></tr>
+          <tr><td><strong>Google TPU v5p</strong></td><td>Systolic array; 8192 chips networked via ICI fabric</td><td>Transformer training at massive scale; extremely efficient matmul</td><td>Programmability; works best with JAX/XLA only</td></tr>
+          <tr><td><strong>Apple Neural Engine (M4)</strong></td><td>Fixed-function neural network accelerator</td><td>On-device inference; extreme efficiency (TOPS/W); unified memory</td><td>Not programmable for general workloads</td></tr>
+          <tr><td><strong>Qualcomm NPU (Hexagon)</strong></td><td>Fixed-function + DSP hybrid</td><td>Edge inference; mobile power envelope</td><td>General compute limited</td></tr>
+          <tr><td><strong>Cerebras WSE-3</strong></td><td>Single massive wafer-scale chip</td><td>On-chip SRAM for full model (980 GB SRAM); eliminates memory transfer</td><td>Cost; limited memory capacity vs GPU</td></tr>
+          <tr><td><strong>Graphcore IPU</strong></td><td>Bulk Synchronous Parallel; massive on-chip SRAM</td><td>Sparse/irregular workloads; GNNs</td><td>Software ecosystem; programming model</td></tr>
+        </table>
+      </div>
+
+      <div class="s-title">CPU Role in GPU-Accelerated AI Systems</div>
+      <div class="card">
+        <div class="card-h"><span class="cdot cdot-g"></span>CPU is Still Critical — It Does Not Disappear</div>
+        <ul class="bul">
+          <li><strong>Dataloader and preprocessing:</strong> PyTorch DataLoader uses multiple CPU workers (num_workers=8+) to load, decode, and augment data to keep GPUs fed. Slow CPU preprocessing = GPU idle = wasted throughput.</li>
+          <li><strong>Model orchestration:</strong> The Python training loop, loss computation, optimizer calls, LR scheduler — all on CPU. Well-optimized; not a bottleneck for most workloads.</li>
+          <li><strong>ZeRO-Offload (DeepSpeed):</strong> Moves optimizer state (momentum, variance) to CPU RAM to train models larger than GPU VRAM. CPU performs optimizer step while GPU does forward/backward.</li>
+          <li><strong>Sampling / decode in LLM inference:</strong> Autoregressive token sampling logic (top-p, top-k sampling) runs on CPU between GPU decode steps — though cuRand can do this on GPU too.</li>
+          <li><strong>Post-processing:</strong> Detokenization, output parsing, serving logic — CPU handles request routing, batching, and serving infrastructure.</li>
+        </ul>
+      </div>
+
+      <div class="co co-exam"><span class="co-lbl">Exam Key Points</span>
+        GPU dominates: large matmuls (training), large batch inference, multi-GPU allreduce. CPU preferred: data preprocessing, single-sample inference, simulation environments, tree-based models, symbolic AI. Roofline model: performance limited by min(bandwidth × arithmetic_intensity, peak_FLOPS). Ridge point = peak FLOPS / peak bandwidth — above this is compute-bound; below is memory-bound. Distributed training: Data Parallel (AllReduce), Tensor Parallel (layer sharding), Pipeline Parallel (stage assignment). 3D parallelism combines all three for 100B+ models.
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+let currentSection = 'hw';
+let currentTopic = 't1';
+
+function switchSection(section) {
+  currentSection = section;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && section === 'hw') || (i === 1 && section === 'arch'));
+  });
+  document.querySelector('.hw-nav').style.display = section === 'hw' ? 'block' : 'none';
+  document.querySelector('.arch-nav').style.display = section === 'arch' ? 'block' : 'none';
+  const firstTopic = section === 'hw' ? 't1' : 't10';
+  showTopic(firstTopic);
+}
+
+function showTopic(id) {
+  currentTopic = id;
+  document.querySelectorAll('.tp').forEach(el => el.classList.remove('active'));
+  const tp = document.getElementById(id);
+  if (tp) tp.classList.add('active');
+  document.querySelectorAll('.sb-item').forEach(el => {
+    el.classList.toggle('active', el.getAttribute('onclick') === `showTopic('${id}')`);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

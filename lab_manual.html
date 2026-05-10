@@ -1,0 +1,2675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Computer Architecture Lab Manual – All 10 Experiments</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0d1117;
+  --bg2:#161b22;
+  --bg3:#1c2230;
+  --border:#30363d;
+  --text:#e6edf3;
+  --muted:#8b949e;
+  --accent:#58a6ff;
+  --accent2:#3fb950;
+  --accent3:#d29922;
+  --accent4:#f85149;
+  --accent5:#bc8cff;
+  --code-bg:#010409;
+  --sidebar-w:270px;
+  --note:#1f2d3d;
+  --warn:#2d2008;
+  --warn-border:#d29922;
+  --note-border:#1f6feb;
+  --tip:#0d2216;
+  --tip-border:#3fb950;
+  --danger:#2d0f0f;
+  --danger-border:#f85149;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Sora',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh;font-size:15px;line-height:1.7;}
+
+/* SIDEBAR */
+#sidebar{
+  width:var(--sidebar-w);min-width:var(--sidebar-w);background:var(--bg2);
+  border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;
+  overflow-y:auto;z-index:100;display:flex;flex-direction:column;
+}
+#sidebar::-webkit-scrollbar{width:4px;}
+#sidebar::-webkit-scrollbar-track{background:transparent;}
+#sidebar::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.sidebar-header{padding:20px 18px 14px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg2);z-index:10;}
+.sidebar-header h1{font-size:13px;font-weight:700;color:var(--accent);letter-spacing:.05em;text-transform:uppercase;}
+.sidebar-header p{font-size:11px;color:var(--muted);margin-top:4px;}
+.nav-section{padding:12px 0;}
+.nav-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);padding:6px 18px 4px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:7px 18px;cursor:pointer;transition:background .15s,color .15s;border-left:3px solid transparent;font-size:12.5px;color:var(--muted);text-decoration:none;}
+.nav-item:hover{background:var(--bg3);color:var(--text);border-left-color:var(--border);}
+.nav-item.active{background:rgba(88,166,255,.08);color:var(--accent);border-left-color:var(--accent);}
+.nav-item .exp-num{background:var(--bg3);border:1px solid var(--border);border-radius:4px;font-size:10px;padding:1px 6px;font-family:'JetBrains Mono',monospace;font-weight:600;min-width:28px;text-align:center;flex-shrink:0;}
+.nav-item.active .exp-num{background:rgba(88,166,255,.15);border-color:var(--accent);color:var(--accent);}
+
+/* MAIN */
+#main{margin-left:var(--sidebar-w);flex:1;padding:0;min-width:0;}
+.hero{background:linear-gradient(135deg,#0d1117 0%,#1a1f35 50%,#0d1117 100%);padding:60px 56px 48px;border-bottom:1px solid var(--border);position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(88,166,255,.06) 0%,transparent 70%);pointer-events:none;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(88,166,255,.1);border:1px solid rgba(88,166,255,.3);border-radius:20px;padding:4px 14px;font-size:11px;color:var(--accent);font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:20px;}
+.hero h1{font-size:36px;font-weight:700;line-height:1.2;margin-bottom:12px;}
+.hero h1 span{color:var(--accent);}
+.hero p{font-size:15px;color:var(--muted);max-width:700px;line-height:1.75;}
+.hero-meta{display:flex;flex-wrap:wrap;gap:20px;margin-top:28px;}
+.hero-meta-item{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted);}
+.hero-meta-item strong{color:var(--text);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--accent2);}
+
+/* CONTENT */
+.content{padding:0 56px 80px;}
+.experiment{padding-top:60px;border-bottom:1px solid var(--border);padding-bottom:48px;}
+.experiment:last-child{border-bottom:none;}
+.exp-header{display:flex;align-items:flex-start;gap:20px;margin-bottom:32px;}
+.exp-badge{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;flex-shrink:0;}
+.exp-badge span{display:block;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;}
+.exp-badge strong{display:block;font-size:24px;font-weight:700;color:var(--accent);font-family:'JetBrains Mono',monospace;}
+.exp-title h2{font-size:24px;font-weight:700;margin-bottom:6px;}
+.exp-title .obj{font-size:13px;color:var(--muted);background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:6px 12px;display:inline-block;margin-top:4px;}
+.obj-label{color:var(--accent3);font-weight:600;}
+
+/* SECTIONS */
+.section{margin-bottom:32px;}
+.section-title{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent5);margin-bottom:14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.section-title .icon{width:22px;height:22px;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;background:rgba(188,140,255,.15);flex-shrink:0;}
+.section p{margin-bottom:12px;color:var(--text);line-height:1.8;}
+.section p:last-child{margin-bottom:0;}
+
+/* CODE */
+.code-block{background:var(--code-bg);border:1px solid var(--border);border-radius:8px;margin:14px 0;overflow:hidden;}
+.code-header{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:var(--bg2);border-bottom:1px solid var(--border);}
+.code-header .lang{font-size:11px;font-family:'JetBrains Mono',monospace;color:var(--accent2);text-transform:uppercase;letter-spacing:.08em;}
+.code-header .desc{font-size:11px;color:var(--muted);}
+.code-header .copy-btn{font-size:11px;background:var(--bg3);border:1px solid var(--border);color:var(--muted);padding:3px 10px;border-radius:4px;cursor:pointer;font-family:'Sora',sans-serif;transition:color .15s,border-color .15s;}
+.code-header .copy-btn:hover{color:var(--text);border-color:var(--accent);}
+pre{padding:16px;overflow-x:auto;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;tab-size:2;}
+pre::-webkit-scrollbar{height:4px;}
+pre::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.c-cmd{color:#79c0ff;}
+.c-flag{color:#ffab70;}
+.c-str{color:#a5d6ff;}
+.c-cmt{color:#6e7681;font-style:italic;}
+.c-kw{color:#ff7b72;}
+.c-num{color:#79c0ff;}
+.c-ok{color:var(--accent2);}
+.c-err{color:var(--accent4);}
+.c-path{color:#e3b341;}
+.c-var{color:#bc8cff;}
+
+/* CALLOUTS */
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;}
+.callout-icon{font-size:15px;flex-shrink:0;margin-top:1px;}
+.callout-body p{margin:0;font-size:13.5px;line-height:1.7;}
+.callout-body strong{display:block;margin-bottom:4px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;}
+.callout.note{background:var(--note);border:1px solid var(--note-border);}
+.callout.note .callout-body strong{color:var(--accent);}
+.callout.note .callout-body p{color:#8ab4f8;}
+.callout.warn{background:var(--warn);border:1px solid var(--warn-border);}
+.callout.warn .callout-body strong{color:var(--accent3);}
+.callout.warn .callout-body p{color:#e3b341;}
+.callout.tip{background:var(--tip);border:1px solid var(--tip-border);}
+.callout.tip .callout-body strong{color:var(--accent2);}
+.callout.tip .callout-body p{color:#7ee787;}
+.callout.danger{background:var(--danger);border:1px solid var(--danger-border);}
+.callout.danger .callout-body strong{color:var(--accent4);}
+.callout.danger .callout-body p{color:#ffa198;}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;margin:14px 0;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+thead th{background:var(--bg2);border:1px solid var(--border);padding:9px 14px;text-align:left;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);}
+tbody td{border:1px solid var(--border);padding:9px 14px;vertical-align:top;line-height:1.6;}
+tbody tr:nth-child(even){background:rgba(255,255,255,.02);}
+tbody tr:hover{background:rgba(88,166,255,.04);}
+tbody td:first-child{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);}
+
+/* STEPS */
+.steps{counter-reset:step;margin:14px 0;}
+.step{display:flex;gap:16px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(48,54,61,.5);}
+.step:last-child{border-bottom:none;margin-bottom:0;}
+.step-num{counter-increment:step;background:var(--bg2);border:1px solid var(--border);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--accent);flex-shrink:0;margin-top:2px;}
+.step-content{flex:1;}
+.step-content h4{font-size:14px;font-weight:600;margin-bottom:6px;}
+.step-content p{font-size:13.5px;color:var(--muted);margin-bottom:8px;}
+.step-content p:last-child{margin-bottom:0;}
+.step-content .code-block{margin:8px 0 0;}
+
+/* INLINE CODE */
+code{background:rgba(110,118,129,.2);padding:1px 6px;border-radius:4px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--accent3);}
+
+/* GRID */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:14px 0;}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:14px 0;}
+.info-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
+.info-card h4{font-size:13px;font-weight:600;color:var(--accent5);margin-bottom:8px;}
+.info-card ul{padding-left:16px;}
+.info-card li{font-size:12.5px;color:var(--muted);margin-bottom:4px;line-height:1.6;}
+.info-card li strong{color:var(--text);}
+
+/* SUBSECTION */
+.sub-section{margin:20px 0;}
+.sub-section h3{font-size:16px;font-weight:600;color:var(--accent3);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.sub-section h3::before{content:'';display:inline-block;width:3px;height:16px;background:var(--accent3);border-radius:2px;}
+
+/* TAG PILLS */
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0;}
+.tag{font-size:11px;padding:3px 10px;border-radius:12px;font-family:'JetBrains Mono',monospace;border:1px solid;}
+.tag.blue{background:rgba(88,166,255,.1);border-color:rgba(88,166,255,.3);color:var(--accent);}
+.tag.green{background:rgba(63,185,80,.1);border-color:rgba(63,185,80,.3);color:var(--accent2);}
+.tag.orange{background:rgba(210,153,34,.1);border-color:rgba(210,153,34,.3);color:var(--accent3);}
+.tag.red{background:rgba(248,81,73,.1);border-color:rgba(248,81,73,.3);color:var(--accent4);}
+.tag.purple{background:rgba(188,140,255,.1);border-color:rgba(188,140,255,.3);color:var(--accent5);}
+
+/* TOGGLE */
+#toggle-sidebar{display:none;position:fixed;bottom:20px;right:20px;z-index:200;background:var(--accent);color:#000;border:none;border-radius:50%;width:44px;height:44px;font-size:20px;cursor:pointer;align-items:center;justify-content:center;}
+
+/* SCROLL SPY */
+.sidebar-footer{padding:14px 18px;border-top:1px solid var(--border);font-size:11px;color:var(--muted);margin-top:auto;}
+
+@media(max-width:900px){
+  #sidebar{transform:translateX(-100%);transition:transform .3s;}
+  #sidebar.open{transform:translateX(0);}
+  #main{margin-left:0;}
+  .hero{padding:40px 24px 32px;}
+  .content{padding:0 24px 60px;}
+  #toggle-sidebar{display:flex;}
+  .two-col,.three-col{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <h1>&#128187; CA Lab Manual</h1>
+    <p>Computer Architecture · 10 Experiments</p>
+  </div>
+  <div class="nav-section">
+    <div class="nav-label">Experiments</div>
+    <a class="nav-item active" href="#exp1"><span class="exp-num">01</span>Hardware ID &amp; Mapping</a>
+    <a class="nav-item" href="#exp2"><span class="exp-num">02</span>Disassembly &amp; Assembly</a>
+    <a class="nav-item" href="#exp3"><span class="exp-num">03</span>Instruction Pipelining</a>
+    <a class="nav-item" href="#exp4"><span class="exp-num">04</span>Cache &amp; Memory Analysis</a>
+    <a class="nav-item" href="#exp5"><span class="exp-num">05</span>GPU Architecture</a>
+    <a class="nav-item" href="#exp6"><span class="exp-num">06</span>Jetson Nano Setup</a>
+    <a class="nav-item" href="#exp7"><span class="exp-num">07</span>GPU Virtualization</a>
+    <a class="nav-item" href="#exp8"><span class="exp-num">08</span>Performance Benchmarking</a>
+    <a class="nav-item" href="#exp9"><span class="exp-num">09</span>Cloud GPU Setup</a>
+    <a class="nav-item" href="#exp10"><span class="exp-num">10</span>Energy &amp; Thermal</a>
+  </div>
+  <div class="sidebar-footer">Ubuntu/WSL2 · gem5 · CUDA · Docker</div>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main id="main">
+  <div class="hero">
+    <div class="hero-badge"><span class="dot"></span>Lab Manual</div>
+    <h1>Computer <span>Architecture</span><br/>Laboratory Manual</h1>
+    <p>Complete procedures, theory, commands, debugging guides, and troubleshooting for all 10 experiments. All Linux commands target <strong>Ubuntu 22.04 LTS on WSL2</strong> with notes for native Linux, Windows PowerShell, and cloud environments.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>10</strong> Experiments</div>
+      <div class="hero-meta-item"><strong>Environment:</strong> Ubuntu 22.04 / WSL2</div>
+      <div class="hero-meta-item"><strong>Tools:</strong> gem5 · CUDA · Docker · Nsight</div>
+      <div class="hero-meta-item"><strong>Coverage:</strong> Theory + Procedure + Debug</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 1
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp1">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>01</strong></div>
+    <div class="exp-title">
+      <h2>Hardware Identification and Functional Mapping</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Study CPU, GPU, memory, buses, and interconnects; correlate with architecture diagrams.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">lscpu</span><span class="tag blue">lspci</span><span class="tag blue">dmidecode</span>
+    <span class="tag green">WSL2</span><span class="tag orange">CPU-Z</span><span class="tag orange">GPU-Z</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>A computer system is a collection of hardware components that communicate through well-defined interfaces. Understanding the physical layout and functional roles of these components is the foundation of computer architecture.</p>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>CPU (Central Processing Unit)</h4>
+        <ul>
+          <li><strong>Cores &amp; Threads:</strong> Physical execution units; SMT/Hyper-Threading doubles logical threads per core.</li>
+          <li><strong>Clock Speed:</strong> Base &amp; Boost frequencies in GHz; governed by thermal &amp; power headroom.</li>
+          <li><strong>IPC:</strong> Instructions Per Cycle – architectural efficiency metric independent of frequency.</li>
+          <li><strong>Cache Hierarchy:</strong> L1 (≈32–64 KB, ~4 cycles), L2 (≈256 KB–1 MB, ~12 cycles), L3 (≈8–64 MB, ~40 cycles).</li>
+          <li><strong>TDP:</strong> Thermal Design Power – sustained power envelope the cooler must handle.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Memory Subsystem</h4>
+        <ul>
+          <li><strong>DRAM Types:</strong> DDR4 / DDR5 – double data rate; transfers on both clock edges.</li>
+          <li><strong>Channels:</strong> Dual/Quad channel doubles memory bandwidth.</li>
+          <li><strong>Ranks &amp; Banks:</strong> Physical organization within a DIMM; affects timing &amp; interleaving.</li>
+          <li><strong>Latency (CL):</strong> CAS Latency – cycles between column address strobe and data output.</li>
+          <li><strong>ECC:</strong> Error-Correcting Code – detects and corrects single-bit flips (server/workstation).</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Buses &amp; Interconnects</h4>
+        <ul>
+          <li><strong>PCIe:</strong> Peripheral Component Interconnect Express – point-to-point serial link. Gen 4 x16 = 64 GB/s.</li>
+          <li><strong>DMI/UPI:</strong> Intel's CPU-chipset (DMI) and CPU-CPU (UPI) links on multi-socket systems.</li>
+          <li><strong>NVLink:</strong> NVIDIA's GPU-GPU interconnect – up to 900 GB/s (H100 NVLink 4.0).</li>
+          <li><strong>USB / SATA / M.2:</strong> Peripheral and storage buses with varying bandwidth.</li>
+          <li><strong>NUMA:</strong> Non-Uniform Memory Access topology on multi-socket systems.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>GPU Architecture Overview</h4>
+        <ul>
+          <li><strong>SM (Streaming Multiprocessor):</strong> GPU's core compute unit; contains CUDA cores, tensor cores, warp schedulers.</li>
+          <li><strong>VRAM:</strong> Video RAM – GDDR6/HBM2e; separate from system RAM with dedicated bandwidth.</li>
+          <li><strong>PCIe Lane:</strong> GPU connects to CPU via PCIe slot; bandwidth-limited vs CPU compute.</li>
+          <li><strong>Driver Stack:</strong> Hardware → Kernel Mode Driver → CUDA Driver → CUDA Runtime → Application.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>Functional Mapping: Von Neumann vs Harvard Architecture</h3>
+      <p>Modern CPUs are fundamentally Von Neumann machines (shared instruction/data memory) but use Harvard-style L1 caches (split I-cache and D-cache) internally. The memory hierarchy exists because DRAM latency (~100 ns) is orders of magnitude higher than CPU cycle time (~0.3 ns at 3 GHz). Caches bridge this gap using locality of reference: spatial locality (nearby data accessed soon) and temporal locality (recently accessed data accessed again).</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>Environment Setup (WSL2 / Ubuntu)</div>
+    <div class="callout note">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body"><strong>WSL2 Note</strong><p>WSL2 runs a real Linux kernel in a lightweight VM. Hardware queries like <code>lspci</code> may show limited output. Use Windows-native tools (CPU-Z, GPU-Z, HWiNFO64) for full hardware enumeration alongside Linux commands.</p></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">bash</span><span class="desc">Initial system update and tool installation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="c-cmt"># Always start with system update</span>
+<span class="c-cmd">sudo apt update</span> <span class="c-flag">&amp;&amp;</span> <span class="c-cmd">sudo apt upgrade</span> <span class="c-flag">-y</span>
+
+<span class="c-cmt"># Install hardware inspection tools</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> <span class="c-str">cpu-checker util-linux lshw pciutils usbutils \
+  dmidecode hwinfo inxi numactl sysstat stress-ng</span>
+
+<span class="c-cmt"># Verify installations</span>
+<span class="c-cmd">which</span> lscpu lspci dmidecode hwinfo inxi</pre>
+    </div>
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>Troubleshooting – apt fails</strong><p>If <code>apt update</code> fails with "Temporary failure resolving", your WSL2 DNS is broken. Fix: <code>echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf</code> and disable auto-generation: add <code>[network] generateResolvConf = false</code> to <code>/etc/wsl.conf</code>.</p></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – CPU Information</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Query CPU topology with lscpu</h4>
+          <p>Provides a structured overview of the CPU including architecture, cores, threads, cache sizes, and NUMA nodes.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Full CPU information</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">lscpu</span>
+<span class="c-cmt"># Key fields to note:</span>
+<span class="c-cmt"># Architecture:       x86_64 / aarch64</span>
+<span class="c-cmt"># CPU(s):             Total logical CPUs</span>
+<span class="c-cmt"># Thread(s) per core: 1=no HT, 2=Hyper-Threading enabled</span>
+<span class="c-cmt"># Core(s) per socket: Physical cores per CPU socket</span>
+<span class="c-cmt"># Socket(s):          Number of physical CPU packages</span>
+<span class="c-cmt"># NUMA node(s):       Memory access domains</span>
+<span class="c-cmt"># L1d/L1i/L2/L3 cache sizes</span>
+
+<span class="c-cmt"># Export to JSON for programmatic analysis</span>
+<span class="c-cmd">lscpu</span> <span class="c-flag">--json</span> <span class="c-flag">></span> <span class="c-path">~/cpu_info.json</span>
+
+<span class="c-cmt"># Extended info including flags (SIMD, virtualization support)</span>
+<span class="c-cmd">lscpu</span> <span class="c-flag">-e</span>  <span class="c-cmt"># Per-CPU table: CPU, CORE, SOCKET, NODE, CACHE, ONLINE, MAXMHZ, MINMHZ</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Read /proc filesystem directly</h4>
+          <p>The /proc virtual filesystem exposes kernel data structures. Reading it bypasses user-space tools and shows raw hardware information.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">/proc CPU and memory info</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Detailed per-core processor info</span>
+<span class="c-cmd">cat</span> <span class="c-path">/proc/cpuinfo</span>
+
+<span class="c-cmt"># Count physical CPU cores (unique physical id + core id combos)</span>
+<span class="c-cmd">grep</span> <span class="c-flag">-E</span> <span class="c-str">"physical id|core id"</span> <span class="c-path">/proc/cpuinfo</span> <span class="c-flag">|</span> <span class="c-cmd">sort</span> <span class="c-flag">-u</span>
+
+<span class="c-cmt"># CPU flags – look for: sse4_2, avx, avx2, avx512, aes, vmx/svm</span>
+<span class="c-cmd">grep</span> flags <span class="c-path">/proc/cpuinfo</span> <span class="c-flag">|</span> <span class="c-cmd">head</span> <span class="c-flag">-1</span> <span class="c-flag">|</span> <span class="c-cmd">tr</span> <span class="c-str">' '</span> <span class="c-str">'\n'</span> <span class="c-flag">|</span> <span class="c-cmd">sort</span>
+
+<span class="c-cmt"># Memory overview</span>
+<span class="c-cmd">cat</span> <span class="c-path">/proc/meminfo</span>
+<span class="c-cmt"># MemTotal, MemFree, MemAvailable, Buffers, Cached, SwapTotal</span>
+
+<span class="c-cmt"># Real-time memory usage</span>
+<span class="c-cmd">free</span> <span class="c-flag">-h</span>  <span class="c-cmt"># human-readable</span>
+<span class="c-cmd">free</span> <span class="c-flag">-m</span>  <span class="c-cmt"># megabytes</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>PCI device enumeration with lspci</h4>
+          <p>Lists all PCI/PCIe devices including the GPU, network card, storage controllers, and USB hubs. Critical for understanding the interconnect topology.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">PCI bus enumeration</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Basic device list</span>
+<span class="c-cmd">lspci</span>
+
+<span class="c-cmt"># Verbose output with driver info</span>
+<span class="c-cmd">lspci</span> <span class="c-flag">-v</span>
+
+<span class="c-cmt"># Show kernel driver in use for each device</span>
+<span class="c-cmd">lspci</span> <span class="c-flag">-k</span>
+
+<span class="c-cmt"># Filter for GPU only</span>
+<span class="c-cmd">lspci</span> <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-flag">-iE</span> <span class="c-str">"vga|3d|display|nvidia|amd|intel graphics"</span>
+
+<span class="c-cmt"># Get PCIe link speed and width (x4/x8/x16, Gen3/4/5)</span>
+<span class="c-cmd">sudo lspci</span> <span class="c-flag">-vvv</span> <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-flag">-A2</span> <span class="c-str">"LnkCap\|LnkSta"</span>
+
+<span class="c-cmt"># Tree view showing PCIe hierarchy</span>
+<span class="c-cmd">lspci</span> <span class="c-flag">-t</span> <span class="c-flag">-v</span></pre>
+          </div>
+          <div class="callout warn"><span class="callout-icon">⚠️</span><div class="callout-body"><strong>WSL2 lspci limitation</strong><p>WSL2 shows a virtual PCI bus, not the host's. You'll see minimal entries. For actual PCIe topology, run GPU-Z or HWiNFO64 on Windows, or use a native Linux installation.</p></div></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>SMBIOS data via dmidecode</h4>
+          <p>Decodes SMBIOS (System Management BIOS) tables to reveal hardware details not exposed through /proc, including DIMM slot information, memory speeds, and BIOS version.</p>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">SMBIOS hardware data</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Memory module details (type, speed, manufacturer, slots)</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> memory
+
+<span class="c-cmt"># CPU processor details</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> processor
+
+<span class="c-cmt"># Mainboard/chassis info</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> baseboard
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> chassis
+
+<span class="c-cmt"># BIOS version and capabilities</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> bios
+
+<span class="c-cmt"># Full dump (large output – pipe to less)</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">|</span> <span class="c-cmd">less</span>
+
+<span class="c-cmt"># Save full report</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">></span> <span class="c-path">~/dmidecode_report.txt</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Comprehensive system report with inxi and hwinfo</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Full system hardware report</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># inxi – beautiful formatted system report</span>
+<span class="c-cmd">inxi</span> <span class="c-flag">-Fxz</span>   <span class="c-cmt"># Full, extra detail, anonymize serials</span>
+<span class="c-cmd">inxi</span> <span class="c-flag">-G</span>    <span class="c-cmt"># GPU info only</span>
+<span class="c-cmd">inxi</span> <span class="c-flag">-m</span>    <span class="c-cmt"># Memory info</span>
+<span class="c-cmd">inxi</span> <span class="c-flag">-C</span>    <span class="c-cmt"># CPU only</span>
+
+<span class="c-cmt"># hwinfo – low-level hardware detection</span>
+<span class="c-cmd">sudo hwinfo</span> <span class="c-flag">--short</span>          <span class="c-cmt"># Quick summary of all devices</span>
+<span class="c-cmd">sudo hwinfo</span> <span class="c-flag">--cpu</span>            <span class="c-cmt"># Detailed CPU probe</span>
+<span class="c-cmd">sudo hwinfo</span> <span class="c-flag">--memory</span>         <span class="c-cmt"># Memory banks</span>
+<span class="c-cmd">sudo hwinfo</span> <span class="c-flag">--display</span>        <span class="c-cmt"># Display/GPU info</span>
+<span class="c-cmd">sudo hwinfo</span> <span class="c-flag">--pci</span>            <span class="c-cmt"># All PCI devices</span>
+
+<span class="c-cmt"># lshw – hardware lister (very detailed)</span>
+<span class="c-cmd">sudo lshw</span>
+<span class="c-cmd">sudo lshw</span> <span class="c-flag">-short</span>            <span class="c-cmt"># Tabular summary</span>
+<span class="c-cmd">sudo lshw</span> <span class="c-flag">-html</span> <span class="c-flag">></span> <span class="c-path">~/hw_report.html</span>  <span class="c-cmt"># Export HTML report</span>
+<span class="c-cmd">sudo lshw</span> <span class="c-flag">-json</span> <span class="c-flag">></span> <span class="c-path">~/hw_report.json</span>  <span class="c-cmt"># Export JSON</span>
+<span class="c-cmd">sudo lshw</span> <span class="c-flag">-class</span> display     <span class="c-cmt"># Only display devices</span>
+<span class="c-cmd">sudo lshw</span> <span class="c-flag">-class</span> memory      <span class="c-cmt"># Only memory</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-content">
+          <h4>NUMA topology inspection</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">NUMA and memory topology</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># NUMA hardware topology</span>
+<span class="c-cmd">numactl</span> <span class="c-flag">--hardware</span>
+<span class="c-cmt"># Shows nodes, CPUs per node, memory per node, distance matrix</span>
+
+<span class="c-cmt"># CPU/cache topology tree</span>
+<span class="c-cmd">lstopo</span>    <span class="c-cmt"># Graphical (requires X11 / display)</span>
+<span class="c-cmd">lstopo</span> <span class="c-flag">--of</span> txt  <span class="c-cmt"># ASCII text tree</span>
+
+<span class="c-cmt"># Install lstopo</span>
+<span class="c-cmd">sudo apt install</span> hwloc
+
+<span class="c-cmt"># Save topology diagram</span>
+<span class="c-cmd">lstopo</span> <span class="c-path">~/topology.svg</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Problem</th><th>Likely Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>dmidecode: permission denied</td><td>Needs root</td><td>Prefix with <code>sudo</code>. In WSL2, run: <code>sudo -s</code> first.</td></tr>
+          <tr><td>lspci shows empty/minimal</td><td>WSL2 virtual bus</td><td>Use Windows HWiNFO64 or boot native Linux Live USB for real PCI data.</td></tr>
+          <tr><td>hwinfo: command not found</td><td>Not installed</td><td><code>sudo apt install hwinfo</code></td></tr>
+          <tr><td>inxi shows "N/A" for GPU</td><td>Driver not loaded or WSL2</td><td>Install mesa-utils: <code>sudo apt install mesa-utils</code> then <code>glxinfo | grep renderer</code></td></tr>
+          <tr><td>dmidecode shows "No SMBIOS"</td><td>Virtualized environment</td><td>Expected in WSL2/VMs. Use <code>sudo apt install dmi-sysfs</code> as alternative.</td></tr>
+          <tr><td>numactl: no NUMA support</td><td>Single-socket system or WSL2</td><td>Normal for consumer laptops. NUMA matters on Xeon/EPYC workstations.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sub-section">
+      <h3>Windows-Native Tools (Run on Host)</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">powershell</span><span class="desc">Windows system info commands</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre><span class="c-cmt"># CPU info</span>
+<span class="c-cmd">Get-WmiObject</span> <span class="c-flag">Win32_Processor</span> <span class="c-flag">|</span> Format-List *
+<span class="c-cmt"># Or: wmic cpu get /all</span>
+
+<span class="c-cmt"># RAM info (each DIMM slot)</span>
+<span class="c-cmd">Get-WmiObject</span> <span class="c-flag">Win32_PhysicalMemory</span> <span class="c-flag">|</span> Format-List Capacity,Speed,Manufacturer,PartNumber
+
+<span class="c-cmt"># GPU info</span>
+<span class="c-cmd">Get-WmiObject</span> <span class="c-flag">Win32_VideoController</span> <span class="c-flag">|</span> Format-List *
+
+<span class="c-cmt"># Full system info</span>
+<span class="c-cmd">systeminfo</span>
+
+<span class="c-cmt"># Mainboard info</span>
+<span class="c-cmd">Get-WmiObject</span> <span class="c-flag">Win32_BaseBoard</span> <span class="c-flag">|</span> Format-List *</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📋</span>Observation Table Template</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Parameter</th><th>Value Observed</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>CPU Model</td><td></td><td>Record full model string from lscpu</td></tr>
+          <tr><td>Physical Cores / Logical CPUs</td><td></td><td>Cores × Threads per core</td></tr>
+          <tr><td>Base / Boost Frequency</td><td></td><td>MHz from lscpu MAXMHZ column</td></tr>
+          <tr><td>L1d / L1i Cache</td><td></td><td>Per core; from lscpu</td></tr>
+          <tr><td>L2 Cache</td><td></td><td>Per core or shared</td></tr>
+          <tr><td>L3 Cache</td><td></td><td>Usually shared across all cores</td></tr>
+          <tr><td>RAM Total / Type / Speed</td><td></td><td>From dmidecode --type memory</td></tr>
+          <tr><td>GPU Model</td><td></td><td>lspci or GPU-Z</td></tr>
+          <tr><td>PCIe Link Speed</td><td></td><td>Gen3/4/5, x8/x16</td></tr>
+          <tr><td>NUMA Nodes</td><td></td><td>numactl --hardware</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp1 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 2
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp2">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>02</strong></div>
+    <div class="exp-title">
+      <h2>System Disassembly and Assembly</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Identify and reassemble system components emphasizing bus/pipeline data paths.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag orange">ESD Safety</span><span class="tag blue">PCIe</span><span class="tag blue">DDR</span><span class="tag green">SATA</span><span class="tag purple">M.2 NVMe</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>Physical disassembly reinforces the abstract bus-and-pipeline model. Each component slot corresponds to a specific interconnect: DIMM slots ↔ memory bus, PCIe slots ↔ serial point-to-point lanes, M.2 slots ↔ PCIe or SATA lanes routed through the platform controller.</p>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>Bus Types by Physical Connector</h4>
+        <ul>
+          <li><strong>DIMM (Long slot):</strong> 288-pin DDR4 or 288-pin DDR5; keyed differently. 240-pin DDR3 is shorter.</li>
+          <li><strong>PCIe x16:</strong> GPU slot; 164 pins; runs x16 or x8 electrically despite physical x16.</li>
+          <li><strong>PCIe x1/x4:</strong> Shorter slots; NICs, capture cards, NVMe adapters.</li>
+          <li><strong>M.2 2280:</strong> 80mm card; supports NVMe (PCIe) or SATA depending on key (M-key = NVMe/SATA, B-key = SATA/USB).</li>
+          <li><strong>U.2:</strong> Enterprise NVMe in 2.5" form factor; same signal as M.2 NVMe.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Data Path Pipeline</h4>
+        <ul>
+          <li><strong>CPU ↔ DRAM:</strong> Via integrated Memory Controller (IMC) on modern CPUs; eliminated FSB bottleneck.</li>
+          <li><strong>CPU ↔ GPU:</strong> PCIe root complex → PCIe slot; DMA for large transfers.</li>
+          <li><strong>CPU ↔ SSD (M.2 NVMe):</strong> PCIe lanes from CPU or chipset → NVMe controller → NAND flash.</li>
+          <li><strong>CPU ↔ Chipset:</strong> DMI (Intel) or Fusion Controller Hub link; all USB/SATA/slower PCIe flows through here.</li>
+          <li><strong>Chipset ↔ USB/SATA:</strong> Legacy peripherals; max 600 MB/s (SATA III), 10 Gbps (USB 3.2 Gen 2).</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🛡️</span>Safety Precautions (Critical)</div>
+    <div class="callout danger">
+      <span class="callout-icon">⚡</span>
+      <div class="callout-body"><strong>ESD Warning</strong><p>Electrostatic discharge can permanently destroy CPUs, RAM, and GPUs with no visible damage. Always: (1) use an ESD wrist strap grounded to the PC chassis, (2) work on an anti-static mat, (3) handle PCBs by edges only, (4) store removed components in anti-static bags. Never work on carpet.</p></div>
+    </div>
+    <div class="callout warn">
+      <span class="callout-icon">⚠️</span>
+      <div class="callout-body"><strong>Power &amp; Capacitors</strong><p>Always unplug the power cable AND press the power button (to discharge capacitors) before opening the chassis. GPU capacitors hold charge. PSU capacitors can hold lethal voltages – never open a PSU.</p></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Tool Required</th><th>Purpose</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td>Phillips #0, #1, #2</td><td>Case and component screws</td><td>#1 for standoffs, #0 for M.2</td></tr>
+          <tr><td>Torx T8, T10</td><td>Some OEM systems (Dell, HP)</td><td>Check before starting</td></tr>
+          <tr><td>ESD wrist strap</td><td>Electrostatic protection</td><td>Mandatory; clip to chassis ground</td></tr>
+          <tr><td>Anti-static mat</td><td>Work surface protection</td><td>Ground mat to same chassis point</td></tr>
+          <tr><td>Thermal paste + spatula</td><td>CPU cooler reseating</td><td>Arctic MX-4 or similar; pea-sized dot method</td></tr>
+          <tr><td>LED flashlight</td><td>Illumination inside chassis</td><td>Identify cable routing and connectors</td></tr>
+          <tr><td>Plastic spudger</td><td>DIMM latch release</td><td>Prevents hand slip damage</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Disassembly Procedure</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Document before opening</h4><p>Photograph the system from multiple angles, note all cable connections, and record the component layout. This is your reference for reassembly.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Power down and discharge</h4><p>Shut down OS → power off PSU switch → unplug cable → press power button for 3 seconds → clip ESD strap to chassis metal.</p></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-content"><h4>Remove side panel and photograph interior</h4><p>Note: front panel headers (power, reset, HDD LED), fan headers, PCIe power cables to GPU, SATA cables, and 24-pin ATX + 8-pin CPU connectors.</p></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-content"><h4>Remove GPU</h4><p>Disconnect PCIe power connector(s). Release the PCIe slot retention clip (on motherboard). Unscrew bracket from case. Lift GPU straight up. Note which PCIe slot it occupied (primary x16 slot closest to CPU).</p></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-content"><h4>Remove RAM DIMMs</h4><p>Press both retention clips simultaneously until DIMM pops up. Note slot population: for dual channel, DIMMs go in matched slots (e.g., A2+B2 per Intel, not A1+A2). Record which slots were populated.</p></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-content"><h4>Remove storage (M.2 and SATA)</h4><p>M.2: Remove the single screw at the far end, lift at 30° angle, slide out. Note key type (M-key, B+M-key) and length (2242/2260/2280). SATA: unclip data cable, unplug power connector from drive.</p></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-content"><h4>Remove CPU cooler and CPU (optional)</h4><p>Cooler: loosen screws/push-pins in an X pattern. CPU: lift ZIF socket lever (Intel LGA) or rotate lever (AMD AM4/AM5). Handle CPU by edges – never touch the pins on LGA sockets or pads on CPUs.</p></div></div>
+    </div>
+    <div class="callout tip"><span class="callout-icon">✅</span><div class="callout-body"><strong>Bus Mapping Exercise</strong><p>As each component is removed, annotate the architecture diagram: draw arrows from CPU → DRAM channel A/B, CPU → PCIe Root Complex → GPU, CPU/PCH → M.2 → SSD. This maps the logical bus path to the physical connector you just handled.</p></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔧</span>Assembly and Verification</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-content"><h4>Verify POST after each major component</h4><p>Reassemble in reverse order: CPU → Cooler → RAM → storage → GPU → power. Test POST (Power On Self Test) with minimum components first (CPU + 1 DIMM + power) before adding GPU and storage.</p></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-content"><h4>Post-assembly Linux verification</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Verify hardware is recognized correctly</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Verify all RAM is detected</span>
+<span class="c-cmd">free</span> <span class="c-flag">-h</span>
+<span class="c-cmd">sudo dmidecode</span> <span class="c-flag">--type</span> memory <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-str">"Size:"</span>
+
+<span class="c-cmt"># Verify storage devices are detected</span>
+<span class="c-cmd">lsblk</span>         <span class="c-cmt"># Block devices tree</span>
+<span class="c-cmd">sudo fdisk</span> <span class="c-flag">-l</span>  <span class="c-cmt"># Partition tables</span>
+<span class="c-cmd">nvme list</span>     <span class="c-cmt"># NVMe devices (install: sudo apt install nvme-cli)</span>
+
+<span class="c-cmt"># Verify GPU</span>
+<span class="c-cmd">lspci</span> <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-flag">-i</span> vga
+
+<span class="c-cmt"># Check for hardware errors in kernel log</span>
+<span class="c-cmd">dmesg</span> <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-flag">-iE</span> <span class="c-str">"error|fail|warn|ata|nvme|pcie"</span>
+
+<span class="c-cmt"># Check SMART health of drives</span>
+<span class="c-cmd">sudo apt install</span> smartmontools
+<span class="c-cmd">sudo smartctl</span> <span class="c-flag">-a</span> /dev/sda   <span class="c-cmt"># SATA drive</span>
+<span class="c-cmd">sudo smartctl</span> <span class="c-flag">-a</span> /dev/nvme0  <span class="c-cmt"># NVMe drive</span></pre>
+          </div>
+      </div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Symptom</th><th>Likely Cause</th><th>Resolution</th></tr></thead>
+        <tbody>
+          <tr><td>No POST / no display</td><td>RAM not seated, CPU power missing, GPU not seated</td><td>Reseat RAM one DIMM at a time in first slot. Check 8-pin CPU power. Try onboard display output if available.</td></tr>
+          <tr><td>POST beep codes</td><td>Hardware error signaled by BIOS</td><td>Look up beep code for your BIOS vendor (AMI, Phoenix, Award). 1 long + 2 short often = GPU; 3 beeps = RAM.</td></tr>
+          <tr><td>System detects less RAM than installed</td><td>DIMM not fully seated or wrong slots</td><td>Re-seat DIMM; check motherboard manual for slot pairing rules (dual-channel requires specific slot pairs).</td></tr>
+          <tr><td>SSD not visible in OS</td><td>M.2 screw missing (not held at angle), SATA cable unplugged</td><td>Ensure M.2 is held at 30° and secured. Check BIOS for storage mode (AHCI vs RAID).</td></tr>
+          <tr><td>Thermal throttling/shutdowns</td><td>CPU cooler improperly seated, insufficient thermal paste</td><td>Reapply paste (pea-sized dot, center of IHS). Ensure all cooler mounting clips/screws engage evenly.</td></tr>
+          <tr><td>GPU not detected</td><td>PCIe slot clip not released fully, power cable missing</td><td>Press retention clip until it clicks open before inserting. Connect both PCIe power connectors.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp2 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 3
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp3">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>03</strong></div>
+    <div class="exp-title">
+      <h2>Instruction Pipelining Simulation (gem5 / Multi2Sim)</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Model and visualize instruction-level parallelism (ILP), branch prediction, and hazards.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">gem5</span><span class="tag blue">Multi2Sim</span><span class="tag purple">ILP</span><span class="tag orange">Branch Prediction</span><span class="tag red">Hazards</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>Pipelining overlaps the execution of multiple instructions by dividing the execution process into discrete stages. A classic 5-stage RISC pipeline (IF → ID → EX → MEM → WB) achieves CPI ≈ 1 in the ideal case, compared to CPI = 5 for sequential execution.</p>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>Pipeline Stages (Classic 5-Stage)</h4>
+        <ul>
+          <li><strong>IF – Instruction Fetch:</strong> Read instruction from I-cache using PC; increment PC.</li>
+          <li><strong>ID – Instruction Decode:</strong> Decode opcode; read registers from register file; detect hazards.</li>
+          <li><strong>EX – Execute:</strong> ALU operation; address calculation for load/store; branch condition evaluation.</li>
+          <li><strong>MEM – Memory Access:</strong> Read/write data cache for loads/stores. No-op for arithmetic.</li>
+          <li><strong>WB – Write Back:</strong> Write result to destination register.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Pipeline Hazards</h4>
+        <ul>
+          <li><strong>Structural Hazard:</strong> Two instructions need same hardware resource simultaneously. Solution: duplicate resources or stall.</li>
+          <li><strong>Data Hazard (RAW):</strong> Read-After-Write: instruction needs result not yet written. Solution: forwarding/bypassing or stall (bubble insertion).</li>
+          <li><strong>Data Hazard (WAR/WAW):</strong> Write-After-Read and Write-After-Write; less common in in-order pipelines.</li>
+          <li><strong>Control Hazard:</strong> Branch outcome unknown until EX stage; pipeline fetched wrong instructions. Solution: branch prediction, delayed branching, or flush+stall.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>Branch Prediction Schemes</h3>
+      <div class="three-col">
+        <div class="info-card">
+          <h4>Static Prediction</h4>
+          <ul>
+            <li>Always-taken or always-not-taken. Backward branches (loops) always taken = ~80% accurate for loops.</li>
+            <li>BTFNT: Backward-Taken Forward-Not-Taken heuristic.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Dynamic – 2-bit Saturating Counter</h4>
+          <ul>
+            <li>States: Strongly Not Taken → Weakly Not Taken → Weakly Taken → Strongly Taken.</li>
+            <li>Tolerates one misprediction without switching. ~90–95% accuracy typical.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Tournament Predictors</h4>
+          <ul>
+            <li>Combine local history (per-branch) and global history (gshare/gselect) predictors.</li>
+            <li>Meta-predictor chooses winner. Used in modern CPUs. ~97–99% accuracy.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>ILP – Instruction-Level Parallelism</h3>
+      <p>ILP is the potential for concurrent execution of instructions from a sequential program. It is bounded by data dependencies (RAW chains), control flow (branches), and memory ordering. Out-of-order (OoO) execution with register renaming (Tomasulo's algorithm) extracts ILP dynamically by executing independent instructions early and using a Reorder Buffer (ROB) to maintain the appearance of sequential execution.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>gem5 Installation on WSL2 / Ubuntu</div>
+    <div class="callout warn"><span class="callout-icon">⚠️</span><div class="callout-body"><strong>Build Time</strong><p>gem5 compilation takes 30–90 minutes on a typical laptop. Plan accordingly. Use <code>-j$(nproc)</code> to parallelize. Requires 10+ GB disk space.</p></div></div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">bash</span><span class="desc">gem5 dependencies installation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="c-cmt"># Install all gem5 build dependencies</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> <span class="c-str">build-essential git m4 scons zlib1g zlib1g-dev \
+  libprotobuf-dev protobuf-compiler libprotoc-dev libgoogle-perftools-dev \
+  python3-dev python3-six python3-pydot python3-venv python3-pip \
+  libboost-all-dev pkg-config libcapstone-dev</span>
+
+<span class="c-cmt"># Install Python dependencies</span>
+<span class="c-cmd">pip3 install</span> scons
+
+<span class="c-cmt"># Clone gem5 source</span>
+<span class="c-cmd">git clone</span> https://github.com/gem5/gem5.git <span class="c-path">~/gem5</span>
+<span class="c-cmd">cd</span> <span class="c-path">~/gem5</span>
+
+<span class="c-cmt"># Build gem5 for x86 architecture</span>
+<span class="c-cmt"># -j$(nproc) uses all CPU cores; replace with specific number if needed</span>
+<span class="c-cmd">scons</span> <span class="c-flag">build/X86/gem5.opt</span> <span class="c-flag">-j$(nproc)</span>
+
+<span class="c-cmt"># Alternative: build for ARM or RISC-V</span>
+<span class="c-cmd">scons</span> <span class="c-flag">build/ARM/gem5.opt</span> <span class="c-flag">-j$(nproc)</span>
+<span class="c-cmd">scons</span> <span class="c-flag">build/RISCV/gem5.opt</span> <span class="c-flag">-j$(nproc)</span>
+
+<span class="c-cmt"># Verify build succeeded</span>
+<span class="c-cmd">ls</span> <span class="c-flag">-la</span> <span class="c-path">build/X86/gem5.opt</span></pre>
+    </div>
+    <div class="callout danger"><span class="callout-icon">🔴</span><div class="callout-body"><strong>Common Build Errors</strong><p><strong>"scons not found"</strong>: Run <code>pip3 install scons</code> and add <code>~/.local/bin</code> to PATH: <code>export PATH=$PATH:~/.local/bin</code>. Add to <code>~/.bashrc</code> to make permanent.<br/><strong>"Python.h: No such file"</strong>: Run <code>sudo apt install python3-dev</code>.<br/><strong>"protobuf version mismatch"</strong>: Run <code>sudo apt install --reinstall libprotobuf-dev</code>.</p></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – Running Pipeline Simulations</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Run a simple in-order pipeline simulation</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">gem5 MinorCPU (in-order pipeline) simulation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">cd</span> <span class="c-path">~/gem5</span>
+
+<span class="c-cmt"># Run hello world with MinorCPU (4-stage in-order pipeline)</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=MinorCPU \
+  <span class="c-flag">--caches</span> \
+  <span class="c-flag">--cmd</span>=<span class="c-str">"tests/test-progs/hello/bin/x86/linux/hello"</span>
+
+<span class="c-cmt"># Output directory: m5out/</span>
+<span class="c-cmd">ls</span> <span class="c-path">m5out/</span>   <span class="c-cmt"># stats.txt, config.ini, config.json</span>
+
+<span class="c-cmt"># View key pipeline statistics</span>
+<span class="c-cmd">grep</span> <span class="c-flag">-E</span> <span class="c-str">"simInsts|cpi|ipc|branchPred|ipc"</span> <span class="c-path">m5out/stats.txt</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Run out-of-order CPU simulation (DerivO3CPU)</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">OoO CPU with branch predictor config</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Out-of-order CPU (Superscalar, OoO) – models modern CPUs</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=DerivO3CPU \
+  <span class="c-flag">--caches</span> \
+  <span class="c-flag">--l2cache</span> \
+  <span class="c-flag">--bp-type</span>=TournamentBP \
+  <span class="c-flag">--cmd</span>=<span class="c-str">"tests/test-progs/hello/bin/x86/linux/hello"</span>
+
+<span class="c-cmt"># Compare with different branch predictors</span>
+<span class="c-cmt"># Available: BiModeBP, LocalBP, TournamentBP, TAGE, MultiperspectivePerceptronTAGE</span>
+
+<span class="c-cmt"># Run with LocalBP</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=DerivO3CPU \
+  <span class="c-flag">--caches</span> \
+  <span class="c-flag">--bp-type</span>=LocalBP \
+  <span class="c-flag">--cmd</span>=<span class="c-str">"tests/test-progs/hello/bin/x86/linux/hello"</span>
+
+<span class="c-cmt"># Compare IPC and branch misprediction rates</span>
+<span class="c-cmd">grep</span> <span class="c-flag">-E</span> <span class="c-str">"ipc|branchPred.condIncorrect|branchPred.lookups"</span> <span class="c-path">m5out/stats.txt</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Write a custom benchmark to expose hazards</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">c</span><span class="desc">hazard_test.c – deliberately creates RAW hazards and branch mispredictions</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt">/* hazard_test.c */</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;stdio.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;stdlib.h&gt;</span>
+
+<span class="c-cmt">/* RAW Hazard: each add depends on previous result */</span>
+<span class="c-kw">long</span> raw_chain(<span class="c-kw">long</span> n) {
+    <span class="c-kw">long</span> a = 1;
+    <span class="c-kw">for</span> (<span class="c-kw">long</span> i = 0; i &lt; n; i++)
+        a = a + a;  <span class="c-cmt">/* each iteration depends on previous */</span>
+    <span class="c-kw">return</span> a;
+}
+
+<span class="c-cmt">/* Branch-heavy: causes many branch predictions */</span>
+<span class="c-kw">long</span> branch_intensive(<span class="c-kw">long</span> n) {
+    <span class="c-kw">long</span> sum = 0;
+    <span class="c-kw">for</span> (<span class="c-kw">long</span> i = 0; i &lt; n; i++)
+        <span class="c-kw">if</span> (i % 3 == 0) sum += i;  <span class="c-cmt">/* unpredictable pattern */</span>
+    <span class="c-kw">return</span> sum;
+}
+
+<span class="c-kw">int</span> main() {
+    printf(<span class="c-str">"RAW result: %ld\n"</span>, raw_chain(1000000));
+    printf(<span class="c-str">"Branch result: %ld\n"</span>, branch_intensive(1000000));
+    <span class="c-kw">return</span> 0;
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Compile and simulate custom benchmark</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Compile statically (required for gem5 SE mode)</span>
+<span class="c-cmd">gcc</span> <span class="c-flag">-static -O0</span> <span class="c-flag">-o</span> hazard_test hazard_test.c  <span class="c-cmt"># No optimization – preserve hazards</span>
+<span class="c-cmd">gcc</span> <span class="c-flag">-static -O2</span> <span class="c-flag">-o</span> hazard_test_opt hazard_test.c  <span class="c-cmt"># With optimization</span>
+
+<span class="c-cmt"># Simulate unoptimized version</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=DerivO3CPU <span class="c-flag">--caches</span> \
+  <span class="c-flag">--cmd</span>=<span class="c-path">./hazard_test</span>
+<span class="c-cmd">cp</span> <span class="c-path">m5out/stats.txt</span> <span class="c-path">stats_O0.txt</span>
+
+<span class="c-cmt"># Simulate optimized version</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=DerivO3CPU <span class="c-flag">--caches</span> \
+  <span class="c-flag">--cmd</span>=<span class="c-path">./hazard_test_opt</span>
+<span class="c-cmd">cp</span> <span class="c-path">m5out/stats.txt</span> <span class="c-path">stats_O2.txt</span>
+
+<span class="c-cmt"># Compare IPC: O2 should show significantly higher IPC</span>
+<span class="c-cmd">grep</span> <span class="c-str">"ipc"</span> <span class="c-path">stats_O0.txt</span> <span class="c-path">stats_O2.txt</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Parse and analyze statistics</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Extract key pipeline metrics from stats.txt</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Key metrics to extract from m5out/stats.txt</span>
+<span class="c-cmd">grep</span> <span class="c-flag">-E</span> <span class="c-str">"simInsts|simTicks|hostSeconds|ipc|cpi"</span> <span class="c-path">m5out/stats.txt</span>
+
+<span class="c-cmt"># Branch predictor stats</span>
+<span class="c-cmd">grep</span> <span class="c-str">"branchPred"</span> <span class="c-path">m5out/stats.txt</span>
+
+<span class="c-cmt"># Pipeline stall stats (OoO CPU)</span>
+<span class="c-cmd">grep</span> <span class="c-flag">-E</span> <span class="c-str">"rob|iq|lsq|rename"</span> <span class="c-path">m5out/stats.txt</span>
+
+<span class="c-cmt"># Python script to compute misprediction rate</span>
+<span class="c-cmd">python3</span> <span class="c-flag">-c</span> <span class="c-str">"
+import re
+with open('m5out/stats.txt') as f:
+    content = f.read()
+lookups = float(re.search(r'branchPred\.lookups\s+([\d.]+)', content).group(1))
+incorrect = float(re.search(r'branchPred\.condIncorrect\s+([\d.]+)', content).group(1))
+print(f'Misprediction rate: {incorrect/lookups*100:.2f}%')
+"</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>"No module named m5"</td><td>Wrong Python path for gem5</td><td>Always run gem5.opt directly, not python3 configs/...; gem5 uses its own Python interpreter.</td></tr>
+          <tr><td>"Could not open file" for --cmd</td><td>Binary not found or not static</td><td>Use absolute path; compile with <code>-static</code>; verify with <code>file ./binary</code> (must say "statically linked").</td></tr>
+          <tr><td>scons fails: "Python 3.x required"</td><td>Old Python or wrong version</td><td>Install python3-dev; check <code>python3 --version</code> ≥ 3.6.</td></tr>
+          <tr><td>Very slow simulation</td><td>gem5 is inherently slow (1000× slower than real)</td><td>Use smaller workloads; use gem5.fast build (<code>scons build/X86/gem5.fast -j$(nproc)</code>) which skips debug asserts.</td></tr>
+          <tr><td>stats.txt is empty</td><td>Simulation crashed before dumping</td><td>Check simout for error messages; add <code>--debug-flags=ExecAll</code> to trace execution.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout note"><span class="callout-icon">ℹ️</span><div class="callout-body"><strong>Multi2Sim Alternative</strong><p>Multi2Sim is another CPU/GPU simulator. Installation: <code>sudo apt install m2s</code> (Ubuntu repos) or build from source at <code>https://github.com/Multi2Sim/multi2sim</code>. It uses configuration files (*.ini) for pipeline configuration and supports x86, ARM, and CUDA simulation. Key command: <code>m2s --x86-sim detailed --x86-config cpu.ini -- ./binary</code>.</p></div></div>
+  </div>
+</div><!-- end exp3 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 4
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp4">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>04</strong></div>
+    <div class="exp-title">
+      <h2>Cache and Memory Hierarchy Analysis (gem5 / SimpleScalar)</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Configure cache size, associativity, and replacement policy using simulators.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">gem5</span><span class="tag purple">AMAT</span><span class="tag orange">LRU</span><span class="tag orange">FIFO</span><span class="tag green">Valgrind</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>The memory hierarchy exploits locality of reference to bridge the gap between fast CPU registers and slow DRAM. Cache design involves three primary decisions: size, associativity, and replacement policy — each with distinct performance trade-offs.</p>
+    <div class="sub-section">
+      <h3>Key Cache Parameters</h3>
+      <div class="three-col">
+        <div class="info-card">
+          <h4>Cache Size</h4>
+          <ul>
+            <li>Larger cache = higher hit rate but larger access latency and area cost.</li>
+            <li>Diminishing returns: doubling cache size rarely halves miss rate.</li>
+            <li>Working set size determines optimal cache size per application.</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Associativity</h4>
+          <ul>
+            <li><strong>Direct-mapped (1-way):</strong> One possible location per address. Fast but high conflict misses.</li>
+            <li><strong>2/4/8-way set-associative:</strong> Multiple ways per set. Reduces conflict misses at cost of comparator hardware.</li>
+            <li><strong>Fully associative:</strong> Any line in any location. Eliminates conflict misses; hardware-intensive (CAM required).</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>Replacement Policies</h4>
+          <ul>
+            <li><strong>LRU (Least Recently Used):</strong> Evict least recently accessed. Best average performance; expensive to track in high-associativity caches.</li>
+            <li><strong>FIFO:</strong> Evict oldest line. Simpler hardware; Bélády's anomaly possible.</li>
+            <li><strong>Random:</strong> Evict random line. Surprisingly competitive; no anomalies; simple.</li>
+            <li><strong>PLRU (Pseudo-LRU):</strong> Binary tree approximation of LRU; used in real CPUs.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>AMAT – Average Memory Access Time</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text</span><span class="desc">AMAT formula and example</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre>AMAT = Hit Time + Miss Rate × Miss Penalty
+
+Example (3-level hierarchy):
+  L1: Hit Time = 4 cycles,  Miss Rate = 5%
+  L2: Hit Time = 12 cycles, Miss Rate = 2% (of L1 misses)
+  L3: Hit Time = 40 cycles, Miss Rate = 10% (of L2 misses)
+  DRAM: 200 cycles
+
+  AMAT = 4 + 0.05 × (12 + 0.02 × (40 + 0.10 × 200))
+       = 4 + 0.05 × (12 + 0.02 × 60)
+       = 4 + 0.05 × (12 + 1.2)
+       = 4 + 0.05 × 13.2
+       = 4 + 0.66
+       = 4.66 cycles</pre>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>Types of Cache Misses (3 C's)</h3>
+      <div class="three-col">
+        <div class="info-card"><h4>Compulsory (Cold) Misses</h4><ul><li>First access to any data. Unavoidable without prefetching. Reduced by larger cache lines (spatial prefetch).</li></ul></div>
+        <div class="info-card"><h4>Capacity Misses</h4><ul><li>Working set larger than cache. Only reduced by larger cache size. Fully associative still has these.</li></ul></div>
+        <div class="info-card"><h4>Conflict Misses</h4><ul><li>Two addresses map to same set, evict each other. Reduced by higher associativity or larger cache.</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – Cache Configuration in gem5</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Run baseline cache simulation</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">gem5 with configurable cache parameters</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">cd</span> <span class="c-path">~/gem5</span>
+
+<span class="c-cmt"># Baseline: 32KB L1, 4-way, 256KB L2</span>
+<span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+  <span class="c-flag">--cpu-type</span>=DerivO3CPU \
+  <span class="c-flag">--caches</span> <span class="c-flag">--l2cache</span> \
+  <span class="c-flag">--l1d_size</span>=32kB \
+  <span class="c-flag">--l1i_size</span>=32kB \
+  <span class="c-flag">--l2_size</span>=256kB \
+  <span class="c-flag">--l1d_assoc</span>=4 \
+  <span class="c-flag">--l1i_assoc</span>=4 \
+  <span class="c-flag">--l2_assoc</span>=8 \
+  <span class="c-flag">--cacheline_size</span>=64 \
+  <span class="c-flag">--cmd</span>=<span class="c-path">./hazard_test</span>
+
+<span class="c-cmt"># Save baseline stats</span>
+<span class="c-cmd">cp</span> <span class="c-path">m5out/stats.txt</span> <span class="c-path">cache_baseline.txt</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Systematic cache size sweep script</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Automated cache size sweep</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt">#!/bin/bash</span>
+<span class="c-cmt"># cache_sweep.sh – sweeps L1 cache size and records miss rates</span>
+
+BINARY=<span class="c-path">./hazard_test</span>
+RESULTS_DIR=<span class="c-path">~/cache_results</span>
+<span class="c-cmd">mkdir</span> <span class="c-flag">-p</span> <span class="c-path">$RESULTS_DIR</span>
+
+<span class="c-kw">for</span> SIZE <span class="c-kw">in</span> 4kB 8kB 16kB 32kB 64kB 128kB; <span class="c-kw">do</span>
+  echo <span class="c-str">"Running with L1D=$SIZE..."</span>
+  <span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+    <span class="c-flag">--cpu-type</span>=DerivO3CPU <span class="c-flag">--caches</span> <span class="c-flag">--l2cache</span> \
+    <span class="c-flag">--l1d_size</span>=<span class="c-var">$SIZE</span> <span class="c-flag">--l1i_size</span>=32kB \
+    <span class="c-flag">--l2_size</span>=256kB <span class="c-flag">--l1d_assoc</span>=4 \
+    <span class="c-flag">--cmd</span>=<span class="c-var">$BINARY</span> <span class="c-flag">2>/dev/null</span>
+  <span class="c-cmd">cp</span> <span class="c-path">m5out/stats.txt</span> <span class="c-path">$RESULTS_DIR/l1d_${SIZE}.txt</span>
+<span class="c-kw">done</span>
+
+<span class="c-cmt"># Extract miss rates</span>
+<span class="c-kw">for</span> f <span class="c-kw">in</span> <span class="c-path">$RESULTS_DIR/*.txt</span>; <span class="c-kw">do</span>
+  echo <span class="c-flag">-n</span> <span class="c-str">"$f: "</span>
+  <span class="c-cmd">grep</span> <span class="c-str">"l1d.overall_miss_rate"</span> <span class="c-var">$f</span>
+<span class="c-kw">done</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Associativity sweep</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Vary associativity from 1-way to 16-way</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-kw">for</span> ASSOC <span class="c-kw">in</span> 1 2 4 8 16; <span class="c-kw">do</span>
+  <span class="c-cmd">build/X86/gem5.opt</span> <span class="c-path">configs/example/se.py</span> \
+    <span class="c-flag">--cpu-type</span>=DerivO3CPU <span class="c-flag">--caches</span> <span class="c-flag">--l2cache</span> \
+    <span class="c-flag">--l1d_size</span>=32kB <span class="c-flag">--l1d_assoc</span>=<span class="c-var">$ASSOC</span> \
+    <span class="c-flag">--cmd</span>=<span class="c-path">./hazard_test</span> <span class="c-flag">2>/dev/null</span>
+  echo <span class="c-flag">-n</span> <span class="c-str">"Assoc=$ASSOC miss_rate: "</span>
+  <span class="c-cmd">grep</span> <span class="c-str">"l1d.overall_miss_rate"</span> <span class="c-path">m5out/stats.txt</span>
+<span class="c-kw">done</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Use Valgrind Cachegrind for quick cache profiling on host</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Valgrind cachegrind – fast cache simulation on real hardware</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Install valgrind</span>
+<span class="c-cmd">sudo apt install</span> valgrind
+
+<span class="c-cmt"># Simulate with configurable cache sizes</span>
+<span class="c-cmd">valgrind</span> <span class="c-flag">--tool</span>=cachegrind \
+  <span class="c-flag">--I1</span>=32768,4,64 \   <span class="c-cmt"># L1-I: 32KB, 4-way, 64B line</span>
+  <span class="c-flag">--D1</span>=32768,4,64 \   <span class="c-cmt"># L1-D: 32KB, 4-way, 64B line</span>
+  <span class="c-flag">--LL</span>=4194304,8,64 \ <span class="c-cmt"># LL: 4MB, 8-way, 64B line</span>
+  <span class="c-path">./hazard_test</span>
+
+<span class="c-cmt"># Annotated report</span>
+<span class="c-cmd">cg_annotate</span> <span class="c-path">cachegrind.out.*</span>
+<span class="c-cmd">cg_annotate</span> <span class="c-flag">--auto</span>=yes <span class="c-path">cachegrind.out.*</span>
+
+<span class="c-cmt"># Key output fields:</span>
+<span class="c-cmt"># Ir = Instruction reads, I1mr = L1-I misses, ILmr = LL misses</span>
+<span class="c-cmt"># Dr = Data reads, D1mr = L1-D read misses, DLmr = LL read misses</span>
+<span class="c-cmt"># Dw = Data writes, D1mw = L1-D write misses</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Write a cache-friendly vs cache-unfriendly benchmark</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">c</span><span class="desc">cache_test.c – row-major vs column-major access</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-kw">#include</span> <span class="c-str">&lt;stdio.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;time.h&gt;</span>
+<span class="c-kw">#define</span> N 1024
+
+<span class="c-kw">double</span> A[N][N];
+
+<span class="c-kw">void</span> row_major() {   <span class="c-cmt">/* Cache-FRIENDLY: sequential access */</span>
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0;i&lt;N;i++)
+        <span class="c-kw">for</span> (<span class="c-kw">int</span> j=0;j&lt;N;j++)
+            A[i][j] = i*j;
+}
+
+<span class="c-kw">void</span> col_major() {   <span class="c-cmt">/* Cache-UNFRIENDLY: stride-N access */</span>
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> j=0;j&lt;N;j++)
+        <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0;i&lt;N;i++)
+            A[i][j] = i*j;
+}
+
+<span class="c-kw">int</span> main() {
+    <span class="c-kw">struct</span> timespec t0, t1;
+    clock_gettime(CLOCK_MONOTONIC, &amp;t0);
+    row_major();
+    clock_gettime(CLOCK_MONOTONIC, &amp;t1);
+    printf(<span class="c-str">"Row-major: %.3f ms\n"</span>, (t1.tv_nsec-t0.tv_nsec)/1e6);
+    clock_gettime(CLOCK_MONOTONIC, &amp;t0);
+    col_major();
+    clock_gettime(CLOCK_MONOTONIC, &amp;t1);
+    printf(<span class="c-str">"Col-major: %.3f ms\n"</span>, (t1.tv_nsec-t0.tv_nsec)/1e6);
+    <span class="c-kw">return</span> 0;
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Compile and profile cache behavior</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">gcc</span> <span class="c-flag">-O1 -o</span> cache_test cache_test.c
+<span class="c-cmd">./cache_test</span>
+<span class="c-cmt"># Expected: col-major is 5-10x slower due to cache thrashing</span>
+
+<span class="c-cmd">valgrind</span> <span class="c-flag">--tool=cachegrind ./cache_test</span>
+<span class="c-cmd">cg_annotate</span> <span class="c-flag">--auto=yes</span> cachegrind.out.*</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Cause</th><th>Solution</th></tr></thead>
+        <tbody>
+          <tr><td>"l1d.overall_miss_rate" not in stats</td><td>Cache not enabled or wrong stat name</td><td>Ensure <code>--caches</code> flag is passed; stat names changed between gem5 versions – use <code>grep -i "miss" m5out/stats.txt</code> to find correct name.</td></tr>
+          <tr><td>Cachegrind output is 0 misses</td><td>Binary too small; fits entirely in cache</td><td>Use larger arrays (N=4096+) or longer loops to stress cache capacity.</td></tr>
+          <tr><td>gem5 crashes with cache config</td><td>Invalid associativity/size combo</td><td>Cache size must be divisible by (ways × line_size). E.g., 4kB, 4-way, 64B: 4096/(4×64) = 16 sets. OK. 3kB would fail.</td></tr>
+          <tr><td>Row vs col-major timings identical</td><td>Compiled with -O3 (compiler vectorized/reordered)</td><td>Use <code>-O1</code> or <code>-O0</code> to prevent loop reordering; or use <code>volatile</code> qualifier on array.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp4 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 5
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp5">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>05</strong></div>
+    <div class="exp-title">
+      <h2>Exploration of GPU Architecture</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Study CUDA cores, memory hierarchy, and parallelism using NVIDIA Nsight / Jetson developer tools.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">CUDA</span><span class="tag blue">Nsight</span><span class="tag green">nvidia-smi</span><span class="tag purple">SM</span><span class="tag orange">SIMT</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>GPU Execution Model</h4>
+        <ul>
+          <li><strong>SIMT (Single Instruction Multiple Thread):</strong> All threads in a warp (32 threads) execute the same instruction simultaneously on different data. Analogous to CPU SIMD but with independent thread state.</li>
+          <li><strong>Warp:</strong> The GPU's basic scheduling unit; 32 threads. A warp scheduler selects a ready warp each cycle.</li>
+          <li><strong>Thread Block (CTA):</strong> Group of up to 1024 threads sharing fast shared memory (SRAM) and synchronization barriers.</li>
+          <li><strong>Grid:</strong> Collection of thread blocks launched for a kernel; maps to all SMs on the GPU.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>GPU Memory Hierarchy</h4>
+        <ul>
+          <li><strong>Register File:</strong> Fastest; per-thread; 32-bit registers (~256 KB per SM). Register spilling to local memory is very slow.</li>
+          <li><strong>Shared Memory (SRAM):</strong> L1-speed; shared within a thread block; configurable (16–100 KB per SM).</li>
+          <li><strong>L1 Cache:</strong> Automatic; unified with shared memory on Ampere+.</li>
+          <li><strong>L2 Cache:</strong> Shared across all SMs; ~40 MB on H100.</li>
+          <li><strong>Global Memory (VRAM):</strong> GDDR6/HBM2e; 16–80 GB; ~1–3 TB/s bandwidth (HBM). High latency (~700 cycles).</li>
+          <li><strong>Constant / Texture Memory:</strong> Read-only cached memory for broadcast patterns.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>Streaming Multiprocessor (SM) Architecture</h3>
+      <p>Each SM contains: CUDA cores (INT32, FP32, FP64), Tensor Cores (matrix multiply accelerators), warp schedulers, instruction dispatch units, the register file, shared memory, and L1 cache. An NVIDIA H100 has 132 SMs, each with 128 FP32 CUDA cores = 16,896 total CUDA cores. Occupancy is the ratio of active warps to maximum possible warps per SM – higher occupancy hides memory latency better.</p>
+    </div>
+    <div class="sub-section">
+      <h3>Memory Coalescing</h3>
+      <p>When 32 threads in a warp access global memory, the GPU combines (coalesces) these into a minimum number of 128-byte memory transactions. If threads access contiguous, aligned addresses: 1 transaction for all 32 threads. If threads access random addresses: up to 32 separate transactions, 32× slower. Always design kernels for coalesced access.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>CUDA Setup on WSL2</div>
+    <div class="callout note"><span class="callout-icon">ℹ️</span><div class="callout-body"><strong>WSL2 CUDA Support</strong><p>CUDA works in WSL2 since Windows 11 / Windows 10 21H2 with NVIDIA driver 470.76+. The GPU driver is installed on Windows only – do NOT install Linux GPU drivers inside WSL2. Only install the CUDA toolkit.</p></div></div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">bash</span><span class="desc">CUDA Toolkit installation on WSL2 Ubuntu 22.04</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="c-cmt"># Verify NVIDIA driver is accessible from WSL2</span>
+<span class="c-cmd">nvidia-smi</span>  <span class="c-cmt"># Should show GPU name, driver version, CUDA version</span>
+
+<span class="c-cmt"># Add CUDA repository (Ubuntu 22.04 / WSL2)</span>
+<span class="c-cmd">wget</span> https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+<span class="c-cmd">sudo dpkg</span> <span class="c-flag">-i</span> cuda-keyring_1.1-1_all.deb
+<span class="c-cmd">sudo apt update</span>
+
+<span class="c-cmt"># Install CUDA toolkit (without driver – driver is on Windows side)</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> cuda-toolkit-12-3
+
+<span class="c-cmt"># Add CUDA to PATH (add to ~/.bashrc)</span>
+<span class="c-cmd">echo</span> <span class="c-str">'export PATH=/usr/local/cuda/bin:$PATH'</span> <span class="c-flag">>></span> <span class="c-path">~/.bashrc</span>
+<span class="c-cmd">echo</span> <span class="c-str">'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH'</span> <span class="c-flag">>></span> <span class="c-path">~/.bashrc</span>
+<span class="c-cmd">source</span> <span class="c-path">~/.bashrc</span>
+
+<span class="c-cmt"># Verify CUDA installation</span>
+<span class="c-cmd">nvcc</span> <span class="c-flag">--version</span>
+<span class="c-cmd">nvidia-smi</span>
+
+<span class="c-cmt"># Install CUDA samples</span>
+<span class="c-cmd">git clone</span> https://github.com/NVIDIA/cuda-samples.git <span class="c-path">~/cuda-samples</span>
+<span class="c-cmd">cd</span> <span class="c-path">~/cuda-samples/Samples/1_Utilities/deviceQuery</span>
+<span class="c-cmd">make</span>
+<span class="c-cmd">./deviceQuery</span>  <span class="c-cmt"># Lists all GPU properties</span></pre>
+    </div>
+    <div class="callout danger"><span class="callout-icon">🔴</span><div class="callout-body"><strong>WSL2 Common CUDA Errors</strong><p><strong>"CUDA driver version insufficient"</strong>: Update Windows NVIDIA driver (not WSL2 driver). <strong>"libcuda.so not found"</strong>: <code>sudo ldconfig</code> then check <code>/usr/lib/wsl/lib/</code>. <strong>nvidia-smi not found</strong>: NVIDIA driver not installed on Windows or WSL2 GPU passthrough not enabled (requires Windows 10 build 21H2+).</p></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – GPU Architecture Exploration</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>GPU properties with nvidia-smi and deviceQuery</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">GPU architecture information commands</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Full GPU info</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">-q</span>             <span class="c-cmt"># Comprehensive info</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">-L</span>             <span class="c-cmt"># List GPUs</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">--query-gpu</span>=name,memory.total,memory.free,utilization.gpu,temperature.gpu \
+  <span class="c-flag">--format</span>=csv
+
+<span class="c-cmt"># Real-time monitoring</span>
+<span class="c-cmd">watch</span> <span class="c-flag">-n1</span> <span class="c-str">"nvidia-smi"</span>
+
+<span class="c-cmt"># Run deviceQuery (from cuda-samples)</span>
+<span class="c-cmd">./deviceQuery</span>
+<span class="c-cmt"># Note: # of SMs, CUDA cores per SM, Warp size (always 32),</span>
+<span class="c-cmt">#       Max threads per block, Shared memory per SM,</span>
+<span class="c-cmt">#       L2 cache size, Memory bandwidth, Compute capability</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Write and profile a simple CUDA kernel</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">cuda</span><span class="desc">vector_add.cu – baseline CUDA kernel</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-kw">#include</span> <span class="c-str">&lt;stdio.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;cuda_runtime.h&gt;</span>
+
+<span class="c-cmt">// CUDA error checking macro</span>
+<span class="c-kw">#define</span> CUDA_CHECK(err) { \
+  <span class="c-kw">if</span> (err != cudaSuccess) { \
+    fprintf(stderr, <span class="c-str">"CUDA error at %s:%d: %s\n"</span>, \
+      __FILE__, __LINE__, cudaGetErrorString(err)); \
+    exit(1); } }
+
+<span class="c-kw">__global__</span> <span class="c-kw">void</span> vectorAdd(<span class="c-kw">float</span>* A, <span class="c-kw">float</span>* B, <span class="c-kw">float</span>* C, <span class="c-kw">int</span> N) {
+    <span class="c-kw">int</span> i = blockIdx.x * blockDim.x + threadIdx.x;
+    <span class="c-kw">if</span> (i &lt; N)
+        C[i] = A[i] + B[i];  <span class="c-cmt">// Coalesced access – all good</span>
+}
+
+<span class="c-kw">int</span> main() {
+    <span class="c-kw">int</span> N = 1 &lt;&lt; 20;  <span class="c-cmt">// 1M elements</span>
+    <span class="c-kw">size_t</span> bytes = N * <span class="c-kw">sizeof</span>(<span class="c-kw">float</span>);
+    
+    <span class="c-kw">float</span> *h_A = (<span class="c-kw">float</span>*)malloc(bytes);
+    <span class="c-kw">float</span> *h_B = (<span class="c-kw">float</span>*)malloc(bytes);
+    <span class="c-kw">float</span> *h_C = (<span class="c-kw">float</span>*)malloc(bytes);
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0; i&lt;N; i++) { h_A[i]=1.0f; h_B[i]=2.0f; }
+    
+    <span class="c-kw">float</span> *d_A, *d_B, *d_C;
+    CUDA_CHECK(cudaMalloc(&amp;d_A, bytes));
+    CUDA_CHECK(cudaMalloc(&amp;d_B, bytes));
+    CUDA_CHECK(cudaMalloc(&amp;d_C, bytes));
+    
+    CUDA_CHECK(cudaMemcpy(d_A, h_A, bytes, cudaMemcpyHostToDevice));
+    CUDA_CHECK(cudaMemcpy(d_B, h_B, bytes, cudaMemcpyHostToDevice));
+    
+    <span class="c-cmt">// Launch: 256 threads/block, ceil(N/256) blocks</span>
+    <span class="c-kw">int</span> blockSize = 256;
+    <span class="c-kw">int</span> gridSize = (N + blockSize - 1) / blockSize;
+    vectorAdd&lt;&lt;&lt;gridSize, blockSize&gt;&gt;&gt;(d_A, d_B, d_C, N);
+    CUDA_CHECK(cudaGetLastError());
+    CUDA_CHECK(cudaDeviceSynchronize());
+    
+    CUDA_CHECK(cudaMemcpy(h_C, d_C, bytes, cudaMemcpyDeviceToHost));
+    printf(<span class="c-str">"C[0]=%.1f (expected 3.0)\n"</span>, h_C[0]);
+    
+    cudaFree(d_A); cudaFree(d_B); cudaFree(d_C);
+    free(h_A); free(h_B); free(h_C);
+    <span class="c-kw">return</span> 0;
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Compile and profile with nvprof / Nsight</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Compile CUDA code</span>
+<span class="c-cmd">nvcc</span> <span class="c-flag">-o</span> vector_add vector_add.cu <span class="c-flag">-arch=sm_86</span>  <span class="c-cmt"># sm_86 = Ampere (RTX 30xx)</span>
+<span class="c-cmt"># sm_75 = Turing (RTX 20xx), sm_89 = Ada Lovelace (RTX 40xx)</span>
+<span class="c-cmt"># Use: nvcc -arch=native to auto-detect</span>
+
+<span class="c-cmd">./vector_add</span>
+
+<span class="c-cmt"># Profile with ncu (Nsight Compute – modern replacement for nvprof)</span>
+<span class="c-cmd">sudo ncu</span> <span class="c-flag">--set full</span> <span class="c-flag">--target-processes all</span> <span class="c-flag">-o</span> <span class="c-path">profile_report</span> <span class="c-path">./vector_add</span>
+
+<span class="c-cmt"># Quick profile (no root needed sometimes)</span>
+<span class="c-cmd">ncu</span> <span class="c-flag">--metrics</span> sm__throughput.avg.pct_of_peak_sustained_elapsed,\
+l1tex__t_bytes.sum,dram__bytes.sum <span class="c-path">./vector_add</span>
+
+<span class="c-cmt"># For older GPUs or if ncu unavailable, use nvprof</span>
+<span class="c-cmd">nvprof</span> <span class="c-path">./vector_add</span>
+<span class="c-cmd">nvprof</span> <span class="c-flag">--print-gpu-trace</span> <span class="c-path">./vector_add</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Demonstrate memory coalescing impact</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Run bandwidth test from CUDA samples</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">cd</span> <span class="c-path">~/cuda-samples/Samples/1_Utilities/bandwidthTest</span>
+<span class="c-cmd">make</span> &amp;&amp; <span class="c-cmd">./bandwidthTest</span>
+<span class="c-cmt"># Reports H2D, D2H, and D2D bandwidth in GB/s</span>
+<span class="c-cmt"># Compare with theoretical VRAM bandwidth from deviceQuery</span>
+
+<span class="c-cmt"># Run transpose sample to see coalescing impact</span>
+<span class="c-cmd">cd</span> <span class="c-path">~/cuda-samples/Samples/6_Performance/transpose</span>
+<span class="c-cmd">make</span> &amp;&amp; <span class="c-cmd">./transpose</span>
+<span class="c-cmt"># Shows: naive (non-coalesced) vs optimized (coalesced) transpose</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>nvcc: command not found</td><td>CUDA toolkit not in PATH</td><td><code>export PATH=/usr/local/cuda/bin:$PATH</code> and add to ~/.bashrc</td></tr>
+          <tr><td>"no kernel image available for this device"</td><td>-arch flag doesn't match GPU</td><td>Run <code>nvidia-smi</code> to get GPU name, look up compute capability, use correct sm_XX value or <code>-arch=native</code></td></tr>
+          <tr><td>CUDA error: out of memory</td><td>VRAM exhausted</td><td>Reduce array sizes, free GPU memory properly, use <code>nvidia-smi</code> to check VRAM usage</td></tr>
+          <tr><td>ncu: permission denied</td><td>Performance counters need root</td><td><code>sudo ncu ...</code> or <code>echo 0 | sudo tee /proc/sys/kernel/perf_event_paranoid</code></td></tr>
+          <tr><td>CUDA works but WSL2 is slow</td><td>PCIe bandwidth through WSL2 VM</td><td>Expected; real-world CUDA apps perform similarly. Use native Linux dual boot for benchmarking.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp5 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 6
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp6">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>06</strong></div>
+    <div class="exp-title">
+      <h2>Jetson Nano / GPU Stick Setup and Model Execution</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Boot and configure GPU device; deploy lightweight ML workloads for inference.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">Jetson Nano</span><span class="tag green">TensorRT</span><span class="tag purple">JetPack</span><span class="tag orange">ONNX</span><span class="tag red">Inference</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>The NVIDIA Jetson Nano is an edge AI platform combining a quad-core ARM Cortex-A57 CPU with a 128-core Maxwell GPU in a System-on-Module (SoM) format. Unlike discrete GPUs, the Jetson uses unified memory architecture (UMA) – CPU and GPU share the same physical LPDDR4 memory pool, eliminating PCIe data transfer overhead at the cost of shared bandwidth.</p>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>Jetson Nano Architecture</h4>
+        <ul>
+          <li><strong>CPU:</strong> Quad-core ARM Cortex-A57 @ 1.43 GHz</li>
+          <li><strong>GPU:</strong> 128 CUDA cores (Maxwell architecture, sm_53)</li>
+          <li><strong>Memory:</strong> 4 GB LPDDR4 @ 25.6 GB/s (shared CPU+GPU)</li>
+          <li><strong>Power:</strong> 5W / 10W configurable modes</li>
+          <li><strong>TensorRT:</strong> NVIDIA's inference optimizer; fuses layers, quantizes to INT8/FP16</li>
+          <li><strong>DLA (on Jetson Xavier):</strong> Deep Learning Accelerator – dedicated ASIC for inference</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Inference Optimization Stack</h4>
+        <ul>
+          <li><strong>Training framework:</strong> PyTorch / TensorFlow on desktop GPU</li>
+          <li><strong>ONNX export:</strong> Framework-agnostic intermediate representation</li>
+          <li><strong>TensorRT optimization:</strong> Layer fusion, kernel auto-tuning, quantization</li>
+          <li><strong>TensorRT runtime:</strong> Fast engine (.engine file) on Jetson</li>
+          <li><strong>Quantization:</strong> FP32 → FP16 → INT8; each halves memory and increases throughput</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>Jetson Nano Initial Setup</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Flash JetPack SD card (from Windows/Linux host)</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Flash Jetson Nano SD card on Ubuntu/WSL2</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Download JetPack image from: developer.nvidia.com/embedded/downloads</span>
+<span class="c-cmt"># JetPack 4.6.x for Jetson Nano (Ubuntu 18.04 based)</span>
+
+<span class="c-cmt"># On WSL2: Use Balena Etcher on Windows side (simpler)</span>
+<span class="c-cmt"># On native Linux: use dd or Etcher</span>
+
+<span class="c-cmt"># Find SD card device (CAREFUL: wrong device = data loss)</span>
+<span class="c-cmd">lsblk</span>          <span class="c-cmt"># Before inserting SD card</span>
+<span class="c-cmt"># Insert SD card</span>
+<span class="c-cmd">lsblk</span>          <span class="c-cmt"># New entry = your SD card (e.g. /dev/sdb or /dev/mmcblk0)</span>
+
+<span class="c-cmt"># Unmount if auto-mounted</span>
+<span class="c-cmd">sudo umount</span> <span class="c-path">/dev/sdb1</span>
+
+<span class="c-cmt"># Flash image (replace /dev/sdb and image filename)</span>
+<span class="c-cmd">sudo dd</span> <span class="c-flag">if</span>=jetson-nano-4gb-jp46-sd-card-image.img \
+  <span class="c-flag">of</span>=/dev/sdb <span class="c-flag">bs</span>=1M <span class="c-flag">status</span>=progress
+<span class="c-cmd">sync</span>  <span class="c-cmt"># Flush write cache</span></pre>
+          </div>
+          <div class="callout danger"><span class="callout-icon">⚡</span><div class="callout-body"><strong>Critical</strong><p>Double-check the <code>of=</code> device before pressing Enter. Writing to wrong device destroys data. Run <code>lsblk</code> carefully; SD card is usually smallest new device.</p></div></div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>First boot configuration</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Jetson Nano post-boot setup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># After first boot (HDMI + keyboard + mouse + USB power or 5V barrel)</span>
+<span class="c-cmt"># Complete OEM setup wizard: timezone, username, password</span>
+
+<span class="c-cmt"># SSH access (find IP from router or use USB device mode)</span>
+<span class="c-cmd">ssh</span> <span class="c-str">your_username@jetson-ip-address</span>
+
+<span class="c-cmt"># Update system</span>
+<span class="c-cmd">sudo apt update</span> &amp;&amp; <span class="c-cmd">sudo apt upgrade</span> <span class="c-flag">-y</span>
+
+<span class="c-cmt"># Check JetPack version</span>
+<span class="c-cmd">cat</span> <span class="c-path">/etc/nv_tegra_release</span>
+
+<span class="c-cmt"># Check CUDA version on Jetson</span>
+<span class="c-cmd">nvcc</span> <span class="c-flag">--version</span>
+<span class="c-cmd">cat</span> <span class="c-path">/usr/local/cuda/version.txt</span>
+
+<span class="c-cmt"># Set power mode (0=10W MAXN, 1=5W, etc.)</span>
+<span class="c-cmd">sudo nvpmodel</span> <span class="c-flag">-m</span> 0   <span class="c-cmt"># Maximum performance</span>
+<span class="c-cmd">sudo jetson_clocks</span>    <span class="c-cmt"># Lock clocks to maximum</span>
+<span class="c-cmd">sudo jetson_clocks</span> <span class="c-flag">--show</span>  <span class="c-cmt"># Verify clock frequencies</span>
+
+<span class="c-cmt"># Monitor Jetson resources</span>
+<span class="c-cmd">sudo apt install</span> python3-pip
+<span class="c-cmd">sudo pip3 install</span> jetson-stats
+<span class="c-cmd">sudo jtop</span>  <span class="c-cmt"># htop-like monitor for Jetson CPU/GPU/memory/power</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Deploy ML inference workload</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Install PyTorch for Jetson and run inference</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Install PyTorch for Jetson (ARM + CUDA version from NVIDIA)</span>
+<span class="c-cmt"># JetPack 4.6 uses PyTorch 1.10 for Jetson:</span>
+<span class="c-cmd">wget</span> https://developer.download.nvidia.com/compute/redist/jp/v46/pytorch/torch-1.10.0a0+git36449ea-cp36-cp36m-linux_aarch64.whl
+
+<span class="c-cmd">pip3 install</span> torch-1.10.0a0+git36449ea-cp36-cp36m-linux_aarch64.whl
+
+<span class="c-cmt"># Install torchvision from source (matches PyTorch version)</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> libjpeg-dev zlib1g-dev libfreetype6-dev
+<span class="c-cmd">git clone</span> https://github.com/pytorch/vision torchvision
+<span class="c-cmd">cd</span> torchvision &amp;&amp; git checkout v0.11.0
+<span class="c-cmd">python3 setup.py install</span> <span class="c-flag">--user</span></pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">python</span><span class="desc">inference_test.py – ResNet50 inference on Jetson</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-kw">import</span> torch, torchvision, time
+<span class="c-kw">import</span> torchvision.transforms <span class="c-kw">as</span> transforms
+<span class="c-kw">from</span> PIL <span class="c-kw">import</span> Image
+
+device = torch.device(<span class="c-str">'cuda'</span> <span class="c-kw">if</span> torch.cuda.is_available() <span class="c-kw">else</span> <span class="c-str">'cpu'</span>)
+print(<span class="c-str">f"Using device: {device}"</span>)
+
+model = torchvision.models.resnet18(pretrained=True)
+model.eval().to(device)
+
+<span class="c-cmt"># Warmup</span>
+dummy = torch.randn(1, 3, 224, 224).to(device)
+<span class="c-kw">with</span> torch.no_grad():
+    <span class="c-kw">for</span> _ <span class="c-kw">in</span> range(5): model(dummy)
+
+<span class="c-cmt"># Benchmark</span>
+N = 100
+t0 = time.time()
+<span class="c-kw">with</span> torch.no_grad():
+    <span class="c-kw">for</span> _ <span class="c-kw">in</span> range(N): out = model(dummy)
+    torch.cuda.synchronize()
+elapsed = time.time() - t0
+print(<span class="c-str">f"FPS: {N/elapsed:.1f} | Latency: {elapsed/N*1000:.2f} ms"</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>No display after boot</td><td>HDMI connected after power-on</td><td>Connect HDMI before powering on Jetson. Use DisplayPort adapter if needed.</td></tr>
+          <tr><td>Jetson very slow / thermal throttling</td><td>Insufficient cooling or power</td><td>Add heatsink/fan; use 5V 4A barrel jack (not USB for 10W mode); run <code>sudo jtop</code> to monitor temp.</td></tr>
+          <tr><td>CUDA not available in PyTorch</td><td>Wrong PyTorch version for JetPack</td><td>Must use NVIDIA's prebuilt wheel, not pip install torch. Check <code>torch.version.cuda</code>.</td></tr>
+          <tr><td>OOM during inference</td><td>4GB shared with OS; model too large</td><td>Use smaller models (MobileNet, EfficientNet-B0); enable swap: <code>sudo fallocate -l 4G /var/swapfile</code>.</td></tr>
+          <tr><td>SSH connection refused</td><td>Jetson hasn't booted / wrong IP</td><td>Use <code>nmap -sn 192.168.x.0/24</code> to scan for Jetson IP; check router DHCP table.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout note"><span class="callout-icon">ℹ️</span><div class="callout-body"><strong>Simulating Jetson on x86 (WSL2)</strong><p>If physical Jetson is unavailable, install QEMU and emulate ARM: <code>sudo apt install qemu-user-static</code>. Alternatively, use NVIDIA's Jetson emulation container: <code>docker run --runtime nvidia nvcr.io/nvidia/l4t-base:r32.6.1</code> (requires host NVIDIA GPU).</p></div></div>
+  </div>
+</div><!-- end exp6 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 7
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp7">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>07</strong></div>
+    <div class="exp-title">
+      <h2>GPU Virtualization with Docker / NVIDIA Container Toolkit</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Deploy and monitor GPU-enabled containers for workload isolation and sharing.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">Docker</span><span class="tag green">NVIDIA Container Toolkit</span><span class="tag purple">Isolation</span><span class="tag orange">GPU Sharing</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <p>GPU virtualization enables multiple workloads or users to share a single physical GPU. Unlike CPU virtualization, GPU VMs historically required full hardware passthrough (vGPU/VFIO). The NVIDIA Container Toolkit (formerly nvidia-docker) provides a lightweight alternative: it mounts GPU drivers and devices into Docker containers, giving each container direct GPU access with namespace isolation.</p>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>Container vs VM GPU Isolation</h4>
+        <ul>
+          <li><strong>Docker + Container Toolkit:</strong> Namespace isolation; shared GPU memory; near-zero overhead; no VM hypervisor. CUDA Context per container.</li>
+          <li><strong>NVIDIA vGPU:</strong> Hardware-mediated partitioning; strict memory isolation; requires licensed vGPU driver (datacenter use); low overhead via SR-IOV on Ampere.</li>
+          <li><strong>MIG (Multi-Instance GPU):</strong> Ampere+ hardware partitioning; divides SM and memory into independent instances; true isolation; no driver license needed.</li>
+          <li><strong>CUDA MPS:</strong> Multi-Process Service; shares GPU between processes efficiently; reduces context switching overhead; no memory isolation.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Container Toolkit Architecture</h4>
+        <ul>
+          <li>Docker daemon → <code>nvidia-container-runtime</code> hook → mounts <code>/dev/nvidia*</code> devices and driver libraries into container.</li>
+          <li>Container sees GPU as if bare-metal; full CUDA support without installing GPU driver inside container.</li>
+          <li>Only CUDA toolkit (user-space libraries) needs to be in the container image.</li>
+          <li>Resource limiting: <code>--gpus device=0</code> restricts to specific GPUs; <code>CUDA_VISIBLE_DEVICES</code> further limits visibility.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>Installation on WSL2 / Ubuntu</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">bash</span><span class="desc">Docker and NVIDIA Container Toolkit installation</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre><span class="c-cmt">══════════════════════════════════════</span>
+<span class="c-cmt">STEP 1: Install Docker Engine</span>
+<span class="c-cmt">══════════════════════════════════════</span>
+<span class="c-cmt"># Remove old Docker packages if present</span>
+<span class="c-cmd">sudo apt remove</span> <span class="c-flag">-y</span> docker docker.io containerd runc 2>/dev/null
+
+<span class="c-cmt"># Add Docker's official GPG key</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> ca-certificates curl gnupg
+<span class="c-cmd">sudo install</span> <span class="c-flag">-m 0755 -d</span> <span class="c-path">/etc/apt/keyrings</span>
+<span class="c-cmd">curl</span> <span class="c-flag">-fsSL</span> https://download.docker.com/linux/ubuntu/gpg \
+  <span class="c-flag">|</span> <span class="c-cmd">sudo gpg</span> <span class="c-flag">--dearmor -o</span> <span class="c-path">/etc/apt/keyrings/docker.gpg</span>
+
+<span class="c-cmt"># Add Docker repository</span>
+echo <span class="c-str">"deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
+  https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"</span> \
+  <span class="c-flag">| sudo tee</span> <span class="c-path">/etc/apt/sources.list.d/docker.list</span> > /dev/null
+
+<span class="c-cmd">sudo apt update</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+<span class="c-cmt"># Start Docker service</span>
+<span class="c-cmd">sudo service docker start</span>   <span class="c-cmt"># WSL2 uses service, not systemctl</span>
+<span class="c-cmt"># On native Linux: sudo systemctl enable --now docker</span>
+
+<span class="c-cmt"># Add current user to docker group (avoid sudo for docker)</span>
+<span class="c-cmd">sudo usermod</span> <span class="c-flag">-aG</span> docker <span class="c-var">$USER</span>
+<span class="c-cmt"># Log out and back in for group change to take effect</span>
+newgrp docker   <span class="c-cmt"># Or: use this in current session</span>
+
+<span class="c-cmt"># Verify Docker works</span>
+<span class="c-cmd">docker run</span> hello-world
+
+<span class="c-cmt">══════════════════════════════════════</span>
+<span class="c-cmt">STEP 2: Install NVIDIA Container Toolkit</span>
+<span class="c-cmt">══════════════════════════════════════</span>
+<span class="c-cmd">curl</span> <span class="c-flag">-fsSL</span> https://nvidia.github.io/libnvidia-container/gpgkey \
+  <span class="c-flag">| sudo gpg --dearmor -o</span> <span class="c-path">/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg</span>
+
+<span class="c-cmd">curl</span> <span class="c-flag">-s -L</span> https://nvidia.github.io/libnvidia-container/stable/deb/nvidia-container-toolkit.list \
+  <span class="c-flag">| sed 's#deb https://#deb [signed-by=/usr/share/keyrings/nvidia-container-toolkit-keyring.gpg] https://#g'</span> \
+  <span class="c-flag">| sudo tee</span> <span class="c-path">/etc/apt/sources.list.d/nvidia-container-toolkit.list</span>
+
+<span class="c-cmd">sudo apt update</span>
+<span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> nvidia-container-toolkit
+
+<span class="c-cmt"># Configure Docker to use NVIDIA runtime</span>
+<span class="c-cmd">sudo nvidia-ctk runtime configure</span> <span class="c-flag">--runtime</span>=docker
+<span class="c-cmd">sudo service docker restart</span>
+
+<span class="c-cmt"># Verify GPU access in container</span>
+<span class="c-cmd">docker run</span> <span class="c-flag">--rm --gpus all</span> nvidia/cuda:12.3.0-base-ubuntu22.04 nvidia-smi</pre>
+    </div>
+    <div class="callout danger"><span class="callout-icon">🔴</span><div class="callout-body"><strong>WSL2 Docker: systemctl doesn't work</strong><p>WSL2 doesn't run systemd by default. Use <code>sudo service docker start</code> instead of <code>systemctl</code>. To enable systemd in WSL2: add <code>[boot] systemd=true</code> to <code>/etc/wsl.conf</code> and restart WSL with <code>wsl --shutdown</code> from PowerShell.</p></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – GPU Container Workloads</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Run GPU-enabled CUDA container</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Launch and verify GPU containers</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmt"># Run with ALL GPUs</span>
+<span class="c-cmd">docker run</span> <span class="c-flag">--rm --gpus all</span> \
+  nvidia/cuda:12.3.0-runtime-ubuntu22.04 \
+  nvidia-smi
+
+<span class="c-cmt"># Run with specific GPU (device 0 only)</span>
+<span class="c-cmd">docker run</span> <span class="c-flag">--rm --gpus device=0</span> \
+  nvidia/cuda:12.3.0-runtime-ubuntu22.04 \
+  nvidia-smi
+
+<span class="c-cmt"># Interactive CUDA development container</span>
+<span class="c-cmd">docker run</span> <span class="c-flag">-it --rm --gpus all</span> \
+  <span class="c-flag">-v $HOME/cuda-code:/workspace</span> \
+  <span class="c-flag">-w /workspace</span> \
+  nvidia/cuda:12.3.0-devel-ubuntu22.04 \
+  bash
+
+<span class="c-cmt"># Inside container: compile and run CUDA code</span>
+<span class="c-cmd">nvcc</span> <span class="c-flag">-o</span> vector_add vector_add.cu <span class="c-flag">-arch=native</span>
+<span class="c-cmd">./vector_add</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Deploy multiple containers sharing one GPU</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">yaml</span><span class="desc">docker-compose.yml – multi-container GPU workloads</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">version</span>: <span class="c-str">'3.8'</span>
+<span class="c-kw">services</span>:
+  <span class="c-kw">workload_a</span>:
+    image: nvidia/cuda:12.3.0-runtime-ubuntu22.04
+    <span class="c-kw">deploy</span>:
+      <span class="c-kw">resources</span>:
+        <span class="c-kw">reservations</span>:
+          <span class="c-kw">devices</span>:
+            - <span class="c-kw">driver</span>: nvidia
+              <span class="c-kw">count</span>: 1
+              <span class="c-kw">capabilities</span>: [gpu]
+    <span class="c-kw">environment</span>:
+      - CUDA_VISIBLE_DEVICES=0
+    <span class="c-kw">command</span>: nvidia-smi
+
+  <span class="c-kw">workload_b</span>:
+    image: nvidia/cuda:12.3.0-runtime-ubuntu22.04
+    <span class="c-kw">deploy</span>:
+      <span class="c-kw">resources</span>:
+        <span class="c-kw">reservations</span>:
+          <span class="c-kw">devices</span>:
+            - <span class="c-kw">driver</span>: nvidia
+              <span class="c-kw">count</span>: 1
+              <span class="c-kw">capabilities</span>: [gpu]
+    <span class="c-kw">environment</span>:
+      - CUDA_VISIBLE_DEVICES=0
+    <span class="c-kw">command</span>: nvidia-smi</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Launch and monitor multi-container GPU sharing</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">docker compose up</span>
+
+<span class="c-cmt"># Monitor GPU utilization from host while containers run</span>
+<span class="c-cmd">watch</span> <span class="c-flag">-n0.5</span> <span class="c-str">"nvidia-smi --query-compute-apps=pid,name,used_memory \
+  --format=csv,noheader"</span>
+
+<span class="c-cmt"># See per-container GPU process isolation</span>
+<span class="c-cmd">nvidia-smi pmon</span> <span class="c-flag">-s u -d 1</span>  <span class="c-cmt"># Process monitor, per-second utilization</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Build custom GPU-enabled image</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">dockerfile</span><span class="desc">Dockerfile for GPU ML container</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">FROM</span> nvidia/cuda:12.3.0-runtime-ubuntu22.04
+
+<span class="c-kw">RUN</span> apt-get update &amp;&amp; apt-get install -y python3 python3-pip &amp;&amp; rm -rf /var/lib/apt/lists/*
+
+<span class="c-kw">RUN</span> pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu121
+
+<span class="c-kw">COPY</span> inference_test.py /app/
+<span class="c-kw">WORKDIR</span> /app
+
+<span class="c-kw">CMD</span> ["python3", "inference_test.py"]</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Build and run custom image</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">docker build</span> <span class="c-flag">-t</span> my-gpu-app <span class="c-flag">.</span>
+<span class="c-cmd">docker run</span> <span class="c-flag">--rm --gpus all</span> my-gpu-app</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Error</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>"docker: permission denied"</td><td>User not in docker group</td><td><code>sudo usermod -aG docker $USER</code> then <code>newgrp docker</code></td></tr>
+          <tr><td>"could not select device driver nvidia"</td><td>nvidia-container-toolkit not configured</td><td><code>sudo nvidia-ctk runtime configure --runtime=docker && sudo service docker restart</code></td></tr>
+          <tr><td>"CUDA_ERROR_NO_DEVICE" inside container</td><td>--gpus flag missing</td><td>Always include <code>--gpus all</code> or <code>--gpus device=N</code></td></tr>
+          <tr><td>Container CUDA version mismatch</td><td>Container CUDA > host driver CUDA</td><td>Use container image matching host CUDA version: <code>nvidia-smi</code> shows max CUDA version supported</td></tr>
+          <tr><td>docker compose: no GPU config</td><td>Compose v2 syntax required</td><td>Use <code>deploy.resources.reservations.devices</code> (not <code>runtime: nvidia</code>)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp7 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 8
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp8">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>08</strong></div>
+    <div class="exp-title">
+      <h2>Performance Benchmarking: CPU vs GPU / Pipeline vs Parallel</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Run comparative workloads; analyze performance using Amdahl's Law metrics.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">Amdahl's Law</span><span class="tag purple">FLOPS</span><span class="tag green">perf</span><span class="tag orange">sysbench</span><span class="tag red">speedup</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <div class="sub-section">
+      <h3>Amdahl's Law</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text</span><span class="desc">Amdahl's Law formula and implications</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre">Speedup(n) = 1 / ( (1 - P) + P/n )
+
+Where:
+  P = fraction of program that can be parallelized (0 to 1)
+  n = number of processors / parallel units
+  (1-P) = serial fraction (bottleneck)
+
+Examples:
+  P=0.90, n=4  → Speedup = 1/(0.10 + 0.225) = 3.08x
+  P=0.90, n=∞  → Speedup = 1/0.10 = 10x (maximum possible)
+  P=0.50, n=∞  → Speedup = 1/0.50 = 2x  (severe serial bottleneck)
+
+Gustafson's Law (weak scaling):
+  Speedup = n - (1-P)(n-1)
+  Assumes problem size scales with processors.
+  More optimistic for large-scale scientific computing.</pre>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>CPU vs GPU Performance Characteristics</h3>
+      <div class="two-col">
+        <div class="info-card">
+          <h4>CPU Strengths</h4>
+          <ul>
+            <li>Low latency: ~ns for single instruction</li>
+            <li>Complex control flow; branch prediction</li>
+            <li>Large caches; random access patterns</li>
+            <li>Sequential code; OS/I/O; sparse computations</li>
+            <li>Typically 8-64 cores, 1-4 GHz</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h4>GPU Strengths</h4>
+          <ul>
+            <li>High throughput: thousands of cores in parallel</li>
+            <li>Dense, regular computation; no branch divergence</li>
+            <li>High memory bandwidth (1–3 TB/s vs CPU's ~100 GB/s)</li>
+            <li>Matrix multiply, convolutions, FFTs, Monte Carlo</li>
+            <li>FP32 peak: RTX 4090 = 82.6 TFLOPS vs i9-13900K = ~0.3 TFLOPS</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – Benchmarking Suite</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>CPU benchmarks</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">CPU performance benchmarks</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre><span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> sysbench stress-ng linpack
+
+<span class="c-cmt"># CPU integer benchmark (single-threaded)</span>
+<span class="c-cmd">sysbench</span> cpu <span class="c-flag">--cpu-max-prime</span>=20000 <span class="c-flag">--threads</span>=1 run
+
+<span class="c-cmt"># CPU integer benchmark (all threads)</span>
+<span class="c-cmd">sysbench</span> cpu <span class="c-flag">--cpu-max-prime</span>=20000 <span class="c-flag">--threads=$(nproc)</span> run
+
+<span class="c-cmt"># Compare: speedup = multi_thread_events / single_thread_events</span>
+<span class="c-cmt"># Theoretical max speedup = nproc (Amdahl: P≈1 for this workload)</span>
+
+<span class="c-cmt"># Memory bandwidth benchmark</span>
+<span class="c-cmd">sysbench</span> memory <span class="c-flag">--memory-block-size</span>=1M <span class="c-flag">--memory-total-size</span>=10G run
+
+<span class="c-cmt"># stress-ng: sustained CPU stress with metrics</span>
+<span class="c-cmd">stress-ng</span> <span class="c-flag">--cpu $(nproc)</span> <span class="c-flag">--cpu-method</span>=matrixprod <span class="c-flag">--metrics-brief</span> <span class="c-flag">--timeout</span> 30s
+
+<span class="c-cmt"># perf: hardware performance counters</span>
+<span class="c-cmd">sudo apt install</span> linux-tools-common linux-tools-generic
+<span class="c-cmd">perf stat</span> <span class="c-flag">-e</span> cycles,instructions,cache-misses,branch-misses <span class="c-path">./hazard_test</span>
+<span class="c-cmt"># IPC = instructions / cycles  (higher = better pipeline efficiency)</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>CPU vs GPU matrix multiplication</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">python</span><span class="desc">cpu_vs_gpu_matmul.py</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">import</span> torch, time, sys
+
+<span class="c-kw">def</span> benchmark(device, N=4096, iterations=20):
+    A = torch.randn(N, N, device=device)
+    B = torch.randn(N, N, device=device)
+    <span class="c-cmt"># Warmup</span>
+    <span class="c-kw">for</span> _ <span class="c-kw">in</span> range(3): C = torch.matmul(A, B)
+    <span class="c-kw">if</span> device == <span class="c-str">'cuda'</span>: torch.cuda.synchronize()
+    
+    t0 = time.perf_counter()
+    <span class="c-kw">for</span> _ <span class="c-kw">in</span> range(iterations):
+        C = torch.matmul(A, B)
+    <span class="c-kw">if</span> device == <span class="c-str">'cuda'</span>: torch.cuda.synchronize()
+    elapsed = time.perf_counter() - t0
+    
+    flops = 2 * N**3 * iterations  <span class="c-cmt"># FMA: 2 ops per multiply-add</span>
+    gflops = flops / elapsed / 1e9
+    print(<span class="c-str">f"{device.upper():4s} | N={N} | {elapsed/iterations*1000:.2f} ms/iter | {gflops:.1f} GFLOPS"</span>)
+    <span class="c-kw">return</span> elapsed / iterations
+
+cpu_t = benchmark(<span class="c-str">'cpu'</span>)
+<span class="c-kw">if</span> torch.cuda.is_available():
+    gpu_t = benchmark(<span class="c-str">'cuda'</span>)
+    print(<span class="c-str">f"\nSpeedup: {cpu_t/gpu_t:.1f}x"</span>)</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Run and log results</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmd">pip3 install</span> torch --index-url https://download.pytorch.org/whl/cu121
+<span class="c-cmd">python3</span> cpu_vs_gpu_matmul.py <span class="c-flag">| tee</span> <span class="c-path">benchmark_results.txt</span>
+
+<span class="c-cmt"># Try different matrix sizes to see crossover point</span>
+<span class="c-cmt"># Small N (N=64): CPU may win due to GPU launch overhead</span>
+<span class="c-cmt"># Large N (N=4096+): GPU dominates by 50-200x</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Thread scaling and Amdahl's Law verification</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Scale threads and measure speedup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt">#!/bin/bash</span>
+<span class="c-cmt"># amdahl_test.sh – measure speedup vs thread count</span>
+echo <span class="c-str">"Threads,Events/sec"</span>
+
+<span class="c-kw">for</span> T <span class="c-kw">in</span> 1 2 4 8 16 $(nproc); <span class="c-kw">do</span>
+  RESULT=$(<span class="c-cmd">sysbench</span> cpu <span class="c-flag">--cpu-max-prime</span>=20000 <span class="c-flag">--threads=$T</span> run 2>&1 \
+    <span class="c-flag">|</span> <span class="c-cmd">grep</span> <span class="c-str">"events per second"</span> \
+    <span class="c-flag">|</span> <span class="c-cmd">awk</span> <span class="c-str">'{print $NF}'</span>)
+  echo <span class="c-str">"$T,$RESULT"</span>
+<span class="c-kw">done</span>
+
+<span class="c-cmt"># Then plot in Python:</span>
+<span class="c-cmd">python3</span> <span class="c-flag">-c</span> <span class="c-str">"
+import csv, sys
+data = list(csv.reader(open('scaling.csv')))
+# headers + values
+threads = [int(r[0]) for r in data[1:]]
+events = [float(r[1]) for r in data[1:]]
+base = events[0]
+speedup = [e/base for e in events]
+for t, s in zip(threads, speedup):
+    print(f'Threads={t:3d}  Speedup={s:.2f}x  (Amdahl P≈{1-(1/s)/(1-1/t):.3f} for t>1)')
+"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Pipeline vs parallel comparison</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">c</span><span class="desc">pipeline_vs_parallel.c – demonstrates pipelining speedup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">#include</span> <span class="c-str">&lt;stdio.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;omp.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;time.h&gt;</span>
+<span class="c-kw">#define</span> N (1&lt;&lt;24)
+<span class="c-kw">float</span> A[N], B[N], C[N];
+
+<span class="c-kw">void</span> serial() {
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0;i&lt;N;i++) C[i]=A[i]+B[i];
+}
+
+<span class="c-kw">void</span> parallel() {
+    <span class="c-kw">#pragma omp parallel for simd schedule(static)</span>
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0;i&lt;N;i++) C[i]=A[i]+B[i];
+}
+
+<span class="c-kw">double</span> time_fn(<span class="c-kw">void</span>(*fn)()) {
+    <span class="c-kw">struct</span> timespec t0,t1;
+    clock_gettime(CLOCK_MONOTONIC,&amp;t0);
+    fn();
+    clock_gettime(CLOCK_MONOTONIC,&amp;t1);
+    <span class="c-kw">return</span> (t1.tv_sec-t0.tv_sec)+(t1.tv_nsec-t0.tv_nsec)/1e9;
+}
+
+<span class="c-kw">int</span> main() {
+    <span class="c-kw">for</span> (<span class="c-kw">int</span> i=0;i&lt;N;i++){A[i]=i;B[i]=N-i;}
+    printf(<span class="c-str">"Serial:   %.3f s\n"</span>, time_fn(serial));
+    printf(<span class="c-str">"Parallel: %.3f s\n"</span>, time_fn(parallel));
+    <span class="c-kw">return</span> 0;
+}</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Compile with OpenMP</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmd">gcc</span> <span class="c-flag">-O2 -fopenmp -march=native -o</span> pipeline_vs_parallel pipeline_vs_parallel.c
+<span class="c-cmd">OMP_NUM_THREADS=1</span> <span class="c-cmd">./pipeline_vs_parallel</span>   <span class="c-cmt"># Single thread</span>
+<span class="c-cmd">OMP_NUM_THREADS=$(nproc)</span> <span class="c-cmd">./pipeline_vs_parallel</span>  <span class="c-cmt"># All threads</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>perf: "permission denied"</td><td>Kernel perf event restriction</td><td><code>echo -1 | sudo tee /proc/sys/kernel/perf_event_paranoid</code></td></tr>
+          <tr><td>OpenMP parallel slower than serial</td><td>Thread spawn overhead > work</td><td>Increase N or use <code>schedule(static)</code>; ensure <code>-fopenmp</code> flag used</td></tr>
+          <tr><td>GPU matmul slower than CPU at small N</td><td>CUDA kernel launch latency ~5–10µs</td><td>Expected and correct; crossover typically at N=256–512 for FP32 matmul</td></tr>
+          <tr><td>sysbench: events/sec doesn't scale linearly</td><td>Memory bandwidth bottleneck / Amdahl's serial fraction</td><td>Expected; compute the P parameter from your measurements and compare to theoretical max</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div><!-- end exp8 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 9
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp9">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>09</strong></div>
+    <div class="exp-title">
+      <h2>Cloud GPU Instance Setup (AWS / Azure / Google Cloud)</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Create GPU-enabled VM instances; test model deployment remotely using SSH or Jupyter.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">AWS EC2</span><span class="tag blue">Azure</span><span class="tag green">GCP</span><span class="tag purple">SSH</span><span class="tag orange">Jupyter</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <div class="three-col">
+      <div class="info-card">
+        <h4>AWS GPU Instances</h4>
+        <ul>
+          <li><strong>p3.2xlarge:</strong> Tesla V100 16GB; 8 vCPUs; $3.06/hr</li>
+          <li><strong>p4d.24xlarge:</strong> 8× A100 40GB; NVLink; $32.77/hr</li>
+          <li><strong>g4dn.xlarge:</strong> T4 16GB; cheapest GPU instance; $0.526/hr</li>
+          <li><strong>g5.xlarge:</strong> A10G 24GB; good for inference; $1.006/hr</li>
+          <li>Use Spot Instances for 70-90% cost reduction (interruptible)</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Azure GPU VMs</h4>
+        <ul>
+          <li><strong>NC6s_v3:</strong> Tesla V100 16GB</li>
+          <li><strong>NC4as_T4_v3:</strong> T4 16GB; $0.526/hr</li>
+          <li><strong>ND40rs_v2:</strong> 8× V100 32GB; InfiniBand</li>
+          <li>Use Spot VMs for cost reduction</li>
+          <li>Azure ML Studio provides managed Jupyter environment</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Google Cloud GPU VMs</h4>
+        <ul>
+          <li><strong>n1-standard + T4:</strong> ~$0.35/hr for T4</li>
+          <li><strong>a2-highgpu-1g:</strong> A100 40GB</li>
+          <li>Vertex AI Workbench: managed Jupyter with GPU</li>
+          <li>Preemptible VMs: 60-91% cheaper (can be reclaimed)</li>
+          <li>Google Colab Pro+: cheapest option for experimentation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="callout tip"><span class="callout-icon">✅</span><div class="callout-body"><strong>Free GPU Cloud Options for Students</strong><p>Google Colab (free T4), Kaggle Notebooks (free P100/T4), AWS Free Tier (no GPU but good for setup practice), Oracle Cloud Free Tier (some instances), Vast.ai (community GPUs, cheapest), Paperspace Gradient (free GPU tier).</p></div></div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>AWS EC2 GPU Instance Setup</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>Install AWS CLI on WSL2</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">AWS CLI installation and configuration</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmd">curl</span> <span class="c-str">"https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip"</span> <span class="c-flag">-o</span> awscliv2.zip
+<span class="c-cmd">unzip</span> awscliv2.zip
+<span class="c-cmd">sudo ./aws/install</span>
+<span class="c-cmd">aws</span> <span class="c-flag">--version</span>
+
+<span class="c-cmt"># Configure credentials (from AWS Console → IAM → Access Keys)</span>
+<span class="c-cmd">aws configure</span>
+<span class="c-cmt"># Prompts for: AWS Access Key ID, Secret Access Key, Region, Output format</span>
+<span class="c-cmt"># Region: ap-south-1 (Mumbai), us-east-1 (Virginia), etc.</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>Launch GPU instance via AWS CLI</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Launch EC2 GPU instance</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Create key pair (save the .pem file securely!)</span>
+<span class="c-cmd">aws ec2 create-key-pair</span> \
+  <span class="c-flag">--key-name</span> gpu-lab-key \
+  <span class="c-flag">--query</span> <span class="c-str">'KeyMaterial'</span> \
+  <span class="c-flag">--output</span> text > <span class="c-path">~/gpu-lab-key.pem</span>
+<span class="c-cmd">chmod</span> 400 <span class="c-path">~/gpu-lab-key.pem</span>
+
+<span class="c-cmt"># Get default VPC and subnet</span>
+VPC_ID=$(<span class="c-cmd">aws ec2 describe-vpcs</span> <span class="c-flag">--filters</span> Name=isDefault,Values=true \
+  <span class="c-flag">--query</span> <span class="c-str">'Vpcs[0].VpcId'</span> <span class="c-flag">--output</span> text)
+
+<span class="c-cmt"># Create security group allowing SSH</span>
+SG_ID=$(<span class="c-cmd">aws ec2 create-security-group</span> \
+  <span class="c-flag">--group-name</span> gpu-lab-sg \
+  <span class="c-flag">--description</span> <span class="c-str">"GPU Lab Security Group"</span> \
+  <span class="c-flag">--vpc-id</span> $VPC_ID \
+  <span class="c-flag">--query</span> <span class="c-str">'GroupId'</span> <span class="c-flag">--output</span> text)
+
+<span class="c-cmd">aws ec2 authorize-security-group-ingress</span> \
+  <span class="c-flag">--group-id</span> $SG_ID \
+  <span class="c-flag">--protocol</span> tcp \
+  <span class="c-flag">--port</span> 22 \
+  <span class="c-flag">--cidr</span> 0.0.0.0/0
+
+<span class="c-cmt"># Also open port 8888 for Jupyter</span>
+<span class="c-cmd">aws ec2 authorize-security-group-ingress</span> \
+  <span class="c-flag">--group-id</span> $SG_ID \
+  <span class="c-flag">--protocol</span> tcp \
+  <span class="c-flag">--port</span> 8888 \
+  <span class="c-flag">--cidr</span> 0.0.0.0/0
+
+<span class="c-cmt"># Launch g4dn.xlarge (cheapest GPU instance)</span>
+<span class="c-cmt"># AMI: Deep Learning AMI (Ubuntu 22.04) – has CUDA + PyTorch pre-installed</span>
+<span class="c-cmt"># Find current AMI ID: aws ec2 describe-images --owners amazon ...</span>
+INSTANCE_ID=$(<span class="c-cmd">aws ec2 run-instances</span> \
+  <span class="c-flag">--image-id</span> ami-0abc123def456789  <span class="c-cmt"># Replace with current Deep Learning AMI ID</span> \
+  <span class="c-flag">--instance-type</span> g4dn.xlarge \
+  <span class="c-flag">--key-name</span> gpu-lab-key \
+  <span class="c-flag">--security-group-ids</span> $SG_ID \
+  <span class="c-flag">--count</span> 1 \
+  <span class="c-flag">--query</span> <span class="c-str">'Instances[0].InstanceId'</span> \
+  <span class="c-flag">--output</span> text)
+
+echo "Instance ID: $INSTANCE_ID"
+
+<span class="c-cmt"># Wait for instance to be running</span>
+<span class="c-cmd">aws ec2 wait instance-running</span> <span class="c-flag">--instance-ids</span> $INSTANCE_ID
+
+<span class="c-cmt"># Get public IP</span>
+PUBLIC_IP=$(<span class="c-cmd">aws ec2 describe-instances</span> \
+  <span class="c-flag">--instance-ids</span> $INSTANCE_ID \
+  <span class="c-flag">--query</span> <span class="c-str">'Reservations[0].Instances[0].PublicIpAddress'</span> \
+  <span class="c-flag">--output</span> text)
+echo "Public IP: $PUBLIC_IP"
+
+<span class="c-cmt"># ALWAYS STOP/TERMINATE when done to avoid charges!</span>
+<span class="c-cmt"># aws ec2 stop-instances --instance-ids $INSTANCE_ID</span>
+<span class="c-cmt"># aws ec2 terminate-instances --instance-ids $INSTANCE_ID</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Connect via SSH and set up Jupyter</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">SSH connection and Jupyter setup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Connect via SSH</span>
+<span class="c-cmd">ssh</span> <span class="c-flag">-i</span> <span class="c-path">~/gpu-lab-key.pem</span> ubuntu@<span class="c-var">$PUBLIC_IP</span>
+
+<span class="c-cmt">════ On the Remote GPU Instance ════</span>
+<span class="c-cmt"># Verify GPU</span>
+<span class="c-cmd">nvidia-smi</span>
+
+<span class="c-cmt"># Start Jupyter (no browser, all IPs, no token for lab use)</span>
+<span class="c-cmd">jupyter notebook</span> \
+  <span class="c-flag">--no-browser</span> \
+  <span class="c-flag">--ip=0.0.0.0</span> \
+  <span class="c-flag">--port=8888</span> \
+  <span class="c-flag">--NotebookApp.token=''</span> \
+  <span class="c-flag">--NotebookApp.password=''</span>  <span class="c-cmt"># Remove for production!</span>
+
+<span class="c-cmt">════ On Your Local Machine ════</span>
+<span class="c-cmt"># Open browser to: http://PUBLIC_IP:8888</span>
+
+<span class="c-cmt"># Or use SSH tunnel (more secure – no open port needed)</span>
+<span class="c-cmd">ssh</span> <span class="c-flag">-i</span> <span class="c-path">~/gpu-lab-key.pem</span> \
+  <span class="c-flag">-L 8888:localhost:8888</span> \
+  ubuntu@<span class="c-var">$PUBLIC_IP</span>
+<span class="c-cmt"># Then access: http://localhost:8888</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Google Cloud / GCP alternative</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">GCP GPU instance setup</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Install gcloud CLI on WSL2</span>
+<span class="c-cmd">curl</span> https://sdk.cloud.google.com <span class="c-flag">|</span> bash
+<span class="c-cmd">exec</span> -l $SHELL
+<span class="c-cmd">gcloud init</span>
+
+<span class="c-cmt"># Create GPU instance</span>
+<span class="c-cmd">gcloud compute instances create</span> gpu-lab-vm \
+  <span class="c-flag">--zone</span>=us-central1-a \
+  <span class="c-flag">--machine-type</span>=n1-standard-4 \
+  <span class="c-flag">--accelerator</span>=type=nvidia-tesla-t4,count=1 \
+  <span class="c-flag">--image-family</span>=pytorch-latest-gpu \
+  <span class="c-flag">--image-project</span>=deeplearning-platform-release \
+  <span class="c-flag">--maintenance-policy</span>=TERMINATE \
+  <span class="c-flag">--metadata</span>=<span class="c-str">"install-nvidia-driver=True"</span> \
+  <span class="c-flag">--boot-disk-size</span>=50GB
+
+<span class="c-cmt"># SSH via gcloud (manages keys automatically)</span>
+<span class="c-cmd">gcloud compute ssh</span> gpu-lab-vm <span class="c-flag">--zone</span>=us-central1-a
+
+<span class="c-cmt"># STOP when done</span>
+<span class="c-cmd">gcloud compute instances stop</span> gpu-lab-vm <span class="c-flag">--zone</span>=us-central1-a</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>SSH: "Connection refused"</td><td>Instance not fully booted / wrong port / firewall</td><td>Wait 2-3 min after launch; verify security group allows port 22 from your IP; verify public IP is correct.</td></tr>
+          <tr><td>SSH: "Permission denied (publickey)"</td><td>Wrong key file or wrong username</td><td>Verify <code>chmod 400 key.pem</code>; AWS Deep Learning AMI uses <code>ubuntu</code>, Amazon Linux uses <code>ec2-user</code>.</td></tr>
+          <tr><td>GPU instance quota exceeded</td><td>AWS/GCP requires quota request for GPU instances</td><td>Request quota increase in AWS Service Quotas / GCP IAM quotas for your region. Try different region.</td></tr>
+          <tr><td>Jupyter not accessible from browser</td><td>Security group doesn't allow port 8888</td><td>Add inbound rule for port 8888 in security group; or use SSH tunnel (safer).</td></tr>
+          <tr><td>Unexpected AWS bill</td><td>Forgot to stop/terminate instance</td><td>Set up AWS Cost Alerts; terminate (not stop) instance to avoid EBS storage costs. Use instance scheduler.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn"><span class="callout-icon">💰</span><div class="callout-body"><strong>Cost Control – Critical</strong><p>Always terminate cloud GPU instances when done. Set up billing alerts (AWS: CloudWatch → Billing Alarm; GCP: Budgets &amp; Alerts). A forgotten g4dn.xlarge at $0.526/hr = $12.63/day = $378/month. Use spot/preemptible instances (70-90% cheaper) for non-critical work.</p></div></div>
+  </div>
+</div><!-- end exp9 -->
+
+<!-- ═══════════════════════════════════════════════════
+     EXPERIMENT 10
+═══════════════════════════════════════════════════ -->
+<div class="experiment" id="exp10">
+  <div class="exp-header">
+    <div class="exp-badge"><span>Exp.</span><strong>10</strong></div>
+    <div class="exp-title">
+      <h2>Energy Efficiency and Thermal Profiling of CPU/GPU Systems</h2>
+      <div class="obj"><span class="obj-label">Objective:</span> Measure and analyze power consumption and thermal behavior; understand energy-performance trade-offs.</div>
+    </div>
+  </div>
+  <div class="tags">
+    <span class="tag blue">RAPL</span><span class="tag green">nvidia-smi</span><span class="tag orange">TDP</span><span class="tag purple">Performance/Watt</span><span class="tag red">Thermal Throttling</span>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">📖</span>Theory</div>
+    <div class="sub-section">
+      <h3>Power Dissipation in CMOS</h3>
+      <p>Total CPU/GPU power is the sum of dynamic and static (leakage) power:</p>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">text</span><span class="desc">Power consumption model</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre">P_total = P_dynamic + P_static
+
+P_dynamic = α × C × V² × f
+  where: α = activity factor (fraction of gates switching)
+         C = switched capacitance
+         V = supply voltage
+         f = clock frequency
+
+P_static = I_leak × V  (leakage current × voltage)
+
+Implications:
+• Reducing V by 10% reduces dynamic power by 19% (V²)
+• Reducing f by 10% reduces dynamic power by 10% but also allows lower V
+• Modern CPUs combine VFScaling: drop V AND f together for major power savings
+• At low utilization, static power dominates (justify sleep states)</pre>
+      </div>
+    </div>
+    <div class="two-col">
+      <div class="info-card">
+        <h4>TDP and Power States</h4>
+        <ul>
+          <li><strong>TDP (Thermal Design Power):</strong> Sustained power the cooling solution must handle. NOT peak power (Turbo can exceed TDP briefly).</li>
+          <li><strong>PL1 (Power Limit 1):</strong> Long-term (sustained) power limit ≈ TDP.</li>
+          <li><strong>PL2 (Power Limit 2):</strong> Short-term boost limit; often 2-4× TDP for seconds.</li>
+          <li><strong>C-states:</strong> CPU idle states (C0=active, C1=halt, C6=deep sleep). Each reduces power progressively.</li>
+          <li><strong>P-states:</strong> Performance states; voltage/frequency operating points.</li>
+          <li><strong>T-states:</strong> Thermal control; clock modulation (throttle) when thermal limit exceeded.</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h4>Performance Per Watt (PPW)</h4>
+        <ul>
+          <li>Primary metric in HPC, data centers, edge computing, and mobile.</li>
+          <li>PPW = Performance (FLOPS, IOPS, FPS) / Power (Watts)</li>
+          <li>GPU PPW often better than CPU for massively parallel tasks.</li>
+          <li>Apple M-series excels at PPW (ARM + process node + unified memory).</li>
+          <li>DVFS (Dynamic Voltage and Frequency Scaling) maximizes PPW by operating at the most efficient voltage-frequency knee.</li>
+          <li>Thermal throttling is the automatic PPW degradation when junction temperature (Tj) exceeds TjMax.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="sub-section">
+      <h3>Thermal Throttling Mechanics</h3>
+      <p>When junction temperature exceeds TjMax (typically 95–105°C for Intel/AMD, 85°C for GPUs), the hardware automatically reduces frequency via T-state clock gating. This creates a negative feedback loop: high load → high temp → throttle → lower perf → lower power → lower temp → unthrottle → repeat. Sustained throttling indicates inadequate cooling for the workload.</p>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">⚙️</span>Power Measurement Tools Setup</div>
+    <div class="code-block">
+      <div class="code-header"><span class="lang">bash</span><span class="desc">Install power and thermal monitoring tools</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+      <pre"><span class="c-cmd">sudo apt install</span> <span class="c-flag">-y</span> <span class="c-str">linux-tools-common linux-tools-generic \
+  lm-sensors powertop s-tui cpupower stress-ng</span>
+
+<span class="c-cmt"># Initialize sensor detection (run once)</span>
+<span class="c-cmd">sudo sensors-detect</span>  <span class="c-cmt"># Press Enter to accept all defaults</span>
+<span class="c-cmd">sudo modprobe</span> coretemp  <span class="c-cmt"># Load CPU temperature module</span>
+
+<span class="c-cmt"># Python tools for power analysis</span>
+<span class="c-cmd">pip3 install</span> psutil py-cpuinfo matplotlib pandas</pre>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🔬</span>Procedure – Power and Thermal Profiling</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-content">
+          <h4>CPU temperature and power monitoring</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">CPU thermal monitoring commands</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Real-time temperature sensor readings</span>
+<span class="c-cmd">watch</span> <span class="c-flag">-n0.5</span> sensors  <span class="c-cmt"># 0.5 second refresh</span>
+
+<span class="c-cmt"># Per-core temperatures from thermal zone sysfs</span>
+<span class="c-cmd">cat</span> <span class="c-path">/sys/class/thermal/thermal_zone*/temp</span>  <span class="c-cmt"># Divide by 1000 for °C</span>
+
+<span class="c-cmt"># CPU frequency (shows throttling in real time)</span>
+<span class="c-cmd">watch</span> <span class="c-flag">-n0.5</span> <span class="c-str">"cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq | awk '{printf \"%d MHz\n\", \$1/1000}'"</span>
+
+<span class="c-cmt"># RAPL (Running Average Power Limit) – Intel CPU power</span>
+<span class="c-cmt"># Read package and DRAM power from MSRs</span>
+<span class="c-cmd">sudo modprobe</span> intel_rapl_common
+<span class="c-cmd">sudo modprobe</span> intel_rapl_msr
+
+<span class="c-cmt"># RAPL energy counters (cumulative μJ)</span>
+<span class="c-cmd">cat</span> <span class="c-path">/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj</span>
+<span class="c-cmd">cat</span> <span class="c-path">/sys/class/powercap/intel-rapl/intel-rapl:0/constraint_0_power_limit_uw</span>
+<span class="c-cmt"># Divide power_limit_uw by 1e6 to get Watts (= PL1/TDP)</span>
+
+<span class="c-cmt"># Power measurement script using RAPL</span>
+<span class="c-cmd">python3</span> <span class="c-flag">-c</span> <span class="c-str">"
+import time, os
+
+def read_rapl():
+    path = '/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj'
+    try:
+        return int(open(path).read().strip())
+    except: return None
+
+e0 = read_rapl()
+t0 = time.time()
+time.sleep(1)
+e1 = read_rapl()
+t1 = time.time()
+if e0 and e1:
+    power_w = (e1 - e0) / 1e6 / (t1 - t0)
+    print(f'CPU Package Power: {power_w:.2f} W')
+else:
+    print('RAPL not available (AMD or WSL2 may not support)')
+"</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-content">
+          <h4>GPU power monitoring with nvidia-smi</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">GPU power and thermal monitoring</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Continuous GPU power monitoring</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">dmon</span> <span class="c-flag">-s</span> puc <span class="c-flag">-d</span> 1
+<span class="c-cmt"># -s puc: show power(p), utilization(u), clocks(c)</span>
+<span class="c-cmt"># -d 1: 1 second interval</span>
+
+<span class="c-cmt"># Query specific metrics</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">--query-gpu</span>=\
+power.draw,power.limit,temperature.gpu,\
+utilization.gpu,clocks.current.graphics,\
+clocks.max.graphics \
+  <span class="c-flag">--format</span>=csv <span class="c-flag">-l 1</span>  <span class="c-cmt"># Loop every 1 second</span>
+
+<span class="c-cmt"># Log GPU stats to CSV during workload</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">--query-gpu</span>=timestamp,power.draw,temperature.gpu,\
+utilization.gpu,memory.used <span class="c-flag">--format</span>=csv <span class="c-flag">-l 1</span> \
+  <span class="c-flag">--filename</span> gpu_power_log.csv &
+GPU_LOG_PID=$!
+
+<span class="c-cmt"># Run workload while logging</span>
+<span class="c-cmd">python3</span> cpu_vs_gpu_matmul.py
+
+<span class="c-cmt"># Stop logging</span>
+<span class="c-cmd">kill</span> $GPU_LOG_PID
+
+<span class="c-cmt"># Check thermal throttling</span>
+<span class="c-cmd">nvidia-smi</span> <span class="c-flag">-q -d</span> CLOCK  <span class="c-cmt"># Check if clocks are throttled</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-content">
+          <h4>Stress test with thermal monitoring</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">Simultaneous stress + thermal monitoring</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Terminal 1: Start stress test</span>
+<span class="c-cmd">stress-ng</span> <span class="c-flag">--cpu $(nproc)</span> <span class="c-flag">--timeout</span> 120s <span class="c-flag">--metrics</span>
+
+<span class="c-cmt"># Terminal 2: Monitor temps and frequency (throttle detection)</span>
+<span class="c-cmd">watch</span> <span class="c-flag">-n1</span> <span class="c-str">"
+echo '=== CPU Temps ==='
+sensors | grep -E 'Core|temp|°C'
+echo '=== CPU Freq (MHz) ==='
+cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq | sort -u | awk '{printf \"%d MHz\n\", \$1/1000}'
+echo '=== CPU Throttle Events ==='
+grep -r 'throttle' /sys/devices/system/cpu/ 2>/dev/null | head -5
+"</span>
+
+<span class="c-cmt"># s-tui: beautiful TUI with stress test + power/temp/freq</span>
+<span class="c-cmd">sudo s-tui</span>  <span class="c-cmt"># Press S to start stress; monitors all in one view</span>
+
+<span class="c-cmt"># powertop: detailed power breakdown by process/device</span>
+<span class="c-cmd">sudo powertop</span>  <span class="c-cmt"># Interactive; Tab to switch views</span>
+<span class="c-cmd">sudo powertop</span> <span class="c-flag">--html</span>=powertop_report.html  <span class="c-cmt"># HTML report</span></pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-content">
+          <h4>Comprehensive power logging script</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">python</span><span class="desc">power_logger.py – unified CPU+GPU power and temp logging</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">import</span> subprocess, time, csv, os, signal, sys
+
+<span class="c-kw">def</span> read_rapl():
+    <span class="c-str">"""Read CPU package power via RAPL (Intel)"""</span>
+    path = <span class="c-str">'/sys/class/powercap/intel-rapl/intel-rapl:0/energy_uj'</span>
+    <span class="c-kw">try</span>: <span class="c-kw">return</span> int(open(path).read())
+    <span class="c-kw">except</span>: <span class="c-kw">return</span> None
+
+<span class="c-kw">def</span> read_cpu_temp():
+    <span class="c-str">"""Read CPU temperature from sysfs thermal zones"""</span>
+    temps = []
+    <span class="c-kw">for</span> i <span class="c-kw">in</span> range(16):
+        p = <span class="c-str">f'/sys/class/thermal/thermal_zone{i}/temp'</span>
+        <span class="c-kw">try</span>: temps.append(int(open(p).read()) / 1000)
+        <span class="c-kw">except</span>: <span class="c-kw">break</span>
+    <span class="c-kw">return</span> max(temps) <span class="c-kw">if</span> temps <span class="c-kw">else</span> None
+
+<span class="c-kw">def</span> read_gpu():
+    <span class="c-str">"""Read GPU power and temp via nvidia-smi"""</span>
+    <span class="c-kw">try</span>:
+        out = subprocess.check_output(
+            [<span class="c-str">'nvidia-smi'</span>, <span class="c-str">'--query-gpu=power.draw,temperature.gpu,utilization.gpu'</span>,
+             <span class="c-str">'--format=csv,noheader,nounits'</span>], text=True).strip()
+        power, temp, util = out.split(<span class="c-str">','</span>)
+        <span class="c-kw">return</span> float(power.strip()), float(temp.strip()), float(util.strip())
+    <span class="c-kw">except</span>: <span class="c-kw">return</span> None, None, None
+
+<span class="c-kw">print</span>(<span class="c-str">"Logging power/temp (Ctrl+C to stop)..."</span>)
+e_prev, t_prev = read_rapl(), time.time()
+<span class="c-kw">with</span> open(<span class="c-str">'power_log.csv'</span>, <span class="c-str">'w'</span>, newline=<span class="c-str">''</span>) <span class="c-kw">as</span> f:
+    w = csv.writer(f)
+    w.writerow([<span class="c-str">'time'</span>,<span class="c-str">'cpu_power_w'</span>,<span class="c-str">'cpu_temp_c'</span>,<span class="c-str">'gpu_power_w'</span>,<span class="c-str">'gpu_temp_c'</span>,<span class="c-str">'gpu_util_pct'</span>])
+    <span class="c-kw">try</span>:
+        <span class="c-kw">while True</span>:
+            time.sleep(1)
+            e, t = read_rapl(), time.time()
+            cpu_p = ((e - e_prev) / 1e6 / (t - t_prev)) <span class="c-kw">if</span> e <span class="c-kw">else</span> None
+            e_prev, t_prev = e, t
+            gpu_p, gpu_t, gpu_u = read_gpu()
+            cpu_t = read_cpu_temp()
+            row = [round(t, 1), round(cpu_p, 2) <span class="c-kw">if</span> cpu_p <span class="c-kw">else</span> <span class="c-str">'N/A'</span>,
+                   cpu_t, gpu_p, gpu_t, gpu_u]
+            w.writerow(row)
+            f.flush()
+            print(<span class="c-str">f"\rCPU: {cpu_p:.1f}W {cpu_t:.1f}°C | GPU: {gpu_p}W {gpu_t}°C {gpu_u}%"</span>,
+                  end=<span class="c-str">''</span>)
+    <span class="c-kw">except</span> KeyboardInterrupt:
+        print(<span class="c-str">"\nLogged to power_log.csv"</span>)</pre>
+          </div>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">python</span><span class="desc">plot_power.py – visualize logged data</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-kw">import</span> pandas <span class="c-kw">as</span> pd
+<span class="c-kw">import</span> matplotlib.pyplot <span class="c-kw">as</span> plt
+
+df = pd.read_csv(<span class="c-str">'power_log.csv'</span>)
+df[<span class="c-str">'time'</span>] = df[<span class="c-str">'time'</span>] - df[<span class="c-str">'time'</span>].iloc[0]
+
+fig, axes = plt.subplots(2, 1, figsize=(12, 8))
+df.plot(x=<span class="c-str">'time'</span>, y=[<span class="c-str">'cpu_power_w'</span>, <span class="c-str">'gpu_power_w'</span>], ax=axes[0])
+axes[0].set_ylabel(<span class="c-str">'Power (W)'</span>)
+axes[0].set_title(<span class="c-str">'CPU and GPU Power Consumption'</span>)
+df.plot(x=<span class="c-str">'time'</span>, y=[<span class="c-str">'cpu_temp_c'</span>, <span class="c-str">'gpu_temp_c'</span>], ax=axes[1])
+axes[1].set_ylabel(<span class="c-str">'Temperature (°C)'</span>)
+axes[1].set_title(<span class="c-str">'CPU and GPU Temperature'</span>)
+plt.tight_layout()
+plt.savefig(<span class="c-str">'power_plot.png'</span>, dpi=150)
+plt.show()</pre>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-content">
+          <h4>Performance Per Watt analysis</h4>
+          <div class="code-block">
+            <div class="code-header"><span class="lang">bash</span><span class="desc">PPW calculation across CPU frequency states</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+            <pre"><span class="c-cmt"># Test PPW at different frequency scaling governors</span>
+<span class="c-cmd">sudo cpupower frequency-set</span> <span class="c-flag">-g</span> performance   <span class="c-cmt"># Max freq</span>
+<span class="c-cmd">sysbench</span> cpu <span class="c-flag">--threads=$(nproc)</span> <span class="c-flag">--time</span>=10 run <span class="c-flag">|</span> <span class="c-cmd">grep</span> events/sec
+<span class="c-cmt"># Also run power_logger.py and note avg watts</span>
+
+<span class="c-cmd">sudo cpupower frequency-set</span> <span class="c-flag">-g</span> powersave     <span class="c-cmt"># Min freq</span>
+<span class="c-cmd">sysbench</span> cpu <span class="c-flag">--threads=$(nproc)</span> <span class="c-flag">--time</span>=10 run <span class="c-flag">|</span> <span class="c-cmd">grep</span> events/sec
+
+<span class="c-cmt"># PPW = events_per_sec / average_watts</span>
+<span class="c-cmt"># Compare: often powersave governor has BETTER PPW</span>
+<span class="c-cmt"># despite lower absolute performance</span>
+
+<span class="c-cmt"># Available governors</span>
+<span class="c-cmd">cat</span> <span class="c-path">/sys/devices/system/cpu/cpu0/cpufreq/scaling_available_governors</span>
+<span class="c-cmt"># performance, powersave, ondemand, conservative, schedutil</span></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title"><span class="icon">🐛</span>Debugging &amp; Troubleshooting</div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Issue</th><th>Cause</th><th>Fix</th></tr></thead>
+        <tbody>
+          <tr><td>sensors: "No sensors found"</td><td>Sensor module not loaded</td><td><code>sudo modprobe coretemp && sudo sensors-detect</code>. On WSL2, sensors may not work – use <code>cat /proc/cpuinfo | grep MHz</code> instead.</td></tr>
+          <tr><td>RAPL reads 0 or fails</td><td>WSL2 doesn't expose RAPL / AMD CPU</td><td>AMD: use <code>k10temp</code> module for temperature. For RAPL on AMD, check <code>/sys/class/powercap/</code>; some AMD support it. In WSL2: RAPL typically unavailable – use Windows HWiNFO64.</td></tr>
+          <tr><td>CPU stuck at max frequency during stress</td><td>Turbo boost; cooler handling load fine</td><td>Normal if temps are OK (&lt;85°C). Throttling only occurs when TjMax is hit. Monitor with <code>s-tui</code>.</td></tr>
+          <tr><td>nvidia-smi shows power.draw as 0.00 W</td><td>GPU idle or NVML not reading mobile GPU</td><td>Start a GPU workload first. On laptop discrete GPUs, power reporting may be limited by the MXM specification.</td></tr>
+          <tr><td>s-tui crashes / not found</td><td>Not installed or Python version mismatch</td><td><code>pip3 install s-tui stress-ng</code>; run as <code>python3 -m s_tui</code>.</td></tr>
+          <tr><td>cpupower command not found</td><td>Tools not installed for current kernel</td><td><code>sudo apt install linux-tools-$(uname -r)</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="sub-section">
+      <h3>WSL2 Power Monitoring Alternatives</h3>
+      <div class="code-block">
+        <div class="code-header"><span class="lang">powershell</span><span class="desc">Windows-side power monitoring (run in PowerShell)</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+        <pre"><span class="c-cmt"># GPU power via PowerShell (limited info)</span>
+<span class="c-cmd">Get-WmiObject</span> <span class="c-flag">Win32_VideoController</span> <span class="c-flag">|</span> Select-Object Name, CurrentBitsPerPixel
+
+<span class="c-cmt"># CPU performance counters</span>
+<span class="c-cmd">Get-Counter</span> <span class="c-flag">'\Processor(_Total)\% Processor Time'</span> <span class="c-flag">-Continuous</span>
+
+<span class="c-cmt"># Windows battery report (laptops) – includes power usage history</span>
+<span class="c-cmd">powercfg</span> <span class="c-flag">/batteryreport</span>  <span class="c-cmt"># Generates HTML report</span>
+<span class="c-cmd">powercfg</span> <span class="c-flag">/energy</span>          <span class="c-cmt"># 60-second energy trace report</span>
+
+<span class="c-cmt"># Best option: HWiNFO64 (free) – comprehensive real-time power monitoring</span>
+<span class="c-cmt"># Download from: https://www.hwinfo.com/</span>
+<span class="c-cmt"># Shows: CPU package power, core power, GPU power, board power</span></pre>
+      </div>
+    </div>
+
+    <div class="sub-section">
+      <h3>Observation Table – Energy Efficiency Experiment</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Workload</th><th>Device</th><th>Perf Metric</th><th>Avg Power (W)</th><th>PPW</th><th>Peak Temp (°C)</th></tr></thead>
+          <tbody>
+            <tr><td>Matrix Multiply N=1024</td><td>CPU (single thread)</td><td>___ ms</td><td></td><td></td><td></td></tr>
+            <tr><td>Matrix Multiply N=1024</td><td>CPU (all threads)</td><td>___ ms</td><td></td><td></td><td></td></tr>
+            <tr><td>Matrix Multiply N=1024</td><td>GPU (CUDA)</td><td>___ ms</td><td></td><td></td><td></td></tr>
+            <tr><td>sysbench prime (1T)</td><td>CPU</td><td>___ events/s</td><td></td><td></td><td></td></tr>
+            <tr><td>sysbench prime (all T)</td><td>CPU</td><td>___ events/s</td><td></td><td></td><td></td></tr>
+            <tr><td>ResNet18 inference</td><td>CPU</td><td>___ FPS</td><td></td><td></td><td></td></tr>
+            <tr><td>ResNet18 inference</td><td>GPU</td><td>___ FPS</td><td></td><td></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div><!-- end exp10 -->
+
+  </div><!-- end .content -->
+</main>
+
+<button id="toggle-sidebar" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+function copyCode(btn) {
+  const pre = btn.closest('.code-block').querySelector('pre');
+  const text = pre.innerText.replace(/\u200B/g, '');
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--accent2)';
+    btn.style.borderColor = 'var(--accent2)';
+    setTimeout(() => {
+      btn.textContent = orig;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1500);
+  });
+}
+
+// Scroll spy
+const navItems = document.querySelectorAll('.nav-item');
+const experiments = document.querySelectorAll('.experiment');
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navItems.forEach(n => n.classList.remove('active'));
+      const active = document.querySelector(`.nav-item[href="#${e.target.id}"]`);
+      if (active) {
+        active.classList.add('active');
+        active.scrollIntoView({block: 'nearest', behavior: 'smooth'});
+      }
+    }
+  });
+}, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+experiments.forEach(e => io.observe(e));
+
+// Smooth nav clicks
+navItems.forEach(item => {
+  item.addEventListener('click', e => {
+    const target = document.querySelector(item.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({behavior: 'smooth'});
+      if (window.innerWidth <= 900)
+        document.getElementById('sidebar').classList.remove('open');
+    }
+  });
+});
+</script>
+</body>
+</html>
